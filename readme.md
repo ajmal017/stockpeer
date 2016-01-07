@@ -6,4 +6,4 @@
 
 * Install /apple directory for push notifications (more on this later)
 
-* Install the .env file
+* Install the .env file.
