@@ -1,0 +1,102 @@
+/*Wise Words Demo*/
+
+.glyphicons-showoff i {
+  margin-right: 6px;
+  margin-left: 5px;
+}
+
+.button-showoff  {
+  text-align: center;
+  margin-bottom:30px;
+}
+
+.glyphicons-retinapng .glyphicons-icon {
+  background-image: url(../img/glyphicons/glyphicons@2x.png);
+  background-size:463px 1994px;
+}
+
+.halflings-retinapng .halflings-icon {
+  background-image: url(../img/glyphicons/glyphicons_halflings@2x.png);
+  background-size: 469px 182px;
+}
+
+.lt-ie9 .glyphicons-retinapng .glyphicons-icon {
+  background-image: url(../img/glyphicons/glyphicons.png);
+  background-size:463px 1994px;
+}
+
+.lt-ie9 .halflings-retinapng .halflings-icon {
+  background-image: url(../img/glyphicons/glyphicons_halflings.png);
+  background-size: 469px 182px;
+}
+
+
+/*Color Switcher*/
+
+#colorswitcher {
+  position: fixed;
+  /*display: none;*/
+  top: 200px;
+  left: 0;
+  background-color: none;
+  width: 36px;
+  padding: 4px;
+  z-index: 99999; 
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-left: 0;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 0 6px 6px 0;
+  -moz-border-radius: 0 6px 6px 0;
+  border-radius: 0 6px 6px 0;
+}
+
+#colorswitcher div.colorbox
+{
+  width:30px;
+  height:30px;
+  float:left;
+  cursor:pointer; 
+  margin:3px;
+  display:block; 
+}
+
+#colorswitcher #classic
+{
+  background-color: #9b7188;
+}
+
+#colorswitcher #nytimes
+{
+  background-color: #4c7a9f;
+}
+
+#colorswitcher #red
+{
+  background-color: #D54563;
+}
+
+#colorswitcher #yellow
+{
+  background-color: #E1B93F
+}
+
+#colorswitcher #blue
+{
+  background-color:#299ECB;
+}
+
+#colorswitcher #green
+{
+  background-color:#B2B74E;
+}
+
+
+#colorswitcher div.colorbox .glyphicons-icon.settings {
+  background-position: 1px -1340px;
+}
+
+#colorswitcher div.colorbox .glyphicons-icon.circle_question_mark {
+background-position: -191px -909px;

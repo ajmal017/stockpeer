@@ -1,0 +1,62 @@
+{
+	"name": "stockpeer.com",
+	"description": "Stockpeer.com",
+	
+	"require": {
+		"laravel/framework": "5.0.*",
+		"cloudmanic/robinhood": "dev-master",
+		"cloudmanic/laravel-api-controller": "2.0.*@dev",
+		"cloudmanic/cloudmanic-cms": "dev-master",
+		"league/csv": "7.*",
+		"guzzlehttp/guzzle": "~6.0",
+		"tburry/pquery": "1.1.0",
+		"pda/pheanstalk": "~3.0",
+		"cboden/ratchet": "0.3.*",
+		"coinbase/coinbase": "dev-master",
+		"php-gcm/php-gcm": "1.1.0",
+		"league/flysystem": "^1.0",
+		"league/flysystem-ziparchive": "^1.0",			
+		"predis/predis": "~1.0",
+		"league/flysystem-dropbox": "^1.0",
+		"league/climate": "^3.2",
+		"jenssegers/rollbar": "^1.4"			
+	},
+	
+	"require-dev": {
+	},
+	
+	"autoload": {
+		"classmap": [
+			"database"
+		],
+		
+		"psr-4": {
+			"App\\": "app/"
+		}
+	},
+	
+	"scripts": {
+		"post-install-cmd": [
+			"php artisan clear-compiled",
+			"php artisan optimize"
+		],
+		
+		"pre-update-cmd": [
+        		"php artisan clear-compiled"
+        	],
+		"post-update-cmd": [
+			"php artisan optimize"
+		],
+		
+		"post-create-project-cmd": [
+			"php -r \"copy('.env.example', '.env');\"",
+			"php artisan key:generate"
+		]
+	},
+	
+	"config": {
+		"preferred-install": "source"
+	},
+	
+	"minimum-stability": "dev"	
+}

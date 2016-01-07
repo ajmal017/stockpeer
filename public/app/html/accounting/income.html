@@ -1,0 +1,39 @@
+<div class="zone-content trade-screener">
+		
+	<div class="row">
+  	
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">Income</div>
+
+        <table class="table table-striped">  	
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Source</th> 
+              <th>Amount</th>              
+            </tr>    
+          </thead>
+          
+          <tbody>
+            <tr ng-repeat="row in income">
+              <td>{{ row.IncomeDate | date:'M/d/yyyy' }}</td>
+              
+              <td>{{ row.IncomeType }}</td>
+
+              <td ng-show="row.IncomeType == 'Dividend'">{{ row.Symbol.SymbolsFull }}</td>
+              <td ng-show="row.IncomeType == 'Interest'">{{ row.Asset.AssetsName }}</td>
+              <td ng-show="row.IncomeType == 'P2P Interest'">{{ row.Asset.AssetsName }}</td>
+              <td ng-show="row.IncomeType == 'Loan Interest'">{{ row.Asset.AssetsName }}</td>
+              
+              <td>${{ row.IncomeAmount | number:2 }}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+	</div>
+</div>

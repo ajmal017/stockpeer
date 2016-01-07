@@ -1,0 +1,192 @@
+<div class="zone-content trade-screener">
+		
+	<div class="row">
+  	
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">
+                    
+          <form class="row form-inline">
+            <span class="pull-left col-md-4">Income Statement</span>
+            
+            <span class="pull-right col-md-6 text-right">
+              <input class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-format="m/d/yyyy" ng-model="date_start" style="width: 100px; height: 25px;" ng-change="date_change()" /> 
+              - 
+              <input class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-format="m/d/yyyy" ng-model="date_end" style="width: 100px; height: 25px;" ng-change="date_change()" /> 
+            </span>
+          </form>
+          
+        </div>
+
+        <table class="table table-striped">  	
+          
+          <tbody>
+            <tr>
+              <td><b>Income</b></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            
+            <tr ng-show="statement.Income.Put_Credit_Spread != 0">
+              <td>&nbsp;</td>
+              <td>Put Credit Spreads</td>
+              <td>${{ statement.Income.Put_Credit_Spread | number:2 }}</td>
+            </tr>            
+
+            <tr ng-show="statement.Income.Call_Credit_Spread != 0">
+              <td>&nbsp;</td>
+              <td>Call Credit Spreads</td>
+              <td>${{ statement.Income.Call_Credit_Spread | number:2 }}</td>
+            </tr>  
+
+            <tr ng-show="statement.Income.Weekly_Put_Credit_Spread != 0">
+              <td>&nbsp;</td>
+              <td>Weekly Put Credit Spreads</td>
+              <td>${{ statement.Income.Weekly_Put_Credit_Spread | number:2 }}</td>
+            </tr>
+
+            <tr ng-show="statement.Income.Weekly_Put_Credit != 0">
+              <td>&nbsp;</td>
+              <td>Weekly Put Credit</td>
+              <td>${{ statement.Income.Weekly_Put_Credit | number:2 }}</td>
+            </tr> 
+
+            <tr ng-show="statement.Income.Long_Option_Trade != 0">
+              <td>&nbsp;</td>
+              <td>Long Option Trades</td>
+              <td>${{ statement.Income.Long_Option_Trade | number:2 }}</td>
+            </tr>
+
+            <tr ng-show="statement.Income.Long_Stock_Trade != 0">
+              <td>&nbsp;</td>
+              <td>Long Stock Trades</td>
+              <td>${{ statement.Income.Long_Stock_Trade | number:2 }}</td>
+            </tr>
+
+            <tr ng-show="statement.Income.Peer_To_Peer_Lending != 0">
+              <td>&nbsp;</td>
+              <td>Peer-To-Peer Lending Interest</td>
+              <td>${{ statement.Income.Peer_To_Peer_Lending | number:2 }}</td>
+            </tr> 
+            
+            <tr ng-show="statement.Income.Loan_Interest != 0">
+              <td>&nbsp;</td>
+              <td>Loan Interest</td>
+              <td>${{ statement.Income.Loan_Interest | number:2 }}</td>
+            </tr>             
+
+            <tr ng-show="statement.Income.Dividends != 0">
+              <td>&nbsp;</td>
+              <td>Dividends</td>
+              <td>${{ statement.Income.Dividends | number:2 }}</td>
+            </tr> 
+            
+            <tr ng-show="statement.Income.Interest != 0">
+              <td>&nbsp;</td>
+              <td>Interest</td>
+              <td>${{ statement.Income.Interest | number:2 }}</td>
+            </tr>    
+
+            <tr ng-show="statement.Income.Other != 0">
+              <td>&nbsp;</td>
+              <td>Other</td>
+              <td>${{ statement.Income.Other | number:2 }}</td>
+            </tr>          
+
+            <tr>
+              <td>&nbsp;</td>
+              <td><b>Income Total</b></td>
+              <td>${{ statement.Income.Total | number:2 }}</td>
+            </tr>
+            
+            <tr>
+              <td><b>Trading Expenses</b></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>  
+
+            <tr ng-show="statement.Trading_Expenses.Call_Credit_Spread_Commissions != 0">
+              <td>&nbsp;</td>
+              <td>Call Credit Spread Commission</td>
+              <td>${{ statement.Trading_Expenses.Call_Credit_Spread_Commissions | number:2 }}</td>
+            </tr> 
+            
+            <tr ng-show="statement.Trading_Expenses.Put_Credit_Spread_Commissions != 0">
+              <td>&nbsp;</td>
+              <td>Put Credit Spread Commission</td>
+              <td>${{ statement.Trading_Expenses.Put_Credit_Spread_Commissions | number:2 }}</td>
+            </tr>            
+
+            <tr ng-show="statement.Trading_Expenses.Weekly_Put_Credit_Spread_Commissions != 0">
+              <td>&nbsp;</td>
+              <td>Weekly Put Credit Spread Commission</td>
+              <td>${{ statement.Trading_Expenses.Weekly_Put_Credit_Spread_Commissions | number:2 }}</td>
+            </tr> 
+
+            <tr ng-show="statement.Trading_Expenses.Weekly_Put_Credit_Commissions != 0">
+              <td>&nbsp;</td>
+              <td>Weekly Put Credit Commission</td>
+              <td>${{ statement.Trading_Expenses.Weekly_Put_Credit_Commissions | number:2 }}</td>
+            </tr>             
+
+            <tr ng-show="statement.Trading_Expenses.Long_Option_Trade_Commissions != 0">
+              <td>&nbsp;</td>
+              <td>Long Option Trade Commission</td>
+              <td>${{ statement.Trading_Expenses.Long_Option_Trade_Commissions | number:2 }}</td>
+            </tr>
+
+            <tr ng-show="statement.Trading_Expenses.Long_Stock_Trade_Commissions != 0">
+              <td>&nbsp;</td>
+              <td>Long Stock Trade Commission</td>
+              <td>${{ statement.Trading_Expenses.Long_Stock_Trade_Commissions | number:2 }}</td>
+            </tr>
+
+            <tr ng-show="statement.Trading_Expenses.Other_Commissions != 0">
+              <td>&nbsp;</td>
+              <td>Other Commission</td>
+              <td>${{ statement.Trading_Expenses.Other_Commissions | number:2 }}</td>
+            </tr>          
+
+            <tr>
+              <td>&nbsp;</td>
+              <td><b>Trading Expense Total</b></td>
+              <td>${{ statement.Trading_Expenses.Total | number:2 }}</td>
+            </tr>
+            
+            <tr>
+              <td><b>Expenses</b></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>  
+
+            <tr ng-repeat="(key, row) in statement.Expenses" ng-show="( (row > 0) && (key != 'Total') )">
+              <td>&nbsp;</td>
+              <td>{{ key }}</td>
+              <td>${{ row | number:2 }}</td>
+            </tr> 
+            
+            <tr>
+              <td>&nbsp;</td>
+              <td><b>Expense Total</b></td>
+              <td>${{ statement.Expenses.Total | number:2 }}</td>
+            </tr>            
+            
+
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            
+            <tr>
+              <td>&nbsp;</td>
+              <td><b>Total</b></td>
+              <td>${{ statement.Total | number:2 }}</td>
+            </tr>                                     
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+	</div>
+</div>

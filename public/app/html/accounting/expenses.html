@@ -1,0 +1,49 @@
+<div class="zone-content">
+		
+	<div class="row">
+  	
+  	
+  	
+    <div class="col-md-8 col-md-offset-2">
+
+      <div class="row pd-10 clearfix">
+        <div class="col-md-4 pull-left" style="margin-left: -10px;">
+          <input type="text" class="form-control" placeholder="Search..." ng-model="search" />
+        </div>
+        <a href="/a/accounting/expenses/add" class="btn btn-primary pull-right mr-10">Add Expense</a>
+      </div>
+
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">Expenses</div>
+        
+        <table class="table table-striped">  	
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Vendor</th>
+              <th>Category</th> 
+              <th>Amount</th> 
+              <th>Note</th> 
+            </tr>    
+          </thead>
+          
+          <tbody>
+            <tr ng-repeat="row in expenses | filter:search">
+              <td>{{ row.ExpensesDate | date:'M/d/yyyy' }}</td>
+              
+              <td>{{ row.ExpensesVendor }}</td>
+
+              <td>{{ row.ExpensesCategory }}</td>
+
+              <td>${{ row.ExpensesAmount | number:2 }}</td>
+
+              <td>{{ row.ExpensesNote }}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+	</div>
+</div>

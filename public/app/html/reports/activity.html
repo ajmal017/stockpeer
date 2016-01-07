@@ -1,0 +1,33 @@
+<div class="zone-content trade-screener">
+		
+	<div class="row">
+  	
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">Activity</div>
+
+        <table class="table table-striped">  	
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Text</th>                                         
+            </tr>    
+          </thead>
+          
+          <tbody>
+            <tr ng-repeat="row in activity">
+              <td>{{ row.ActivityCreatedAt | dateToISO | date:'M/d/yyyy h:mm a' }}</td>
+              
+              <td>{{ row.ActivityType }}</td>
+              
+              <td>{{ row.ActivityText }}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+	</div>
+</div>

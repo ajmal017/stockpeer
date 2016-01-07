@@ -1,0 +1,104 @@
+<div class="zone-content trade-screener">
+		
+	<div class="row">
+  	
+    <ng-include src="'/app/html/widgets/watchlist.html'"></ng-include>
+    
+    <div class="col-md-5">
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">SPY Percent Away 45 Days</div>
+
+        <table class="table table-striped">
+          <thead>
+            <tr ng-hide="! credit_spread_45.length">
+              <th class="text-center">Expire</th>
+              <th class="text-center">Spread</th>
+              <th class="text-center">% Away</th>              
+              <th class="text-center">Credit</th>
+              <th class="text-center">Midpoint</th> 
+              <th class="text-center">&nbsp;</th>                                                                     
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in credit_spread_45">
+              <td class="text-center">{{ row.expire_df1 }}</td>
+              <td class="text-center">{{ row.buy_leg }} / {{ row.sell_leg }}</td>
+              <td class="text-center">{{ row.precent_away }}%</td>              
+              <td class="text-center">${{ row.credit }}</td> 
+              <td class="text-center">${{ row.midpoint }}</td> 
+              <td>
+
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#" ng-click="open_midpoint(row, logged_in_user.UsersDefaultPutCreditSpreadLots)">Open @ Midpoint ({{ logged_in_user.UsersDefaultPutCreditSpreadLots}} lots)</a></li>
+                    <li><a href="#">Share On Twitter</a></li>
+                  </ul>
+                </div> 
+                              
+              </td>                                   
+            </tr>
+            
+            <tr ng-show="! credit_spread_45.length">
+              <td colspan="5" class="text-center"><strong>Boo!! No Spreads Found To Trade.<strong></td>
+            </tr>            
+          </tbody>
+        </table>
+        
+        <div class="panel-footer" ng-hide="! credit_spread_45_timestamp">Updated: {{ credit_spread_45_timestamp }}</div>
+
+      </div>       
+    </div>
+    
+    <div class="col-md-5">
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">SPY Percent Away Weeklies</div>
+
+        <table class="table table-striped">
+          <thead>
+            <tr ng-hide="! credit_spread_weekly.length">
+              <th class="text-center">Expire</th>
+              <th class="text-center">Spread</th>
+              <th class="text-center">% Away</th>               
+              <th class="text-center">Credit</th>
+              <th class="text-center">Midpoint</th>  
+              <th class="text-center">&nbsp;</th>                                                                    
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in credit_spread_weekly">
+              <td class="text-center">{{ row.expire_df1 }}</td>
+              <td class="text-center">{{ row.buy_leg }} / {{ row.sell_leg }}</td>
+              <td class="text-center">{{ row.precent_away }}%</td>               
+              <td class="text-center">${{ row.credit }}</td> 
+              <td class="text-center">${{ row.midpoint }}</td> 
+              <td>
+
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#" ng-click="open_midpoint(row, 20)">Open @ Midpoint (20 lots)</a></li>
+                    <li><a href="#">Share On Twitter</a></li>
+                  </ul>
+                </div> 
+                              
+              </td>                                                 
+            </tr>
+            <tr ng-show="! credit_spread_weekly.length">
+              <td colspan="5" class="text-center"><strong>Boo!! No Spreads Found To Trade.<strong></td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="panel-footer" ng-hide="! credit_spread_weekly_timestamp">Updated: {{ credit_spread_weekly_timestamp }}</div>
+
+      </div>       
+    </div>    
+
+	</div>  		
+	
+</div>

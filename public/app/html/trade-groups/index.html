@@ -1,0 +1,150 @@
+<div class="zone-content trade-groups">
+
+	<div class="row">
+    <div class="col-md-2">
+      <div class="well text-center">
+        <h4>2014 P&L</h4>
+        <h5>$<span ng-bind="pl_2014"></span></h5>
+      </div>
+    </div>
+    
+    <div class="col-md-2">
+      <div class="well text-center">
+        <h4>2015 P&L</h4>
+        <h5>$<span ng-bind="pl_2015"></span></h5>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="well text-center">
+        <h4>2016 P&L</h4>
+        <h5>$<span ng-bind="pl_2016"></span></h5>
+      </div>
+    </div>
+        
+	</div>
+		
+
+  <div class="row mb-5">
+    <div class="col-md-4 pull-right text-right">
+      <label>Filter: </label>
+      <select ng-model="filter" ng-change="refresh()">
+        <option value="show-all">Show All</option>
+        <option value="closed-only">Closed Only</option>
+        <option value="open-only">Open Only</option>  
+        <option value="long-stock-only">Long Stocks Only</option>  
+        <option value="long-option-only">Long Options Only</option> 
+        <option value="put-credit-spreads-only">Put Credit Spreads Only</option> 
+        <option value="open-put-credit-spreads-only">Open Put Credit Spreads Only</option>  
+        <option value="closed-put-credit-spreads-only">Closed Put Credit Spreads Only</option>                  
+        <option value="weekly-put-credit-spreads-only">Weekly Put Credit Spreads Only</option>                        
+      </select>
+    </div>                       
+  </div>
+
+
+  <div class="panel panel-default panel-primary" ng-repeat="row in trade_groups">
+  
+    <div class="panel-heading">
+      <div class="row">
+    	  <span class="pull-left col-md-4" ng-bind="row.TradeGroupsTitle"></span>
+    	  
+        <div class="btn-group pull-right col-md-4">
+          <button type="button" class="btn btn-default btn-xs dropdown-toggle pull-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+          </button>
+          
+          <ul class="dropdown-menu">
+            <li><a href="#">Edit Trade</a></li>      
+            <li><a href="#">Blog Trade</a></li>                
+            <li><a href="#">Close Expired</a></li>  
+            <li><a href="#">Close @ $0.03</a></li>                    
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="tg-head well clearfix">
+      <div class="mod col-md-2 text-center">
+        <label>Open</label>
+        <div class="val" ng-bind="row.TradeGroupsStart | dateToISO | date:'M/d/yyyy'"></div>
+      </div>          
+      
+      <div class="mod col-md-2 text-center">
+        <label>Close</label>
+        <div ng-if="row.TradeGroupsStatus != 'Open'" class="val" ng-bind="row.TradeGroupsEnd | dateToISO | date:'M/d/yyyy'"></div>
+        <div ng-if="row.TradeGroupsStatus == 'Open'" class="val">---</div>
+      </div>
+      
+      <div class="mod col-md-2 text-center">
+        <label>Status</label>
+        <div class="val" ng-bind="row.TradeGroupsStatus"></div>
+      </div>            
+  
+      <div class="mod col-md-2 text-center">
+        <label>Commissions</label>
+        <div class="val">
+          $<span ng-bind="row.Commissions_Total | number:2"></span>
+        </div>
+      </div>
+  
+      <div class="mod col-md-2 text-center">
+        <label>Risked</label>
+        <div class="val">
+          $<span ng-bind="row.TradeGroupsRisked | number:2"></span>
+        </div>
+      </div>
+    
+      <div class="mod col-md-2 text-center">
+        <label>Profit</label>
+        <div ng-if="row.TradeGroupsStatus == 'Open'">---</div>
+        <div class="val" ng-if="row.TradeGroupsStatus != 'Open'" ng-class="{ red: (row.Profit_Loss < 0), green: (row.Profit_Loss > 0)}">
+          $<span ng-bind="row.Profit_Loss | number:2"></span>
+          (<span ng-bind="row.Profit_Loss_Precent | number:2"></span>%)
+        </div>
+      </div>
+    </div>          
+
+    <table class="table">
+      <thead>
+        <th>Positions</th>
+        <th>Open</th>
+        <th>Close</th>            
+        <th>Qty</th>
+        <th>Open Value</th> 
+        <th>Close Value</th> 
+        <th>P&L</th>                                                
+      </thead>
+      
+      <tbody>
+    	  <tr ng-repeat="row2 in row.Positions">
+      	  <td ng-bind="row2.SymbolsFull"></td>
+      	  <td ng-bind="row2.PositionsCreatedAt | dateToISO | date:'M/d/yyyy'"></td>
+    
+      	  <td ng-if="row2.PositionsStatus != 'Open'" ng-bind="row2.PositionsClosed | dateToISO | date:'M/d/yyyy'"></td>            	  
+      	  <td ng-if="row2.PositionsStatus == 'Open'">---</td>
+      	  
+      	  <td ng-bind="row2.PositionsQty"></td>
+      	  
+          <td>$<span ng-bind="row2.PositionsCostBasis | number:2"></span></td>
+          
+          <td ng-if="row2.PositionsStatus != 'Open'">$<span ng-bind="row2.PositionsClosePrice | number:2"></span></td>
+          <td ng-if="row2.PositionsStatus == 'Open'">---</td>
+          
+          <td ng-if="row2.PositionsStatus != 'Open'" ng-class="{ red: (row2.Profit_Loss < 0), green: (row2.Profit_Loss > 0)}">$<span ng-bind="row2.Profit_Loss | number:2"></span></td> 
+          <td ng-if="row2.PositionsStatus == 'Open'">---</td>                                            
+    	  </tr>
+    	  
+      </tbody>      	  
+    </table>
+    
+    <div class="note" ng-if="row.TradeGroupsNote.length">
+      <label>Note: </label>
+      <span ng-bind="row.TradeGroupsNote"></span>
+    </div>
+
+    
+  </div>
+
+
+</div>

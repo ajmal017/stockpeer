@@ -1,0 +1,51 @@
+<table class="table table-striped">  	
+  <thead>
+    <tr>
+      <th class="text-center">Open Date</th>
+      <th class="text-center">Close Date</th>
+      <th class="text-center">Spread</th>
+      <th class="text-center">Expire</th>
+      <th class="text-center">Lots</th>
+      <th class="text-center">Stock Open</th>
+      <th class="text-center">Stock Close</th>
+      <th class="text-center">Diff</th>
+      <th class="text-center">Vix Open</th>
+      <th class="text-center">Vix Close</th> 
+      <th class="text-center">S&P IVR Open</th>
+      <th class="text-center">S&P IVR Close</th>      
+      <th class="text-center">Short Delta Open</th>
+      <th class="text-center">Short Delta Close</th>       
+      <th class="text-center">Stopped</th>
+<!--       <th class="text-center">Costs</th> -->
+      <th class="text-center">Open Credit</th>
+      <th class="text-center">Close Credit</th>                
+      <th class="text-center">Profit</th>
+      <th class="text-center">Balance</th>
+    </tr>    
+  </thead>
+  
+  <tbody>
+    <tr ng-repeat="row in trades track by $index">
+      <td class="text-center">{{ row.BackTestTradesOpen | date:'M/d/yyyy' }}</td>
+      <td class="text-center">{{ row.BackTestTradesClose | date:'M/d/yyyy' }}</td>
+      <td class="text-center">{{ row.BackTestTradesLongLeg1 }} / {{ row.BackTestTradesShortLeg1 }}</td>
+      <td class="text-center">{{ row.BackTestTradesExpire1 | date:'M/d/yyyy' }}</td>
+      <td class="text-center">{{ row.BackTestTradesLots }}</td>
+      <td class="text-center">${{ row.BackTestTradesSymStart }}</td>
+      <td class="text-center">${{ row.BackTestTradesSymEnd }}</td>
+      <td class="text-center">{{ row.BackTestTradesSymDiff | number:2 }}%</td>
+      <td class="text-center">{{ row.BackTestTradesVixStart }}</td>
+      <td class="text-center">{{ row.BackTestTradesVixEnd }}</td> 
+      <td class="text-center">{{ row.BackTestTradesSnpIvrStart }}%</td>
+      <td class="text-center">{{ row.BackTestTradesSnpIvrEnd }}%</td> 
+      <td class="text-center">{{ row.BackTestTradesShortDeltaStart1 }}</td>
+      <td class="text-center">{{ row.BackTestTradesShortDeltaEnd1 }}</td>         
+      <td class="text-center">{{ row.BackTestTradesStopped }}</td>                
+<!--       <td class="text-center">${{ row.BackTestTradesCommissions | number:2 }}</td> -->
+      <td class="text-center">${{ row.BackTestTradesOpenCredit | number:2 }}</td>
+      <td class="text-center">${{ row.BackTestTradesCloseCredit | number:2 }}</td>                
+      <td class="text-center" ng-class="{ red: (row.BackTestTradesProfit < 0) }">${{ row.BackTestTradesProfit | number:2 }}</td>
+      <td class="text-center">${{ row.BackTestTradesBalance | number:2 }}</td>
+    </tr>           
+  </tbody>
+</table>

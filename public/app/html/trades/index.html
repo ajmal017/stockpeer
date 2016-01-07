@@ -1,0 +1,94 @@
+<div class="zone-content trade-screener">
+
+	<div class="row">
+    <div class="col-md-2">
+      <div class="well text-center">
+        <h4>2014 P&L</h4>
+        <h5>$<span ng-bind="pl_2014"></span></h5>
+      </div>
+    </div>
+    
+    <div class="col-md-2">
+      <div class="well text-center">
+        <h4>2015 P&L</h4>
+        <h5>$<span ng-bind="pl_2015"></span></h5>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="well text-center">
+        <h4>2016 P&L</h4>
+        <h5>$<span ng-bind="pl_2016"></span></h5>
+      </div>
+    </div>
+        
+	</div>
+		
+	<div class="row">
+  	
+    <div class="col-md-12">
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">Trades</div>
+
+        <table class="table table-striped">  	
+          <thead>
+            <tr>
+              <th>Trade</th>
+              <th>#</th>              
+              <th>Type</th>
+              <th>Status</th>              
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Start Price</th>
+              <th>End Price</th> 
+              <th>Profit</th>                                        
+              <th>&nbsp;</th>
+            </tr>    
+          </thead>
+          
+          <tbody>
+            <tr ng-repeat="row in trades">
+              <td>{{ row.Title }}</td>
+              
+              <td>{{ row.TradesShares }}</td>
+
+              <td>{{ row.TradesType }}</td>
+              
+              <td>{{ row.TradesStatus }}</td>              
+
+              <td>{{ row.TradesDateStart | date:'M/d/yyyy' }}</td>
+              
+              <td ng-show="row.TradesDateEnd == '0000-00-00'">---</td>
+              <td ng-hide="row.TradesDateEnd == '0000-00-00'">{{ row.TradesDateEnd | date:'M/d/yyyy' }}</td>
+              
+              <td>${{ row.TradesStartPrice_df1 }}</td>   
+              
+              <td ng-show="row.TradesStatus == 'Open'">---</td> 
+              <td ng-show="row.TradesStatus == 'Closed'">${{ row.TradesEndPrice_df1 }}</td>                                          
+
+              <td ng-show="row.Profit != '---'" ng-class="{ red: (row.ProfitRaw < 0), green: (row.ProfitRaw > 0)}">${{ row.Profit }} ({{ row.PercentGain }}%)</td> 
+              <td ng-show="row.Profit == '---'">---</td> 
+
+              <td>
+                
+                <div class="btn-group" ng-hide="row.asset_mark">
+                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Edit Trade</a></li>      
+                    <li ng-show="(row.TradesStatus == 'Closed') && (row.TradesAccountId == 1)"><a href="#" ng-click="blog_trade(row)">Blog Trade</a></li>                
+                    <li ng-show="(row.TradesType == 'Weekly Put Credit') && (row.TradesStatus != 'Closed')" ><a href="#" ng-click="close_exired(row)">Close Expired</a></li>  
+                    <li ng-show="(row.TradesType == 'Put Credit Spread') && (row.TradesStatus != 'Closed')"><a href="#" ng-click="close_at_3(row)">Close @ $0.03</a></li>                    
+                  </ul>
+                </div>
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+	</div>
+</div>

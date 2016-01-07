@@ -1,0 +1,54 @@
+<div class="zone-content trade-screener">
+		
+	<div class="row">
+  	
+    <div class="col-md-8 col-md-offset-2">
+
+
+        <div class="form-cont">
+          <div class="head" ng-show="action == 'add'">Add Expense</div>
+          
+          <form ng-submit="submit()">
+            <div class="form-group" ng-class="{ 'has-error': fields.ExpensesDate_error }">
+              <label for="label1">Date</label>
+              <input type="date" class="form-control" id="label1" ng-model="fields.ExpensesDate" />
+              <span class="help-block" ng-bind="fields.ExpensesDate_error"></span>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': fields.ExpensesVendor_error }">
+              <label for="label1">Vendor</label>
+              <select class="form-control" id="label1" ng-options="o as o for o in vendors" ng-model="fields.ExpensesVendor"></select>
+              <span class="help-block" ng-bind="fields.ExpensesVendor_error"></span>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': fields.ExpensesCategory_error }">
+              <label for="label1">Category</label>
+              <select class="form-control" id="label1" ng-options="o as o for o in categories" ng-model="fields.ExpensesCategory"></select>
+              <span class="help-block" ng-bind="fields.ExpensesCategory_error"></span>
+            </div>
+            
+            <div class="form-group" ng-class="{ 'has-error': fields.ExpensesAmount_error }">
+              <label for="label2">Amount</label>
+              <div class="input-group">
+                <div class="input-group-addon">$</div>
+                <input type="text" class="form-control" id="label2" placeholder="5000.00" ng-model="fields.ExpensesAmount" />
+              </div>
+              <span class="help-block" ng-bind="fields.ExpensesAmount_error"></span>
+            </div>
+            
+            <div class="form-group" ng-class="{ 'has-error': fields.ExpensesNote_error }">
+              <label for="label3">Note</label>
+              <input type="text" class="form-control" id="label3" placeholder="" ng-model="fields.ExpensesNote" />
+              <span class="help-block" ng-bind="fields.ExpensesNote_error"></span>
+            </div>            
+            
+            <button type="submit" class="btn btn-primary" ng-bind="submit_btn"></button> or <a href="/a/accounting/expenses">Cancel</a>
+          </form>
+          
+        </div>
+       
+
+    </div>
+    
+	</div>
+</div>

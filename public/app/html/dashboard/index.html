@@ -1,0 +1,276 @@
+<div class="global-stats clearfix">
+	<ul>
+  	<li><b>S&P 500 IVR:</b></li>
+  	<li>30 Day - {{ global_stats.snp_30_rank }}%</li>
+  	<li>60 Day - {{ global_stats.snp_60_rank }}%</li>  
+  	<li>90 Day - {{ global_stats.snp_90_rank }}%</li>  
+  	<li>365 Day - {{ global_stats.snp_365_rank }}%</li>            	          	        	
+	</ul>
+</div>
+
+<div class="zone-content dashboard">
+	
+	<div class="row">
+  	
+    <ng-include src="'/app/html/widgets/watchlist.html'"></ng-include> 	
+  	
+  	<div class="col-md-10">
+
+      <div class="panel panel-default panel-primary positions">
+        <div class="panel-heading">
+          <div class="row">
+            <span class="pull-left col-md-4 form-inline">
+              Ticker: {{ chart_sym | uppercase }}
+            </span>
+            <span class="pull-right col-md-4 text-right">
+              <select ng-model="chart_range" ng-change="chart_refresh()">
+                <option value="today-1">Today (1 min)</option> 
+                <option value="today-5">Today (5 min)</option> 
+                <option value="today-15">Today (15 min)</option>                                 
+                <option value="5d-15">5 Days (15 min)</option> 
+                <option value="1y-daily">1 Year (daily)</option>                 
+                <option value="1y-weekly">1 Year (weekly)</option>  
+                <option value="1y-monthly">1 Year (monthly)</option> 
+                <option value="2y-daily">2 Year (daily)</option>                 
+                <option value="2y-weekly">2 Year (weekly)</option>  
+                <option value="2y-monthly">2 Year (monthly)</option>                    
+                <option value="5y-weekly">5 Year (weekly)</option>  
+                <option value="5y-monthly">5 Year (monthly)</option> 
+                <option value="10y-weekly">10 Year (weekly)</option>  
+                <option value="10y-monthly">10 Year (monthly)</option> 
+                <option value="max-monthly">Max (monthly)</option>                                                                                  
+              <select> 
+            </span>
+          </div>
+        </div>
+                  
+        
+        <div id="chart"></div>
+
+      </div>
+
+
+
+      <div class="panel panel-default panel-primary positions">
+        <div class="panel-heading">
+          <div class="row">
+            <span class="pull-left col-md-4">Put Credit Spread Trades</span>
+            <span class="pull-right col-md-4 text-right">Credit: $<span ng-bind="total_credit() | number:2"></span></span>
+          </div>
+        </div>
+                  
+        <table class="table">
+          <thead>
+            <th>Contracts</th>
+            <th class="text-center">Open</th>
+            <th class="text-center">Lots</th>
+            <th class="text-center">Away</th> 
+            <th class="text-center">Days</th>              
+            <th class="text-center">Credit</th>
+            <th class="text-center">P&L</th>                                          
+            <th class="text-center">&nbsp;</th>    
+          </thead>
+  
+          <tbody>
+            <tr ng-repeat-start="row in positions_multi_leg" ng-show="show_spread(row)">
+              <td>
+                <p ng-repeat="row2 in row.legs" style="margin: 0; margin-bottom: 8px; padding: 0;">{{ quotes[row2.quote.symbol].description }}</p>
+              </td>
+  
+              <td class="text-center">{{ row.open_date }}</td>
+              <td class="text-center">{{ row.lots }}</td>
+              <td class="text-center">{{ percent_away(row.legs[1].quote.strike, row.legs[1].quote.underlying) | number:2 }}%</td>              
+              <td class="text-center">{{ row.days_to_expire }}</td>                 
+              <td class="text-center">${{ row.credit | number:2 }}</td> 
+              <td class="text-center" ng-class="{ red: (spread_gain_loss(row) < 0), green: (spread_gain_loss(row) > 0)}">${{ spread_gain_loss(row) | number:2 }}</td>
+              <td class="text-center">
+                <div class="btn-group" ng-hide="row.asset_mark">
+                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right">                 
+                    <li><a href="" ng-click="close_credit_option_trade(row, logged_in_user.UsersDefaultPutCreditSpreadCloseCredit)" ng-show="row.type == 'credit'">Close Trade @ ${{ logged_in_user.UsersDefaultPutCreditSpreadCloseCredit }}</a></li>                                        
+                  </ul>
+                </div>                
+              </td>                                                   
+            </tr>
+            
+            <tr ng-repeat-end ng-show="show_spread(row)">
+              <td colspan="7" style="border-top: none;">
+                                
+                <div class="progress">
+                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ row.precent_to_close }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ spread_precent_to_close(row) | number:2 }}%;">
+                    {{ spread_precent_to_close(row) | number:2 }}%
+                  </div>
+                </div>
+                                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+      
+      
+      <div class="panel panel-default panel-primary positions" ng-show="positions_options.length">
+        <div class="panel-heading">
+          <div class="row">
+            <span class="pull-left col-md-4">Option Trades</span>
+          </div>
+        </div>
+                  
+        <table class="table">
+          <thead>
+            <th>Contract</th>
+            <th class="text-center">Qty</th>
+            <th class="text-center">Price</th>
+            <th class="text-center">Last</th>  
+            <th class="text-center">Cost Basis</th>
+            <th class="text-center">Value</th>
+            <th class="text-center">Gain / Loss</th>                                               
+            <th class="text-center">&nbsp;</th>    
+          </thead>
+  
+          <tbody>
+            <tr ng-repeat="row in positions_options">
+              <td>{{ row.quote.description }}</td>
+              <td class="text-center">{{ row.quantity }}</td>         
+              <td class="text-center">${{ (row.cost_basis / (100 * row.quantity)) | number:2 }}</td> 
+              <td class="text-center">${{ quotes[row.symbol].last | number:2 }}</td>                
+              <td class="text-center">${{ row.cost_basis | number:2 }}</td> 
+              <td class="text-center">${{ (quotes[row.symbol].last * row.quantity * 100) | number:2 }}</td>
+              <td class="text-center" ng-class="{ red: (((quotes[row.symbol].last * row.quantity * 100) - row.cost_basis) < 0), green: (((quotes[row.symbol].last * row.quantity * 100) - row.cost_basis) > 0) }">
+                ${{ ((quotes[row.symbol].last * row.quantity * 100) - row.cost_basis) | number:2 }} 
+                ({{ ((((quotes[row.symbol].last * row.quantity * 100) - row.cost_basis) / row.cost_basis) * 100) | number:2 }}%)
+              </td>                                                                
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      
+      
+      <div class="panel panel-default panel-primary positions" ng-show="positions_stocks.length">
+        <div class="panel-heading">
+          <div class="row">
+            <span class="pull-left col-md-4">Stock Trades</span>
+          </div>
+        </div>
+                  
+        <table class="table">
+          <thead>
+            <th>Stock</th>
+            <th>Company</th>            
+            <th class="text-center">Qty</th>
+            <th class="text-center">Avg. Price</th>              
+            <th class="text-center">Last</th>              
+            <th class="text-center">Cost Basis</th> 
+            <th class="text-center">Value</th>  
+            <th class="text-center">Gain / Loss</th>                                                                           
+            <th class="text-center">&nbsp;</th>    
+          </thead>
+  
+          <tbody>
+            <tr ng-repeat="row in positions_stocks">
+              <td>{{ row.symbol }}</td>
+              <td>{{ row.quote.description }}</td>              
+              <td class="text-center">{{ row.quantity }}</td> 
+              <td class="text-center">${{ (row.cost_basis / row.quantity)  | number:2 }}</td> 
+              
+              <td class="text-center">
+                ${{ quotes[row.symbol].last | number:2 }} 
+                <span ng-class="{ red: (quotes[row.symbol].change_percentage < 0), green: (quotes[row.symbol].change_percentage > 0) }">({{ quotes[row.symbol].change_percentage | number:2 }}%)</span>
+              </td>         
+              
+              <td class="text-center">${{ row.cost_basis | number:2 }}</td> 
+              <td class="text-center">${{ (quotes[row.symbol].last * row.quantity) | number:2 }}</td> 
+              <td class="text-center" ng-class="{ red: (((quotes[row.symbol].last * row.quantity) - row.cost_basis) < 0), green: (((quotes[row.symbol].last * row.quantity) - row.cost_basis) > 0) }">
+                ${{ ((quotes[row.symbol].last * row.quantity) - row.cost_basis) | number:2 }} 
+                ({{ ((((quotes[row.symbol].last * row.quantity) - row.cost_basis) / row.cost_basis) * 100) | number:2 }}%)
+              </td>                                                                 
+            </tr>           
+
+            <tr ng-hide="! positions_stocks.length">
+              <td colspan="5">&nbsp;</td>
+              <td class="text-center"><strong>${{ get_positions_get_total_cost_baises() | number:2 }}</strong></td> 
+              <td class="text-center"><strong>${{ get_positions_get_total_value() | number:2 }}</strong></td> 
+              <td class="text-center" ng-class="{ red: ((get_positions_get_total_value() - get_positions_get_total_cost_baises()) < 0), green: ((get_positions_get_total_value() - get_positions_get_total_cost_baises()) > 0)}">
+                <strong>
+                  ${{ (get_positions_get_total_value() - get_positions_get_total_cost_baises()) | number:2  }}
+                  ({{ ((get_positions_get_total_value() - get_positions_get_total_cost_baises()) / get_positions_get_total_cost_baises() * 100) | number:2 }}%)
+                </strong>
+              </td>                                                                 
+            </tr>           
+          </tbody>
+        </table>
+
+      </div>            
+      
+      
+      <div class="panel panel-default panel-primary positions" ng-show="orders.length">
+        <div class="panel-heading">Orders</div>
+                  
+        <table class="table">
+          <thead>
+            <th>Symbols</th>
+            <th class="text-center">Last</th>
+            <th class="text-center">Quantity</th>              
+            <th class="text-center">Type</th>       
+            <th class="text-center">Type</th>
+            <th class="text-center">Price</th> 
+            <th class="text-center">Filled</th>                       
+            <th class="text-center">Status</th>                                    
+          </thead>
+  
+          <tbody>
+            <tr ng-repeat="row in orders">
+
+              <td ng-show="row.class == 'option'">{{ quotes[row.option_symbol].description }}</td>
+              
+              <td ng-show="row.class == 'multileg'">
+                <p ng-repeat="row2 in row.leg">{{ quotes[row2.option_symbol].description }}</p>                
+              </td>
+              
+              <td ng-show="row.class == 'equity'">{{ quotes[row.symbol].description }}</td>
+              
+              <td class="text-center" ng-show="row.class == 'multileg'">
+                <p ng-repeat="row2 in row.leg">${{ quotes[row2.option_symbol].last | number:2 }}</p>                
+              </td>                
+
+              <td class="text-center" ng-show="row.class == 'equity'">${{ quotes[row.symbol].last | number:2 }}</td>  
+
+              <td class="text-center" ng-show="row.class == 'option'">${{ quotes[row.option_symbol].last | number:2 }}</td>  
+              
+              <td class="text-center" ng-show="row.class == 'multileg'">
+                <p ng-repeat="row2 in row.leg">{{ row2.quantity }}</p>                
+              </td>              
+
+              <td class="text-center" ng-show="row.class == 'equity'">{{ row.quantity }}</td>
+
+              <td class="text-center" ng-show="row.class == 'option'">{{ row.quantity }}</td>
+              
+              <td class="text-center">{{ row.duration }}</td>
+              <td class="text-center">{{ row.type }}</td>
+
+              <td class="text-center" ng-hide="(row.type == 'market') || (row.type == 'stop')">${{ row.price | number:2 }}</td>
+              <td class="text-center" ng-show="row.type == 'stop'">${{ row.stop_price | number:2 }}</td>
+              <td class="text-center" ng-show="row.type == 'market'">---</td>              
+
+              <td class="text-center" ng-show="row.status == 'filled'">${{ row.avg_fill_price | number:2 }}</td>
+              <td class="text-center" ng-hide="row.status == 'filled'">---</td>
+
+              <td class="text-center">{{ row.status }}</td>
+  
+                                             
+            </tr>
+            
+          </tbody>
+        </table>
+
+      </div>           
+                     
+  	</div>
+ 	  	
+	</div>
+	
+</div>

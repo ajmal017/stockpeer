@@ -1,0 +1,43 @@
+<div class="zone-content trade-screener">
+		
+	<div class="row">
+  	
+    <div class="col-md-8 col-md-offset-2">
+
+
+        <div class="form-cont">
+          <div class="head" ng-show="action == 'add'">Add Shares</div>
+          <div class="head" ng-show="action == 'remove'">Remove Shares</div>
+          
+          <form ng-submit="submit()">
+            <div class="form-group" ng-class="{ 'has-error': fields.SharesDate_error }">
+              <label for="label1">Date</label>
+              <input type="date" class="form-control" id="label1" ng-model="fields.SharesDate" />
+              <span class="help-block" ng-bind="fields.SharesDate_error"></span>
+            </div>
+            
+            <div class="form-group" ng-class="{ 'has-error': fields.SharesPrice_error }">
+              <label for="label2">Amount</label>
+              <div class="input-group">
+                <div class="input-group-addon">$</div>
+                <input type="number" class="form-control" id="label2" placeholder="5000.00" ng-model="fields.SharesPrice" />
+              </div>
+              <span class="help-block" ng-bind="fields.SharesPrice_error"></span>
+            </div>
+            
+            <div class="form-group" ng-class="{ 'has-error': fields.SharesNote_error }">
+              <label for="label3">Note</label>
+              <input type="text" class="form-control" id="label3" placeholder="Monthly contribution." ng-model="fields.SharesNote" />
+              <span class="help-block" ng-bind="fields.SharesNote_error"></span>
+            </div>            
+            
+            <button type="submit" class="btn btn-primary" ng-bind="submit_btn"></button> or <a href="/a/accounting/shares">Cancel</a>
+          </form>
+          
+        </div>
+       
+
+    </div>
+    
+	</div>
+</div>

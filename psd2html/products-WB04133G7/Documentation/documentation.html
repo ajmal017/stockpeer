@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wise Words Documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="css/prettify.css" rel="stylesheet" media="screen">
+    <link href="css/docs.css" rel="stylesheet" media="screen">
+    <link  href="css/custom.css" rel="stylesheet" media="screen">
+  </head>
+   <body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+<header class="jumbotron subhead">
+  <div class="container">
+    <h1>Wise Words</h1>
+    <p class="lead">Responsive &amp; Typographic HTML Template</p>
+  </div>
+</header>
+
+<div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-list bs-docs-sidenav affix-top">
+          <li class="active"><a href="#overview"><i class="icon-chevron-right"></i> Overview</a></li>
+          <li><a href="#general"><i class="icon-chevron-right"></i> General Info</a></li>
+          <li><a href="#filesfolders"><i class="icon-chevron-right"></i> Files and Folders</a></li>
+          <li><a href="#buildingHTML"><i class="icon-chevron-right"></i> Building the HTML</a></li>
+          <li><a href="#colors"><i class="icon-chevron-right"></i>Color Schemes</a></li>
+          <li><a href="#elements"><i class="icon-chevron-right"></i> Elements</a></li>
+          <li><a href="#icons"><i class="icon-chevron-right"></i> Icons</a></li>
+          <li><a href="#credits"><i class="icon-chevron-right"></i> Credits</a></li>
+        </ul>
+      </div>
+
+
+      <div class="span9">
+
+
+        <section id="overview">
+          <div class="page-header">
+            <h1>Wise Words <small>Responsive HTML5 Template</small></h1>
+            <p>Version 1.0 - April 2013</p>
+          </div>
+
+    			<p class="lead">Thank you very much for purchasing Wise Words. This manual will help you use Wise Words and explain its functionality. If you have further questions or problems, please feel free to contact me at <i><a href="mailto:support@shovelandrake.com">support@shovelandrake.com</a></i>.</p>
+
+    			<p class="lead">I hope you will enjoy using my template.</p>
+
+        </section>
+
+
+        <section id="general">
+          <div class="page-header">
+            <h1>General Info</small></h1>
+          </div>
+
+    			<h3>Introduction</h3>
+    			<p><i>Wise Words</i> is a responsive HTML5 template with focus on typography and simplicity. It is primarily intended for text heavy applications, such as a blog. It is built on the Twitter Bootstrap framework, therfore many Bootstrap features and elements are available in <i>Wise Words</i> as well.</p>
+
+    			<h3>Browser Support</h3>
+    			<p>Wise Words supports IE8+, Firefox, Chrome, Safari, Opera and Android/iOS mobile Browsers.</p>
+    			<h3>Library Versions</h3>
+    			<table class="table">
+    			    <tbody><tr>
+    			        <th>Library</th>
+    			        <th>Version</th>
+    			        <th>URL</th>
+    			    </tr>
+    			    <tr>
+    			        <td>Twitter Bootstrap</td>
+    			        <td>2.3.0</td>
+    			        <td><a href="http://twitter.github.com/bootstrap" target="_blank">http://twitter.github.com/bootstrap</a></td>
+    			    </tr>
+    			    <tr>
+    			        <td>jQuery</td>
+    			        <td>1.9.1</td>
+    			        <td><a href="http://jquery.com" target="_blank">http://jquery.com</a></td>
+    			    </tr>
+    			</tbody></table>
+
+    			<h3>Changelog</h3>
+    			<p><strong>Version 1.0 - 04 April 2013</strong></p>
+    			<ul>
+    			<li>Initial Release</li>
+    			</ul>
+
+            </section>
+
+            <section id="filesfolders">
+              <div class="page-header">
+                <h1>Files and Folders</h1>
+              </div>
+
+    			<h3>File and Folder Structure</h3>
+    			<p>This table describes the folder structure of Wise Words and what's inside each folder</p>
+    			<table class="table table-hover">
+    			    <tbody><tr>
+    			        <th>Folder</th>
+    			        <th>Content</th>
+    			    </tr>
+    			    <tr>
+    			        <td>HTML</td>
+    			        <td>The root folder. Contains all HTML files.</td>
+    			    </tr>
+    			    <tr>
+    			        <td>HTML/css</td>
+    			        <td>Contains all style sheets.</td>
+    			    </tr>
+    			    <tr>
+    			        <td>HTML/css/colors</td>
+    			        <td>Contains various color schemes.</td>
+    			    </tr>   
+    			    <tr>
+    			        <td>HTML/fonts</td>
+    			        <td>Contains font files for the Glyphicons.</td>
+    			    </tr>
+    			    <tr>
+    			        <td>HTML/img</td>
+    			        <td>Contains images like the logo as well as the social icons sprite.</td>
+    			    </tr>
+    			    <tr>
+    			        <td>HTML/img/glyphicons</td>
+    			        <td>Contains all images for the Glyphicons.</td>
+    			    </tr>
+    			    <tr>
+    			        <td>HTML/js</td>
+    			        <td>Contains JavaScript files</td>
+    			    </tr>
+    			</tbody></table>
+
+        </section>
+
+
+        <section id="buildingHTML">
+          <div class="page-header">
+            <h1>Building an HTML Site with Wise Words</h1>
+          </div>
+
+			<p>This section covers how to build a basic HTML page using <em>Wise Words</em>. This will enable you to create a basic page and fill it with your own content.</p>
+
+			<h3>Basic HTML Structure</h3>
+			<p>The basic HTML structure of <em>Wise Words</em> includes elements that are common to all pages such as CSS style sheets and JavaScript referneces. The body tag is empty except for one <code>&lt;div&gt;</code> element, which holds all content. Create a new file <code>blank.html</code> in the root HTML folder that looks like this:</p>
+
+			<pre class="prettyprint">
+&lt;!DOCTYPE html&gt;
+&lt;!--[if lt IE 7]&gt;      &lt;html class="no-js lt-ie9 lt-ie8 lt-ie7"&gt; &lt;![endif]--&gt;
+&lt;!--[if IE 7]&gt;         &lt;html class="no-js lt-ie9 lt-ie8"&gt; &lt;![endif]--&gt;
+&lt;!--[if IE 8]&gt;         &lt;html class="no-js lt-ie9"&gt; &lt;![endif]--&gt;
+&lt;!--[if gt IE 8]&gt;&lt;!--&gt; &lt;html class="no-js" lang="en"&gt; &lt;!--&lt;![endif]--&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Wise Words - A typographic HTML template&lt;/title&gt;
+
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+    &lt;link href='http://fonts.googleapis.com/css?family=Poiret+One|PT+Serif|Open+Sans:400,300' 
+          rel='stylesheet' type='text/css'&gt;
+
+    &lt;link href="css/bootstrap.min.css" rel="stylesheet"&gt;
+    &lt;link href="css/bootstrap-responsive.min.css" rel="stylesheet"&gt;
+    &lt;link href="css/socialicons.css" rel="stylesheet"&gt;
+    &lt;link href="css/glyphicons.css" rel="stylesheet"&gt;
+    &lt;link href="css/halflings.css" rel="stylesheet"&gt;
+    &lt;link href="css/template.css" rel="stylesheet"&gt;
+    &lt;link href="css/colors/color-classic.css" rel="stylesheet" id="colorcss"&gt;
+
+    &lt;script src="js/modernizr.js"&gt;&lt;/script&gt;
+
+    &lt;!-- HTML5 shim, for IE6-8 support of HTML5 elements --&gt;
+    &lt;!--[if lt IE 9]&gt;
+      &lt;script src="js/html5shiv.js"&gt;&lt;/script&gt;
+    &lt;![endif]--&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class="container"&gt;
+
+&lt;!-- Content goes here! --&gt;
+
+&lt;/div&gt;  &lt;!-- End Container --&gt;
+
+&lt;!-- Le javascript
+================================================== --&gt;
+&lt;!-- Placed at the end of the document so the pages load faster --&gt;
+&lt;script src="js/jquery-1.9.1.js"&gt;&lt;/script&gt;
+&lt;script src="js/bootstrap.js"&gt;&lt;/script&gt;
+&lt;script src="js/tinynav.js"&gt;&lt;/script&gt;
+&lt;script src="js/template.js"&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+
+			<h3>The Header: Logo and Navigation</h3>
+			<p>Now you are ready to insert the header part, which contains the logo and the navigation. To do this, insert the following markup after the tag <code>&lt;div class="container"&gt;</code>.</p>
+			<pre class="prettyprint">
+&lt;div class="masthead clearfix"&gt;
+
+&lt;!-- The Logo --&gt;
+&lt;a href="index.html"&gt;&lt;img id="logo" src="img/wwlogo@2x.png" height="63" width="324" alt="Wise Words"&gt;&lt;/a&gt;
+
+&lt;!-- The Navigation --&gt;
+&lt;ul id="nav" class="nav ww-nav pull-right hidden-phone"&gt;
+  &lt;li&gt;&lt;a href="#"&gt;Item 1&lt;/a&gt;&lt;/li&gt;
+  &lt;li class="dropdown"&gt;&lt;a href="#" class="dropdown-toggle" data-toggle="dropdown"&gt;Dropdown&lt;/a&gt;
+    &lt;ul class="dropdown-menu"&gt;
+        &lt;li&gt;&lt;a href="#"&gt;Item 2&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#"&gt;Item 3&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;                   
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href="#"&gt;Item 4&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;hr&gt;</pre>
+			<p>Replace the logo with your own logo file if you wish and add/remove the navigation to your liking. The example above features two standard items as well as a dropdown menu with two child items.</p>
+
+
+			<h3>Page Layouts and the Boostrap Grid System</h3>
+			<p><em>Wise Words</em> is based on Twitter Bootstrap. This means that the layout is built using the Bootstrap Scaffolding classes as described in the <a href="http://twitter.github.com/bootstrap/" target="_blank">Boostrap Documentation</a>. To gain a better understanding on how this works, read the <a href="http://twitter.github.com/bootstrap/scaffolding.html#gridSystem" target="_blank">section about the grid system</a>. </p>
+			<p>For this example, we are going to include the simplest page layout of <em>Wise Words</em>, which is a single centered column of 6 column width, with an offset of 3.</p>
+			<p>Add the following markup right after the markup, which you added in the previous step.</p>
+			<pre class="prettyprint">
+&lt;div class="row main-content"&gt;
+    &lt;div class="offset3 span6 zone-content"&gt;
+        &lt;article&gt;
+            &lt;h1&gt;Page Title&lt;/h1&gt;
+            &lt;div&gt;
+                &lt;p class="lead"&gt;
+                    This is a lead sentence. 
+                &lt;/p&gt;
+                &lt;p&gt;
+                    This is a simple paragraph. Lorem ipsum dolor sit amet,
+                    consectetur adipisicing elit. Rerum quas ipsa animi laborum soluta
+                    excepturi minus omnis atque doloremque voluptatum assumenda aut 
+                    beatae hic deleniti nulla. Natus eum officia ipsa!
+                 &lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/article&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+			<p>For other page layouts, see the various sample files which come with the template. You can adjust the layouts quite easily to your liking, using the Bootstrap classes. For example, try replacing the class <code>offset3</code> with <code>offset2</code>, as well as <code>span6</code> with <code>span8</code>. This will make the main content wider, which could be handy depending on the type of content you wish to publish.</p>
+			<pre class="prettyprint">&lt;div class="offset2 span8 zone-content"&gt;</pre>
+			<h3>Footer Widgets and Copyright Line</h3>
+			<p>If you want, you can add the three footer Widgets, the same way they are used in the examples. Add the following code below the snippet that you added in the previous step. Note that you are still inside the main content div <code>&lt;div class="container"&gt;</code>.</p>
+			<pre class="prettyprint">
+&lt;hr&gt;
+&lt;div class="row triple-row"&gt;
+    &lt;div id="triple-first" class="span4 triple"&gt;
+        &lt;div class="zone zone-triple-first"&gt;
+            &lt;article class="widget-triple-first widget-html-widget widget"&gt;
+                &lt;header&gt;
+                    &lt;h1&gt;First Triple&lt;/h1&gt;
+                &lt;/header&gt;
+                &lt;p&gt;First Triple Content&lt;/p&gt;
+            &lt;/article&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id="triple-second" class="span4 triple"&gt;
+        &lt;div class="zone zone-triple-second"&gt;
+            &lt;article class="widget-triple-second widget-html-widget widget"&gt;
+                &lt;header&gt;
+                    &lt;h1&gt;Second Triple&lt;/h1&gt;
+                &lt;/header&gt;
+                &lt;p&gt;Second Triple Content&lt;/p&gt;
+            &lt;/article&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id="triple-third" class="span4 triple"&gt;
+        &lt;div class="zone zone-triple-third"&gt;
+            &lt;article class="widget-triple-third widget-html-widget widget"&gt;
+                &lt;header&gt;
+                    &lt;h1&gt;Third Triple&lt;/h1&gt;
+                &lt;/header&gt;
+                &lt;p&gt;Third Triple Content&lt;/p&gt;
+            &lt;/article&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+			<p>Note that just like the page content div in the previous step, the triples are using the Bootstrap Grid classes (here <code>span4</code>) to determine their size. This makes it fairly easy to you to create your own combination of widgets, by using the various span and offset classes Bootstrap provides.</p>
+			<p>To add a copyright line on the very bottom, simply add </p>
+			<pre class="prettyprint">
+&lt;hr&gt;
+&lt;div class="row"&gt;
+    &lt;div class="copyright span12"&gt;Copyright 2013&lt;/div&gt;  
+&lt;/div&gt;</pre>
+			<p>before the end of the container div. </p>
+        </section>
+
+
+        <section id="colors">
+          <div class="page-header">
+            <h1>Color Schemes</h1>
+          </div>
+
+			<h3>Customizing the Color Scheme</h3>
+			<p><em>Wise Words</em> includes multiple predefined color schemes. The colors of the template are all defined in a separate CSS file, so they can be easily customized and swapped. </p>
+			<p>The color style sheet is included in the <code>&lt;head&gt;</code> tag with the following line:</p>
+
+			<pre class="prettyprint">&lt;link href="css/colors/color-classic.css" rel="stylesheet" id="colorcss"&gt;</pre>
+
+			<p>You can find the color scheme css files in the subfolder <code>HTML/css/colors</code>. To change the scheme, simply include a different color CSS file into your site. For example:</p>
+			<pre class="prettyprint">&lt;link href="css/colors/color-nytimes.css" rel="stylesheet" id="colorcss"&gt;</pre>
+
+			<p>You can also create your own color scheme. Simply copy one of the existing color schemes, define the colors to your liking and include it into your site.</p>
+
+        </section>
+
+
+        <section id="elements">
+          <div class="page-header">
+            <h1>Elements</h1>
+          </div>
+
+			<h3>Using the Included Elements</h3>
+			<p>This section describes the usage of the various elements that are included with Wise Words. For examples, see the page <code>elements.html</code> of the template.</p>
+
+
+			<h3>Tabs</h3>
+			<p>The basic HTML code for tabs looks as follows:</p>
+			<pre class="prettyprint">
+&lt;div class="tabbable"&gt;
+  &lt;ul class="nav nav-tabs"&gt;
+    &lt;li class="active"&gt;&lt;a href="#tab1" data-toggle="tab"&gt;Section 1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#tab2" data-toggle="tab"&gt;Section 2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#tab3" data-toggle="tab"&gt;Section 3&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;div class="tab-content"&gt;
+    &lt;div class="tab-pane active" id="tab1"&gt;
+      &lt;p&gt;I'm in Section 1.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="tab-pane" id="tab2"&gt;
+      &lt;p&gt;Howdy, I'm in Section 2.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="tab-pane" id="tab3"&gt;
+      &lt;p&gt;Howdy, I'm in Section 3.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+			<p>You may also have your tabs on the left/right/bottom of your content. For left/right tabs, simply add <code>tabs-left</code> or <code>tabs-right</code> to the <code>&lt;div class="tabbable"&gt;</code> tag:</p>
+
+			<p>Left:</p>
+			<pre class="prettyprint">&lt;div class="tabbable tabs-left"&gt;</pre>
+
+			<p>Right:</p>
+			<pre class="prettyprint">&lt;div class="tabbable tabs-right"&gt;</pre>
+
+			<p>To place your tabs below your content, add the class <code>tabs-below</code> to the <code>&lt;div class="tabbable"&gt;</code> tag AND switch the <code>&lt;ul&gt;</code> section with the <code>&lt;div class="tab-content"&gt;</code> section.</p>
+
+
+			<h3>Buttons</h3>
+			<p>Buttons have different syntax, depending on the usage. For a button within a form you simply use the <code>button</code> tag. For a button link on the other hand, apply the class <code>button-link</code> to a link:</p>
+			<pre class="prettyprint">&lt;a href="#" class="button-link"&gt;Button Link&lt;/a&gt;</pre>
+
+			<p>You can also combine buttons with the included Glyphicons. Here are two code examples for both a button as well as a link tag:</p>
+			<p>Button:</p>
+			<pre class="prettyprint">&lt;button class="button-icon"&gt;&lt;i class="glyphicons-icon home white"&gt;&lt;/i&gt;&lt;/button&gt;</pre>
+
+			<p>Link:</p>
+			<pre class="prettyprint">&lt;a href="#" class="button-link foricon"&gt;&lt;i class="glyphicons-icon volume_up white"&gt;&lt;/i&gt;&lt;/a&gt;</pre>
+			<p>For more examples, refer to the page <code>elements.html</code> of the template. For more info on the included Glyphicons see the Icon Section of this documentation.</p>
+
+			<h3>Tables</h3>
+			<p>For tables such as the ones that appear in <code>elements.html</code>, use the standard HTML table syntax and add the class <code>table</code>, like so:</p>
+			<pre class="prettyprint">
+&lt;table class="table"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Very Small&lt;/th&gt;
+        &lt;th&gt;Example Table&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Second Row&lt;/td&gt;
+        &lt;td&gt;Second Column&lt;/td&gt;
+    &lt;/tr&gt;   
+    &lt;tr&gt;
+        &lt;td&gt;Third Row&lt;/td&gt;
+        &lt;td&gt;Second Column&lt;/td&gt;
+    &lt;/tr&gt;       
+&lt;/table&gt;</pre>
+			<p>You may add classes <code>table-striped</code> or <code>table-hover</code> to the table, to make it more visually appealing:</p>
+			<pre class="prettyprint">&lt;table class="table table-striped table-hover"&gt;</pre>
+
+			<h3>Pagination</h3>
+			<p>The syntax of a pagination box looks as follows:</p>
+			<pre class="prettyprint">
+&lt;div class="pagination"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="#"&gt;&laquo;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="active"&gt;&lt;a href="#"&gt;1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;&raquo;&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</pre>
+
+        </section>
+
+        <section id="icons">
+          <div class="page-header">
+            <h1>Icons</h1>
+          </div>
+
+
+			<h3>Using the Included Icon Sets</h3>
+			<h3>Social Icons</h3>
+
+			<p>To place a Social Icon anywhere on your site, simply use an <code>&lt;i&gt;</code> tag with the correct class, for example:</p>
+			<pre class="prettyprint">&lt;i class="smicon-twitter"&gt;&lt;/i&gt;</pre>
+			<h3>Glyphicons</h3>
+			<p>Similarly the Glyphicons are used by using the <code>&lt;i&gt;</code> tag with the correct class applied, for example:</p>
+			<pre class="prettyprint">&lt;i class="glyphicons-icon dog"&gt;&lt;/i&gt;</pre>
+			<p>The Glyphicons are available both in black and in white. To render a white icon instead of a black on, simply add the class <code>white</code> to it:</p>
+			<pre class="prettyprint">&lt;i class="glyphicons-icon dog white"&gt;&lt;/i&gt;</pre>
+			<p>This renders the icon based on the .SVG sprite included under the <code>img</code> folder. If you prefer to include the Glyphicons font-based, use the following sytnax:</p>
+			<pre class="prettyprint">
+&lt;a href="" class="glyphicons glass"&gt;&lt;i&gt;&lt;/i&gt;&lt;/a&gt;
+&lt;a href="" class="glyphicons white glass"&gt;&lt;i&gt;&lt;/i&gt;&lt;/a&gt;</pre>
+			<p>For a full list of all available icons, please see the page <code>icons.html</code> in the template files.</p>
+
+      <p><strong>Note:</strong> You may only use the Glyphicons in together with Wise Words. If you like them and want to use them for your own product (i.e. your own template, your iPhone app or another website) you will have to buy your own license. <a href="http://glyphicons.com/glyphicons-licenses/" target="_blank">More info</a></p>
+
+        </section>
+
+
+        <section id="credits">
+          <div class="page-header">
+            <h1>Credits</h1>
+          </div>
+
+			<h3>Credits</h3>
+			<h3>JavaScript Libraries</h3>
+			<ul>
+			<li>Bootstrap <br> 
+			  <a href="http://twitter.github.com/bootstrap" target="_blank">http://twitter.github.com/bootstrap</a></li>
+			<li>jQuery <br>
+			  <a href="http://jquery.com/" target="_blank">http://jquery.com/</a></li>
+			<li>Modernizr <br>
+			  <a href="http://modernizr.com/" target="_blank">http://modernizr.com/</a></li>
+			</ul>
+			<h3>JavaScript Plugins</h3>
+			<ul>
+			<li>TinyNav <br>
+			  <a href="http://tinynav.viljamis.com/" target="_blank">http://tinynav.viljamis.com/</a></li>
+			</ul>
+			<h3>Icons</h3>
+			<ul>
+			<li>Social Icons <br>
+			  <a href="http://www.premiumpixels.com/" target="_blank">http://www.premiumpixels.com/</a> <br>
+			  <a href="http://www.prekesh.com/" target="_blank">Prekesh Chavda</a></li>
+			<li>Glyphicons <br>
+			  <a href="http://glyphicons.com/" target="_blank">http://glyphicons.com/</a></li>
+			</ul>
+
+		</section>
+
+
+      </div>
+    </div>
+
+  <div class="row copyright-message">
+    <div class="copyright">Copyright 2013 - Made in Switzerland</div>  
+  </div>
+
+  </div>
+
+
+
+
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+     <script src="js/run_prettify.js"></script>
+    <script src="js/custom.js"></script>
+  </body>
+</html>

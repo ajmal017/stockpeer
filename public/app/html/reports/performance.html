@@ -1,0 +1,36 @@
+<div class="zone-content trade-screener">
+		
+	<div class="row">
+  	
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">Performance</div>
+
+        <table class="table table-striped">  	
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Shares</th>
+              <th>Price</th>              
+              <th>Value</th>
+            </tr>    
+          </thead>
+          
+          <tbody>
+            <tr ng-repeat="row in marks">
+              <td>{{ row.MarksDate_df1 }}</td>
+              
+              <td>{{ row.MarksShares_df1 }}</td>
+
+              <td>${{ row.PricePerShare }}</td>
+
+              <td>${{ row.MarksValue_df1 }}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+	</div>
+</div>

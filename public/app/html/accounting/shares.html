@@ -1,0 +1,50 @@
+<div class="zone-content trade-screener">
+		
+	<div class="row">
+  	
+  	
+  	
+    <div class="col-md-8 col-md-offset-2">
+
+      <div class="row pd-10 clearfix">
+        <div class="col-md-4 pull-left" style="margin-left: -10px;">
+          <input type="text" class="form-control" placeholder="Search..." ng-model="search" />
+        </div>
+        <a href="/a/accounting/shares/add" class="btn btn-primary pull-right mr-8">Add Shares</a>
+        <a href="/a/accounting/shares/remove" class="btn btn-primary pull-right mr-10">Remove Shares</a>
+      </div>
+
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">Shares</div>
+        
+        <table class="table table-striped">  	
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Shares</th>
+              <th>Amount</th> 
+              <th>Price</th>              
+              <th>Note</th>
+            </tr>    
+          </thead>
+          
+          <tbody>
+            <tr ng-repeat="row in shares | filter:search">
+              <td>{{ row.SharesDate | date:'M/d/yyyy' }}</td>
+              
+              <td>{{ row.SharesCount | number:0 }}</td>
+
+              <td>${{ row.SharesPrice | number:2 }}</td>
+
+              <td>${{ (row.SharesPrice / row.SharesCount) | number:2 }}</td>
+
+              <td>{{ row.SharesNote }}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+	</div>
+</div>

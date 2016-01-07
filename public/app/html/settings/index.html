@@ -1,0 +1,48 @@
+<div class="zone-content trade-screener">
+		
+	<div class="row">
+  	
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default panel-primary">
+        
+        <div class="panel-heading">
+          <div class="row">
+            <span class="pull-left col-md-4">Tradier API Usage</span>
+          </div>
+        </div>        
+
+        <table class="table table-striped">  	
+          
+          <tbody>
+
+            <tr>
+              <td><b>Used</b></td>
+              <td ng-bind="rate_limits.used"></td>
+            </tr>
+            
+            <tr>
+              <td><b>Available</b></td>
+              <td ng-bind="rate_limits.available"></td>
+            </tr>             
+            
+            <tr>
+              <td><b>Allowed</b></td>
+              <td ng-bind="rate_limits.allowed"></td>
+            </tr>
+
+            <tr>
+              <td><b>Resets</b></td>
+              <td ng-bind="rate_limits.expires | date:'M/d/yyyy h:mm:ss a'" ng-if="rate_limits.expires > 0"></td>
+              <td ng-if="rate_limits.expires == 0"></td>              
+            </tr> 
+
+          </tbody>
+        </table>
+        
+        <div class="panel-footer" ng-hide="! rate_limit_updated">Updated: {{ rate_limit_updated }}</div>
+        
+      </div>
+    </div>
+    
+	</div>
+</div>

@@ -1,0 +1,20 @@
+<div class="col-md-2">
+  <div class="panel panel-default panel-primary">
+    <div class="panel-heading">Watchlist</div>
+      
+    <div class="list-group">
+
+      <a href="" class="list-group-item" ng-repeat="row in watchlist" ng-click="watchlist_click(row)">
+        <strong>{{ row }}</strong> <br /> 
+        ${{ quotes[row].last | number:2 }} 
+        <span ng-class="{ red: (quotes[row].change_percentage < 0), green: (quotes[row].change_percentage > 0)}">({{ quotes[row].change_percentage | number:2 }}%)</span>
+      </a>
+      
+      <a href="" class="list-group-item" ng-show="! watchlist.length">Watchlist Loading....</a>  
+              
+    </div>
+    
+    <div class="panel-footer" ng-hide="! watchlist_timestamp">{{ watchlist_timestamp }}</div>
+      
+  </div>
+</div>

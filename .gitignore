@@ -1,0 +1,11 @@
+/daemon/conf.json
+/bootstrap/compiled.php
+/vendor
+/apple
+composer.phar
+composer.lock
+.env.*.php
+.env.php
+.env
+.DS_Store
+Thumbs.db

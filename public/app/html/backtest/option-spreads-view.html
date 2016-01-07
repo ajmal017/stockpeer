@@ -1,0 +1,148 @@
+<div class="zone-content trade-screener">
+		
+	
+	<div class="row">
+  	<div class="col-md-12">
+    	<div class="well clearfix">
+      	
+    		<form role="form" ng-submit="run_backtest()">
+
+    			<div class="row">				
+      			
+    			  <div class="form-group col-md-4 col-md-offset-1">
+    			    <label>Backtest Name</label>
+              <p ng-bind="fields.BackTestsName"></p>
+    			  </div>
+    			      			  
+    			</div>
+    			
+    			<div class="row">				
+    			  <div class="form-group col-md-4 col-md-offset-1">
+    			    <label>Backtest Type</label>
+    			    <p ng-bind="fields.BackTestsType"></p>
+    			  </div>
+    			  
+    			  <div class="form-group col-md-3">
+    			    <label>Start Date</label>
+    			    <p ng-bind="fields.BackTestsStart"></p>
+    			  </div>			  
+    
+    			  <div class="form-group col-md-3">
+    			    <label>End Date</label>
+    			    <p ng-bind="fields.BackTestsEnd"></p>
+    			  </div>	
+    			  
+    			</div>
+    			
+    
+    			<div class="row">
+    				
+    			  <div class="form-group col-md-4 col-md-offset-1">
+    			    <label>Starting Balance</label>
+    			    <p>$<span ng-bind="fields.BackTestsStartBalance | number:2"></span></p>	    
+    			  </div>	
+    			  
+    			  <div class="form-group col-md-3">
+    			    <label>Trade Size</label>
+    			    <p ng-bind="fields.BackTestsTradeSize"></p>
+    			  </div>				  
+    			  
+    			  <div class="form-group col-md-3">
+    			    <label>Close Trade</label>
+    			    <p ng-bind="fields.BackTestsCloseAt"></p>
+    			  </div>				  			  	
+    			  
+    			</div>	
+    									
+
+    			<div class="row">
+    				
+    			  <div class="form-group col-md-4 col-md-offset-1">
+    			    <label>Backtest Start</label>
+    			    <p ng-bind="fields.BackTestsClockStart"></p>   
+    			  </div>	
+    			  
+    			  <div class="form-group col-md-3">
+    			    <label>Backtest Ended</label>
+    			    <p ng-bind="fields.BackTestsClockEnd"></p> 
+    			  </div>				  
+    			  
+    			  <div class="form-group col-md-3">
+    			    <label>Backtest Status</label>
+    			    <p ng-bind="fields.BackTestsStatus"></p> 
+    			  </div>				  			  	
+    			  
+    			</div>
+    			
+    			
+    			<div class="row">
+    				
+    			  <div class="form-group col-md-4 col-md-offset-1">
+    			    <label>Profit</label>
+    			    <p>$<span ng-bind="fields.BackTestsProfit | number:2"></span></p>	  
+    			  </div>	
+    			  
+    			  <div class="form-group col-md-3">
+    			    <label>CAGR</label>
+    			    <p><span ng-bind="fields.BackTestsCagr | number:2"></span>%</p>	 
+    			  </div>				  
+    			  
+    			  <div class="form-group col-md-3">
+    			    <label>Average Days In Trade</label>
+    			    <p ng-bind="fields.BackTestsAvgDaysInTrade | number:0"></p> 
+    			  </div>				  			  	
+    			  
+    			</div>    			
+    				
+    			<div class="row">
+    				
+    			  <div class="form-group col-md-4 col-md-offset-1">
+    			    <label>Win Rate</label>
+    			    <p><span ng-bind="fields.BackTestsWinRate | number:2"></span>%</p>	  
+    			  </div>	
+    			  
+    			  <div class="form-group col-md-3">
+    			    <label>Total Trades</label>
+    			    <p ng-bind="fields.BackTestsTotalTrades | number:0"></p>	 
+    			  </div>				  
+    			  
+    			  <div class="form-group col-md-3">
+    			    <label>Loss Trades</label>
+    			    <p ng-bind="fields.BackTestsLosses | number:0"></p> 
+    			  </div>				  			  	
+    			  
+    			</div> 
+
+    			
+    		</form>
+    		
+    		<div class="row">
+      		<div class="col-md-10 col-md-offset-1">
+      		  <label>Share Link: </label>
+            <a href="https://stockpeer.com/backtests/option-spreads/{{ fields.BackTestsPublicHash }}" target="_blank">https://stockpeer.com/backtests/option-spreads/{{ fields.BackTestsPublicHash }}</a>
+      		</div>
+    		</div>
+    		
+    	</div>
+  	</div>
+	</div>
+	
+				
+	<div class="row">
+  	
+    <div class="col-md-12">
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">Backtest Trades</div>
+
+        <div class="table-responsive">
+
+
+          <div ng-include="'/app/html/backtest/parts/trades-table.html'"></div>
+
+
+        </div>
+      </div>
+    </div>
+    
+	</div>
+</div>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<title>Wise Words - A typographic HTML template</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href='http://fonts.googleapis.com/css?family=Poiret+One|PT+Serif|Open+Sans:400,300' rel='stylesheet' type='text/css'>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="css/socialicons.css" rel="stylesheet">
+	<link href="css/glyphicons.css" rel="stylesheet">
+	<link href="css/halflings.css" rel="stylesheet">
+	<link href="css/template.css" rel="stylesheet">
+	<link href="css/colors/color-classic.css" rel="stylesheet" id="colorcss">
+
+	<!-- todo: remove for package -->
+	<link href="css/wisewords-demo.css" rel="stylesheet">
+
+	<script src="js/modernizr.js"></script>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+    
+</head>
+<body>
+
+<!-- todo: remove for package -->
+<div id="colorswitcher" class="hidden-phone">
+	<div id="classic" class="colorbox"></div>
+	<div id="nytimes" class="colorbox"></div>	
+	<div id="green" class="colorbox"></div>
+	<div id="yellow" class="colorbox"></div>	
+ 	<div id="red" class="colorbox"></div>	
+	<div id="blue" class="colorbox"></div>
+	<div id="morecolors" class="colorbox">
+		 <a href="colors.html"><i class="glyphicons-icon circle_question_mark"></i></a>
+	</div>
+</div>
+
+<div class="container">
+
+	<div class="masthead clearfix">
+		<a href="index.html"><img id="logo" src="img/wwlogo@2x.png" alt="Wise Words"></a>
+	    <ul id="nav" class="nav ww-nav pull-right hidden-phone">
+	      <li class="active"><a href="blog.html">Blog</a></li>
+	      <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Features</a>
+			<ul class="dropdown-menu">
+				<li><a href="typography.html">Typography</a></li>
+				<li><a href="elements.html">Elements</a></li>
+				<li><a href="icons.html">Icons</a></li>
+				<li><a href="404.html">404</a></li>
+				<li><a href="colors.html">Colors</a></li>
+			</ul>					
+	      </li>
+
+		  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Layouts</a>
+			<ul class="dropdown-menu">
+				<li><a href="layout-left.html">Left Column</a></li>
+				<li><a href="blog-single.html">Right Column</a></li>
+				<li><a href="layout-full.html">Full Width</a></li>
+				<li><a href="index.html">Centered Content</a></li>
+			</ul>					
+	      </li>
+	      <li><a href="contact.html">Contact</a></li>
+	    </ul>
+
+
+	</div>
+
+	<hr>
+	
+	<div class="row main-content">
+
+		<div class="offset3 span6">
+			<article class="page">
+
+				<h1>Typography</h1>
+			    
+			    <p class="lead">Wise Words implements many styles. For example, this is a leading paragraph achieved through applying the CSS class <em>.lead</em> on your paragraph tag.&nbsp;</p>
+				<p>This is a normal paragraph containting some <strong>bold text </strong>as well as some <em>italic text. </em>And some of the mandatory lorem ipsum so this doesn't appear too short.&nbsp;Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+
+				<h1>Heading 1</h1>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque culpa ad adipisci assumenda expedita obcaecati blanditiis corrupti recusandae minus aperiam. Nisi incidunt dolorum ea a consequuntur nihil cum illum molestias.</p>
+
+				<h2>Heading 2</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque culpa ad adipisci assumenda expedita obcaecati blanditiis corrupti recusandae minus aperiam. Nisi incidunt dolorum ea a consequuntur nihil cum illum molestias.</p>
+
+				<h3>Heading 3</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque culpa ad adipisci assumenda expedita obcaecati blanditiis corrupti recusandae minus aperiam. Nisi incidunt dolorum ea a consequuntur nihil cum illum molestias.</p>
+
+				<h4>Heading 4</h4>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque culpa ad adipisci assumenda expedita obcaecati blanditiis corrupti recusandae minus aperiam. Nisi incidunt dolorum ea a consequuntur nihil cum illum molestias.</p>
+
+				<h5>Heading 5</h5>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque culpa ad adipisci assumenda expedita obcaecati blanditiis corrupti recusandae minus aperiam. Nisi incidunt dolorum ea a consequuntur nihil cum illum molestias.</p>
+
+				<h6>Heading 6</h6>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque culpa ad adipisci assumenda expedita obcaecati blanditiis corrupti recusandae minus aperiam. Nisi incidunt dolorum ea a consequuntur nihil cum illum molestias.</p>
+				
+				<h3>Blockquote</h3>
+				<blockquote><p>Every year of my life I grow more convinced that it is wisest and best to fix our attention on the beautiful and the good, and dwell as little as possible on the evil and the false.</p><small>Richard Cecil</small></blockquote>
+				<p>Now that's what I call wise words. :)</p>
+				
+				<h3>Code</h3>
+				<p>You can either use inline code like <code>printf("Hello World!");</code> using the <i>&lt;code&gt;</i> tag, or you can use <i>&lt;pre&gt; tag for entire code blocks:</i></p>
+				<pre>
+/* Hello World program */
+
+#include&lt;stdio.h&gt;
+
+main()
+{
+    printf("Hello World");
+}
+				</pre>
+
+				<h3>Unordered list</h3>
+				<ul>
+					<li>Lorem ipsum dolor sit amet</li>
+					<li>Consectetur adipiscing elit</li>
+					<li>Integer molestie lorem at massa</li>
+					<li>Facilisis in pretium nisl aliquet</li>
+					<li>Nulla volutpat aliquam velit
+						<ul>
+							<li>Phasellus iaculis neque</li>
+							<li>Purus sodales ultricies</li>
+							<li>Vestibulum laoreet porttitor sem</li>
+							<li>Ac tristique libero volutpat at</li>
+						</ul>
+					</li>
+					<li>Faucibus porta lacus fringilla vel</li>
+					<li>Aenean sit amet erat nunc</li>
+					<li>Eget porttitor lorem</li>
+				</ul>
+
+				<h3>Ordered list</h3>
+				<ol>
+				<li>Lorem ipsum dolor sit amet</li>
+				<li>Consectetur adipiscing elit</li>
+				<li>Integer molestie lorem at massa</li>
+				<li>Facilisis in pretium nisl aliquet</li>
+				<li>Nulla volutpat aliquam velit</li>
+				<li>Faucibus porta lacus fringilla vel</li>
+				<li>Aenean sit amet erat nunc</li>
+				<li>Eget porttitor lorem</li>
+				</ol>
+			</article>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="row triple-row">
+		<div id="triple-first" class="span4 triple">
+		    <div class="zone zone-triple-first">
+				<article class="widget-triple-first widget-html-widget widget">
+		    		<header>
+		        		<h1>First Triple</h1>
+	    			</header>
+				    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur a nibh ut tortor dapibus vestibulum. Aliquam vel sem nibh. Suspendisse vel condimentum tellus.</p>
+				</article>
+			</div>
+		</div>
+
+		<div id="triple-second" class="span4 triple">
+		    <div class="zone zone-triple-second">
+				<article class="widget-triple-second widget-html-widget widget">
+		    		<header>
+		        		<h1>Second Triple</h1>
+	    			</header>
+				    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur a nibh ut tortor dapibus vestibulum. Aliquam vel sem nibh. Suspendisse vel condimentum tellus.</p>
+				</article>
+			</div>
+		</div>
+
+		<div id="triple-third" class="span4 triple">
+		    <div class="zone zone-triple-third">
+				<article class="widget-triple-third widget-html-widget widget">
+		    		<header>
+		        		<h1>Share &amp; Connect</h1>
+	    			</header>
+				    <p>
+						<a href="#"><i class="smicon-rss"></i></a>
+						<a href="#"><i class="smicon-twitter"></i></a>
+						<a href="#"><i class="smicon-google"></i></a>
+						<a href="#"><i class="smicon-github"></i></a>
+						<a href="#"><i class="smicon-reddit"></i></a>
+				    </p>
+				</article>
+			</div>
+		</div>
+	</div>
+	
+    <hr>
+	<div class="row">
+
+		<div class="copyright span12">Copyright 2013 - Made in Switzerland</div>	
+	</div>
+
+</div>  <!-- End Container -->
+
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/jquery-1.9.1.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/tinynav.js"></script>
+<script src="js/template.js"></script>
+
+<!-- Todo: remove for download version -->
+<script src="js/colorswitcher.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<div class="zone-content trade-screener">
+		
+	<div class="row">
+  	
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default panel-primary">
+        <div class="panel-heading">Orders</div>
+
+        <table class="table table-striped">  	
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Asset</th>
+              <th>Class</th>
+              <th>Strategy</th>  
+              <th>Symbol</th>              
+              <th>Qty</th>
+              <th>Price</th> 
+              <th>Filled</th> 
+              <th>Status</th>                                          
+            </tr>    
+          </thead>
+          
+          <tbody>
+            <tr ng-repeat="row in orders">
+              <td>{{ row.OrdersEntered | dateToISO | date:'M/d/yyyy' }}</td>
+              
+              <td>{{ row.AssetsName }}</td>
+              
+              <td>{{ row.OrdersClass }}</td>
+
+              <td>{{ row.OrdersStrategy }}</td>
+
+              <td>{{ row.OrdersSymbol }}</td>
+
+              <td>{{ row.Qty }}</td>
+
+              <td>${{ row.OrdersPrice | number:2 }}</td>
+
+              <td>${{ row.OrdersFilledPrice | number:2 }}</td>
+
+              <td>{{ row.OrdersStatus }}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+	</div>
+</div>
