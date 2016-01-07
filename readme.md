@@ -6,4 +6,6 @@
 
 * Install /apple directory for push notifications (more on this later)
 
-* Install the .env file.
+* Install /daemon/conf.json for the Golang app
+
+* Install the .env file
