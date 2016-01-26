@@ -22,6 +22,7 @@
               
               <td>{{ row.IncomeType }}</td>
 
+              <td ng-show="row.IncomeType == 'Realty Shares Distribution'">{{ row.Asset.AssetsName }}</td>
               <td ng-show="row.IncomeType == 'Dividend'">{{ row.Symbol.SymbolsFull }}</td>
               <td ng-show="row.IncomeType == 'Interest'">{{ row.Asset.AssetsName }}</td>
               <td ng-show="row.IncomeType == 'P2P Interest'">{{ row.Asset.AssetsName }}</td>
