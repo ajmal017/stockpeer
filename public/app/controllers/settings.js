@@ -3,19 +3,27 @@
 //
 app.controller('SettingsCtrl', function ($scope, $http, $routeParams, $location) 
 {  
-  $scope.rate_limit_updated = '';
+  $scope.user = {}
   
-  $scope.rate_limits = {
-    allowed: 0,
-    available: 0,
-    expires: 0,
-    used: 0   
-  };
+  // Save user settings.
+  $scope.save_configs = function ()
+  {
+    $http.post('/api/v1/me/update_settings', $scope.user).success(function (json) {
+      $scope.refresh_logged_in_user();
+      alert('Successfully Updated.');
+    });
+  }
   
-  // When we get an update on the Tradier API limits
-  $scope.$on('Quotes:rate_limit', function (event, args) {    
-    $scope.rate_limits = args.data;
-    $scope.rate_limit_updated = args.timestamp;
-    $scope.$apply();
-  });
+  // Get user settings.
+  $scope.get_me = function ()
+  {
+    $http.get('/api/v1/me').success(function (json) {
+      $scope.user = json.data;
+    });
+  }
+  
+  // Load page data.
+  $scope.get_me();
 });
+
+/* End File */

@@ -26,9 +26,9 @@ class Users03 extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('BackTestTrades', function($table)
+		Schema::table('Users', function($table)
 		{      
-    	$table->dropColumn('BackTestTradesSnpIvrEnd'); 
+    	$table->dropColumn('UsersDefaultPutCreditSpreadLots'); 
     	$table->dropColumn('UsersDefaultPutCreditSpreadCloseCredit');     		    	   	      	   	    	    	     	    	  	    	    	   	
 		});
 	}

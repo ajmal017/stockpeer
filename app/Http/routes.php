@@ -226,6 +226,7 @@ Route::group([ 'prefix' => 'api/v1', 'middleware' => [ 'force.ssl', 'auth' ] ], 
   Route::get('me', 'Api\V1\Me@get');
   Route::get('me/ping', 'Api\V1\Me@ping');
   Route::get('me/get_watchlist', 'Api\V1\Me@get_watchlist');
+  Route::post('me/update_settings', 'Api\V1\Me@update_settings');
   Route::post('me/get_websocket_key', 'Api\V1\Me@get_websocket_key');
   
   // api/v1/positions

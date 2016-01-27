@@ -25,6 +25,33 @@ class Me extends \Cloudmanic\LaravelApi\Controller
             ->first();
     return $this->api_response($user);
   }
+  
+  // 
+  // Update user settings.
+  //
+  public function update_settings()
+  {
+    $update = [];
+    $options = [ 'UsersDefaultPutCreditSpreadCloseCredit', 'UsersDefaultPutCreditSpreadLots' ];
+
+    // We only allow a few fields to be updated with this call.
+    foreach($options AS $key => $row)
+    {
+      if(Input::get($row))
+      {
+        $update[$row] = Input::get($row);
+      }
+    }
+    
+    // Make sure we have something to update.
+    if(count($update))
+    {
+      DB::table('Users')->where('UsersId', Auth::user()->UsersId)->update($update);
+    }
+    
+    // Return happy.
+    return $this->api_response();
+  }
 
   //
   // Just ping to make sure we are still here.
