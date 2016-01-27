@@ -26,7 +26,8 @@ class Reports extends \Cloudmanic\LaravelApi\Controller
         'Dividends' => 0,
         'Interest' => 0,
         'Loan_Interest' => 0,        
-        'Peer_To_Peer_Lending' => 0,        
+        'Peer_To_Peer_Lending' => 0, 
+        'Realty_Shares_Distribution' => 0,                
         'Other' => 0,
         'Total' => 0                
       ],
@@ -144,6 +145,10 @@ class Reports extends \Cloudmanic\LaravelApi\Controller
 
         case 'P2P Interest':
           $rt['Income']['Peer_To_Peer_Lending'] += $row['IncomeAmount'];        
+        break;
+
+        case 'Realty Shares Distribution':
+          $rt['Income']['Realty_Shares_Distribution'] += $row['IncomeAmount'];        
         break;
         
         default:

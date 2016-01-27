@@ -73,7 +73,13 @@
               <td>&nbsp;</td>
               <td>Loan Interest</td>
               <td>${{ statement.Income.Loan_Interest | number:2 }}</td>
-            </tr>             
+            </tr> 
+            
+            <tr ng-show="statement.Income.Realty_Shares_Distribution != 0">
+              <td>&nbsp;</td>
+              <td>Realty Shares Distribution</td>
+              <td>${{ statement.Income.Realty_Shares_Distribution | number:2 }}</td>
+            </tr>                         
 
             <tr ng-show="statement.Income.Dividends != 0">
               <td>&nbsp;</td>
