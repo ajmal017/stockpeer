@@ -25,7 +25,8 @@ class Kernel extends ConsoleKernel
 		'App\Console\Commands\Import1MinData',
 		'App\Console\Commands\CachePrime',
 		'App\Console\Commands\ImportPastData',
-		'App\Console\Commands\ImportEodOptions'
+		'App\Console\Commands\ImportEodOptions',
+		'App\Console\Commands\ScreenerPrime'
 	];
 
 	/**
@@ -55,14 +56,17 @@ class Kernel extends ConsoleKernel
       ->dailyAt('15:00');  
     
     
-    // Deal with 1min data collection.
+    // Deal with 1min data collection. (6:29am - 6:59am)
     for($i = 29; $i <= 59; $i++)
     {
-      $schedule->command('stockpeer:getdata1min')->dailyAt('6:' . $i); // 6:29am - 6:59am     
+      $schedule->command('stockpeer:getdata1min')->dailyAt('6:' . $i);
+      $schedule->command('stockpeer:screenerprime')->dailyAt('6:' . $i);    
     }
     
     $schedule->command('stockpeer:getdata1min')->cron('* 07-12 * * 1-5'); // 7:00am - 12:59pm
     $schedule->command('stockpeer:getdata1min')->cron('2 13 * * 1-5'); // 1:02                
+	
+    $schedule->command('stockpeer:screenerprime')->cron('* 07-13 * * 1-5'); // 7:00am - 11:59pm    
 	}
 
 }
