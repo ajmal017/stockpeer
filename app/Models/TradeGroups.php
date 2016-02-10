@@ -288,7 +288,14 @@ class TradeGroups extends \Cloudmanic\LaravelApi\Model
         ($data['TradeGroupsStatus'] == 'Closed'))
     {
       $data['Profit_Loss'] = $data['TradeGroupsClose'] - $data['TradeGroupsOpen'] - $data['Commissions_Total'];
-      $data['Profit_Loss_Precent'] = ((($data['TradeGroupsRisked'] + $data['Profit_Loss']) - $data['TradeGroupsRisked']) / $data['TradeGroupsRisked']) * 100;
+
+      if($data['TradeGroupsRisked'] > 0)
+      {
+        $data['Profit_Loss_Precent'] = ((($data['TradeGroupsRisked'] + $data['Profit_Loss']) - $data['TradeGroupsRisked']) / $data['TradeGroupsRisked']) * 100;
+      } else
+      {
+        $data['Profit_Loss_Precent'] = 0;        
+      }
     } else
     {
       $data['Profit_Loss'] = 0;
