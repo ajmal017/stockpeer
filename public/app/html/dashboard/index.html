@@ -55,7 +55,7 @@
         <div class="panel-heading">
           <div class="row">
             <span class="pull-left col-md-4">Put Credit Spread Trades</span>
-            <span class="pull-right col-md-4 text-right">Credit: $<span ng-bind="total_credit() | number:2"></span></span>
+            <span class="pull-right col-md-4 text-right">Credit: $<span ng-bind="total_put_spread_credit() | number:2"></span></span>
           </div>
         </div>
                   
@@ -72,16 +72,16 @@
           </thead>
   
           <tbody>
-            <tr ng-repeat-start="row in positions_multi_leg" ng-show="show_spread(row)">
+            <tr ng-repeat-start="row in trade_groups | filter:{ TradeGroupsType: 'Put Credit Spread' }">
               <td>
-                <p ng-repeat="row2 in row.legs" style="margin: 0; margin-bottom: 8px; padding: 0;">{{ quotes[row2.quote.symbol].description }}</p>
+                <p ng-repeat="row2 in row.Positions" style="margin: 0; margin-bottom: 8px; padding: 0;">{{ quotes[row2.SymbolsShort].description }}</p>
               </td>
   
-              <td class="text-center">{{ row.open_date }}</td>
-              <td class="text-center">{{ row.lots }}</td>
-              <td class="text-center">{{ percent_away(row.legs[1].quote.strike, row.legs[1].quote.underlying) | number:2 }}%</td>              
-              <td class="text-center">{{ row.days_to_expire }}</td>                 
-              <td class="text-center">${{ row.credit | number:2 }}</td> 
+              <td class="text-center">{{ row.TradeGroupsStart | dateToISO | date:'M/d/yyyy' }}</td>
+              <td class="text-center">{{ row.Positions[0].PositionsQty }}</td>
+              <td class="text-center">{{ percent_away(row) | number:2 }}%</td>              
+              <td class="text-center">{{ days_to_expire(row) }}</td>                 
+              <td class="text-center">${{ (row.TradeGroupsOpen * -1) | number:2 }}</td> 
               <td class="text-center" ng-class="{ red: (spread_gain_loss(row) < 0), green: (spread_gain_loss(row) > 0)}">${{ spread_gain_loss(row) | number:2 }}</td>
               <td class="text-center">
                 <div class="btn-group" ng-hide="row.asset_mark">
@@ -95,7 +95,7 @@
               </td>                                                   
             </tr>
             
-            <tr ng-repeat-end ng-show="show_spread(row)">
+            <tr ng-repeat-end>
               <td colspan="7" style="border-top: none;">
                                 
                 <div class="progress">

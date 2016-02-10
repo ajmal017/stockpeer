@@ -9,7 +9,7 @@ use Cloudmanic\LaravelApi\Me;
 
 class Positions extends \Cloudmanic\LaravelApi\Model
 {
-	public $table = 'Positions';  
+	public $table = 'Positions'; 
   
   public $joins = [
     [ 'table' => 'Assets', 'left' => 'PositionsAssetId', 'right' => 'AssetsId' ],    

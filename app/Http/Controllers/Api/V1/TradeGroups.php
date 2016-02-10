@@ -59,6 +59,12 @@ class TradeGroups extends \Cloudmanic\LaravelApi\Controller
       }
     }
     
+    // Special filter for excluding positions that are closed.
+    if(Input::get('only-open-positions'))
+    {
+      $this->model->set_only_open_positions();
+    }
+    
     return parent::get();
   }
 }

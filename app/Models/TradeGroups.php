@@ -12,6 +12,7 @@ use Cloudmanic\LaravelApi\Me;
 class TradeGroups extends \Cloudmanic\LaravelApi\Model
 {
 	public $table = 'TradeGroups';
+  public $only_open_positions = false; 
   private $positions_model = null;
   
   //
@@ -22,6 +23,14 @@ class TradeGroups extends \Cloudmanic\LaravelApi\Model
     parent::__construct();
     $this->positions_model = $positions_model;
   }
+  
+  //
+  // Only include open positions.
+  //
+  public function set_only_open_positions()
+  {
+    $this->only_open_positions = true;
+  }  
   
 	// 
 	// Get completed trades by year.
@@ -268,6 +277,12 @@ class TradeGroups extends \Cloudmanic\LaravelApi\Model
     {
       $this->positions_model->set_col('PositionsTradeGroupId', $data['TradeGroupsId']);
       $this->positions_model->set_order('PositionsId', 'asc');
+      
+      if($this->only_open_positions)
+      {
+        $this->positions_model->set_col('PositionsStatus', 'Open');        
+      }
+      
       $data['Positions'] = $this->positions_model->get();
     }
     

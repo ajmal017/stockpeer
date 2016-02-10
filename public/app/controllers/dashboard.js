@@ -17,6 +17,11 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   $scope.watchlist = [];
   $scope.watchlist_timestamp = ''; 
   
+  
+  $scope.trade_groups = [];
+  
+  
+  
   $scope.positions_stocks = [];
   $scope.positions_options = [];
   $scope.positions_multi_leg = [];    
@@ -62,48 +67,53 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
     $scope.$apply();
   });
   
-  // See if we show a spread or not. This is useful for when a spread expires worthless
-  $scope.show_spread = function (spread)
-  {
-    if(! $scope.quotes[spread.legs[0]['symbol']])
-    {
-      return false;
-    }
-    
-    return true;    
-  }
-  
   // Figure out gain / loss of a spread.
   $scope.spread_gain_loss = function (spread)
   {    
-    if(! $scope.quotes[spread.legs[1]['symbol']])
+    if(! $scope.quotes[spread.Positions[1].SymbolsShort])
     {
       return 0;
     }
     
-    return spread.credit - ((($scope.quotes[spread.legs[1]['symbol']].ask - $scope.quotes[spread.legs[0]['symbol']].bid) * 100) * spread.lots)       
+    return (spread.TradeGroupsOpen * -1) - ((($scope.quotes[spread.Positions[1].SymbolsShort].ask - $scope.quotes[spread.Positions[0].SymbolsShort].bid) * 100) * spread.Positions[0].PositionsQty)       
   }
   
   // Figure out spread precent_to_close
   $scope.spread_precent_to_close = function (spread)
   {    
-    if(! $scope.quotes[spread.legs[1]['symbol']])
+    if(! $scope.quotes[spread.Positions[1].SymbolsShort])
     {
       return 0;
     }
     
-    return ($scope.spread_gain_loss(spread) / spread.credit) * 100;     
+    return ($scope.spread_gain_loss(spread) / (spread.TradeGroupsOpen * -1)) * 100;     
   }  
   
   // Figure out percent away.
-  $scope.percent_away = function (price, underlying)
+  $scope.percent_away = function (row)
   {
-    if(! $scope.quotes[underlying])
+    // Find the short strike.
+    var short_strike = null; 
+    
+    for(var i in row.Positions)
+    {
+      if(row.Positions[i].PositionsType != 'Option')
+      {
+        continue;
+      }
+      
+      if(row.Positions[i].PositionsQty < 0)
+      {
+        short_strike = row.Positions[i];
+      }
+    }
+
+    if(! $scope.quotes[short_strike.SymbolsShort])
     {
       return '';
     }
     
-    return ((parseFloat($scope.quotes[underlying].last) - parseFloat(price)) / ((parseFloat($scope.quotes[underlying].last) + parseFloat(price)) / 2)) * 100;
+    return ((parseFloat($scope.quotes[short_strike.SymbolsUnderlying].last) - parseFloat(short_strike.SymbolsStrike)) / ((parseFloat($scope.quotes[short_strike.SymbolsUnderlying].last) + parseFloat(short_strike.SymbolsStrike)) / 2)) * 100;
   }
   
   // Get the total cost baises of the positions
@@ -133,22 +143,29 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   }  
   
   // Return total credit of positions.
-  $scope.total_credit = function ()
+  $scope.total_put_spread_credit = function ()
   {
     var total = 0;
     
-    for(var i in $scope.positions_multi_leg)
+    for(var i in $scope.trade_groups)
     {
-      if(! $scope.quotes[$scope.positions_multi_leg[i].legs[1]['symbol']])
+      if($scope.trade_groups[i].TradeGroupsType != 'Put Credit Spread')
       {
         continue;
       }
       
-      total = total + parseFloat($scope.positions_multi_leg[i].credit);
+      total = total + ($scope.trade_groups[i].TradeGroupsOpen * -1)
     }
-    
+        
     return total;
   }  
+  
+  // Return the days to expire.
+  $scope.days_to_expire = function (row)
+  {
+    var expire_date = new Date(row.Positions[0].SymbolsExpire + ' 00:00:00');     
+    return Math.round((expire_date - new Date()) / (1000 * 60 * 60 * 24));
+  }
   
   // Close credit option trade
   $scope.close_credit_option_trade = function (row, debit)
@@ -285,10 +302,14 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   // Send a request to API all our positions
   $scope.get_positions_by_types = function ()
   {  
-    $http.get('/api/v1/positions/get_by_types').success(function (json) {
+    $http.get('/api/v1/tradegroups?filter=open-only&only-open-positions=true').success(function (json) {
+      $scope.trade_groups = json.data;
+
+/*
       $scope.positions_stocks = json.data.stock;
       $scope.positions_options = json.data.options;
-      $scope.positions_multi_leg = json.data.multi_leg;       
+      $scope.positions_multi_leg = json.data.multi_leg;  
+*/     
     });
   }
   
