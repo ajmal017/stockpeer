@@ -51,7 +51,7 @@
 
 
 
-      <div class="panel panel-default panel-primary positions">
+      <div class="panel panel-default panel-primary positions" ng-show="trade_groups_put_credit_spread.length">
         <div class="panel-heading">
           <div class="row">
             <span class="pull-left col-md-4">Put Credit Spread Trades</span>
@@ -72,7 +72,7 @@
           </thead>
   
           <tbody>
-            <tr ng-repeat-start="row in trade_groups | filter:{ TradeGroupsType: 'Put Credit Spread' }">
+            <tr ng-repeat-start="row in trade_groups_put_credit_spread">
               <td>
                 <p ng-repeat="row2 in row.Positions" style="margin: 0; margin-bottom: 8px; padding: 0;">{{ quotes[row2.SymbolsShort].description }}</p>
               </td>

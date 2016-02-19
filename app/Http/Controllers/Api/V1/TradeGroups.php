@@ -65,6 +65,12 @@ class TradeGroups extends \Cloudmanic\LaravelApi\Controller
       $this->model->set_only_open_positions();
     }
     
+    // Special filter for only getting Put credit spreads
+    if(Input::get('only-put-credit-spreads'))
+    {
+      $this->model->set_col('TradeGroupsType', 'Put Credit Spread');
+    }    
+    
     return parent::get();
   }
 }

@@ -18,7 +18,7 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   $scope.watchlist_timestamp = ''; 
   
   
-  $scope.trade_groups = [];
+  $scope.trade_groups_put_credit_spread = [];
   $scope.positions_stocks = [];
    
 
@@ -149,14 +149,14 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   {
     var total = 0;
     
-    for(var i in $scope.trade_groups)
+    for(var i in $scope.trade_groups_put_credit_spread)
     {
-      if($scope.trade_groups[i].TradeGroupsType != 'Put Credit Spread')
+      if($scope.trade_groups_put_credit_spread[i].TradeGroupsType != 'Put Credit Spread')
       {
         continue;
       }
       
-      total = total + ($scope.trade_groups[i].TradeGroupsOpen * -1)
+      total = total + ($scope.trade_groups_put_credit_spread[i].TradeGroupsOpen * -1)
     }
         
     return total;
@@ -304,8 +304,8 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   // Send a request to API all our positions
   $scope.get_positions_by_types = function ()
   {  
-    $http.get('/api/v1/tradegroups?filter=open-only&only-open-positions=true').success(function (json) {
-      $scope.trade_groups = json.data;    
+    $http.get('/api/v1/tradegroups?filter=open-only&only-open-positions=true&only-put-credit-spreads=true').success(function (json) {
+      $scope.trade_groups_put_credit_spread = json.data;    
     });
     
     $http.get('/api/v1/positions?col_SymbolsType=Stock&col_PositionsStatus=Open').success(function (json) {
