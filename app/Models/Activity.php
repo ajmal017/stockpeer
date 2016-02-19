@@ -65,6 +65,7 @@ class Activity extends \Cloudmanic\LaravelApi\Model
   //
   public function apple_send_push_notifications($type, $msg)
   {
+/*
     $push = App::make('App\Library\ApplePush');
     
     $devs = DB::table('UserToDevice')
@@ -77,6 +78,7 @@ class Activity extends \Cloudmanic\LaravelApi\Model
     {
       $push->send($row->UserToDeviceAppleToken, 'Stockpeer.com - ' . $type, $msg, 'View');
     }
+*/
      
     // Return happy.
     return true;
