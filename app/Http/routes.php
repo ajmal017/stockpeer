@@ -231,7 +231,6 @@ Route::group([ 'prefix' => 'api/v1', 'middleware' => [ 'force.ssl', 'auth' ] ], 
   
   // api/v1/positions
 	Route::get('positions', 'Api\V1\Positions@get');
-	Route::get('positions/get_by_types', 'Api\V1\Positions@get_by_types');
 
 	// api/v1/autotrade
 	Route::get('autotrade/spy_percent_away', 'Api\V1\Autotrade@spy_percent_away');

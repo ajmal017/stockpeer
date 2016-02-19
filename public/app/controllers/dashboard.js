@@ -19,12 +19,8 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   
   
   $scope.trade_groups = [];
-  
-  
-  
   $scope.positions_stocks = [];
-  $scope.positions_options = [];
-  $scope.positions_multi_leg = [];    
+   
 
   // When the socket connects (or reconnects);
   $scope.$on('Status:connected', function (event, args) {    
@@ -123,7 +119,13 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
     
     for(var i in $scope.positions_stocks)
     {
-      total = total +  (parseFloat($scope.positions_stocks[i].quote.last) * parseFloat($scope.positions_stocks[i].quantity));
+    
+      if(! $scope.quotes[$scope.positions_stocks[i].SymbolsShort])
+      {
+        return 0;
+      }      
+      
+      total = total + (parseFloat($scope.quotes[$scope.positions_stocks[i].SymbolsShort].last) * parseFloat($scope.positions_stocks[i].PositionsQty));
     }
     
     return total;
@@ -136,7 +138,7 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
     
     for(var i in $scope.positions_stocks)
     {
-      total = total +  parseFloat($scope.positions_stocks[i].cost_basis);
+      total = total +  parseFloat($scope.positions_stocks[i].PositionsCostBasis);
     }
     
     return total;
@@ -303,14 +305,12 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   $scope.get_positions_by_types = function ()
   {  
     $http.get('/api/v1/tradegroups?filter=open-only&only-open-positions=true').success(function (json) {
-      $scope.trade_groups = json.data;
-
-/*
-      $scope.positions_stocks = json.data.stock;
-      $scope.positions_options = json.data.options;
-      $scope.positions_multi_leg = json.data.multi_leg;  
-*/     
+      $scope.trade_groups = json.data;    
     });
+    
+    $http.get('/api/v1/positions?col_SymbolsType=Stock&col_PositionsStatus=Open').success(function (json) {
+      $scope.positions_stocks = json.data;    
+    });    
   }
   
   $scope.get_positions_by_types();

@@ -172,21 +172,21 @@
   
           <tbody>
             <tr ng-repeat="row in positions_stocks">
-              <td>{{ row.symbol }}</td>
-              <td>{{ row.quote.description }}</td>              
-              <td class="text-center">{{ row.quantity }}</td> 
-              <td class="text-center">${{ (row.cost_basis / row.quantity)  | number:2 }}</td> 
+              <td>{{ row.SymbolsShort }}</td>
+              <td>{{ row.SymbolsFull }}</td>              
+              <td class="text-center">{{ row.PositionsQty }}</td> 
+              <td class="text-center">${{ (row.PositionsCostBasis / row.PositionsQty)  | number:2 }}</td> 
               
               <td class="text-center">
-                ${{ quotes[row.symbol].last | number:2 }} 
-                <span ng-class="{ red: (quotes[row.symbol].change_percentage < 0), green: (quotes[row.symbol].change_percentage > 0) }">({{ quotes[row.symbol].change_percentage | number:2 }}%)</span>
+                ${{ quotes[row.SymbolsShort].last | number:2 }} 
+                <span ng-class="{ red: (quotes[row.SymbolsShort].change_percentage < 0), green: (quotes[row.SymbolsShort].change_percentage > 0) }">({{ quotes[row.SymbolsShort].change_percentage | number:2 }}%)</span>
               </td>         
               
-              <td class="text-center">${{ row.cost_basis | number:2 }}</td> 
-              <td class="text-center">${{ (quotes[row.symbol].last * row.quantity) | number:2 }}</td> 
-              <td class="text-center" ng-class="{ red: (((quotes[row.symbol].last * row.quantity) - row.cost_basis) < 0), green: (((quotes[row.symbol].last * row.quantity) - row.cost_basis) > 0) }">
-                ${{ ((quotes[row.symbol].last * row.quantity) - row.cost_basis) | number:2 }} 
-                ({{ ((((quotes[row.symbol].last * row.quantity) - row.cost_basis) / row.cost_basis) * 100) | number:2 }}%)
+              <td class="text-center">${{ row.PositionsCostBasis | number:2 }}</td> 
+              <td class="text-center">${{ (quotes[row.SymbolsShort].last * row.PositionsQty) | number:2 }}</td> 
+              <td class="text-center" ng-class="{ red: (((quotes[row.SymbolsShort].last * row.PositionsQty) - row.PositionsCostBasis) < 0), green: (((quotes[row.SymbolsShort].last * row.PositionsQty) - row.PositionsCostBasis) > 0) }">
+                ${{ ((quotes[row.SymbolsShort].last * row.PositionsQty) - row.PositionsCostBasis) | number:2 }} 
+                ({{ ((((quotes[row.SymbolsShort].last * row.PositionsQty) - row.PositionsCostBasis) / row.PositionsCostBasis) * 100) | number:2 }}%)
               </td>                                                                 
             </tr>           
 
