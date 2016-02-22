@@ -26,7 +26,7 @@ class Orders extends \Cloudmanic\LaravelApi\Model
     $this->set_col('OrdersStatus', 'Filled');
     $this->set_col('OrdersReviewed', 'No');
     foreach($this->get() AS $key => $row)
-    {      
+    {            
       // See if any of our orders closed a position.
       $tradegroups_model->close_position($row);
       
@@ -108,6 +108,10 @@ class Orders extends \Cloudmanic\LaravelApi\Model
         case 'sell':
           $side = 'Sell';
         break;
+        
+        case 'buy_to_cover':
+          $side = 'Sell To Close';        
+        break; 
         
         case 'buy_to_close':
           $side = 'Buy To Close';

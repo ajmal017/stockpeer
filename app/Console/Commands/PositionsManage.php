@@ -57,23 +57,24 @@ class PositionsManage extends Command
       $orders_model->log_orders_from_tradier();
       
       // Get positions
-      $data = $this->_tradier->get_account_positions(Auth::user()->UsersTradierAccountId, true);
-      
-      // Log positions
-      $this->_log_positions($data, $user);
-      
-      // Loop through the positions.
-      foreach($data AS $key => $row)
+      if($data = $this->_tradier->get_account_positions(Auth::user()->UsersTradierAccountId, true))
       {
-        // First we check if we have this position in our records
-        if(! $pos = $positions_model->get_open_by_symbol($row['symbol']))
-        {
-          // TODO: check to see if we need to add positions.
-          continue;
-        }
+        // Log positions
+        $this->_log_positions($data, $user);
         
-        // See if we have any options expiring worthless today.
-        $this->_close_expired_options($row, $pos); 
+        // Loop through the positions.
+        foreach($data AS $key => $row)
+        {
+          // First we check if we have this position in our records
+          if(! $pos = $positions_model->get_open_by_symbol($row['symbol']))
+          {
+            // TODO: check to see if we need to add positions.
+            continue;
+          }
+          
+          // See if we have any options expiring worthless today.
+          $this->_close_expired_options($row, $pos); 
+        }
       }
       
       // Loop through our orders and see if any of them filled (as in closed).
