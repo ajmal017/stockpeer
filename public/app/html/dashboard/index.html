@@ -50,6 +50,66 @@
       </div>
 
 
+      <div class="panel panel-default panel-primary positions" ng-show="trade_groups_call_credit_spread.length">
+        <div class="panel-heading">
+          <div class="row">
+            <span class="pull-left col-md-4">Call Credit Spread Trades</span>
+            <span class="pull-right col-md-4 text-right">Credit: $<span ng-bind="total_call_spread_credit() | number:2"></span></span>
+          </div>
+        </div>
+                  
+        <table class="table">
+          <thead>
+            <th>Contracts</th>
+            <th class="text-center">Open</th>
+            <th class="text-center">Lots</th>
+            <th class="text-center">Away</th> 
+            <th class="text-center">Days</th>              
+            <th class="text-center">Credit</th>
+            <th class="text-center">P&L</th>                                          
+            <th class="text-center">&nbsp;</th>    
+          </thead>
+  
+          <tbody>
+            <tr ng-repeat-start="row in trade_groups_call_credit_spread">
+              <td>
+                <p ng-repeat="row2 in row.Positions" style="margin: 0; margin-bottom: 8px; padding: 0;">{{ quotes[row2.SymbolsShort].description }}</p>
+              </td>
+  
+              <td class="text-center">{{ row.TradeGroupsStart | dateToISO | date:'M/d/yyyy' }}</td>
+              <td class="text-center">{{ row.Positions[1].PositionsQty }}</td>
+              <td class="text-center">{{ percent_away(row, 'call') | number:2 }}%</td>              
+              <td class="text-center">{{ days_to_expire(row) }}</td>                 
+              <td class="text-center">${{ (row.TradeGroupsOpen * -1) | number:2 }}</td> 
+              <td class="text-center" ng-class="{ red: (spread_gain_loss(row, 'call') < 0), green: (spread_gain_loss(row, 'call') > 0)}">${{ spread_gain_loss(row, 'call') | number:2 }}</td>
+              <td class="text-center">
+                <div class="btn-group" ng-hide="row.asset_mark">
+                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right">                 
+                    <li><a href="" ng-click="close_credit_option_trade(row, logged_in_user.UsersDefaultPutCreditSpreadCloseCredit)" ng-show="row.type == 'credit'">Close Trade @ ${{ logged_in_user.UsersDefaultPutCreditSpreadCloseCredit }}</a></li>                                        
+                  </ul>
+                </div>                
+              </td>                                                   
+            </tr>
+            
+            <tr ng-repeat-end>
+              <td colspan="7" style="border-top: none;">
+                                
+                <div class="progress">
+                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ row.precent_to_close }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ spread_precent_to_close(row) | number:2 }}%;">
+                    {{ spread_precent_to_close(row) | number:2 }}%
+                  </div>
+                </div>
+                                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+
 
       <div class="panel panel-default panel-primary positions" ng-show="trade_groups_put_credit_spread.length">
         <div class="panel-heading">
@@ -79,10 +139,10 @@
   
               <td class="text-center">{{ row.TradeGroupsStart | dateToISO | date:'M/d/yyyy' }}</td>
               <td class="text-center">{{ row.Positions[0].PositionsQty }}</td>
-              <td class="text-center">{{ percent_away(row) | number:2 }}%</td>              
+              <td class="text-center">{{ percent_away(row, 'put') | number:2 }}%</td>              
               <td class="text-center">{{ days_to_expire(row) }}</td>                 
               <td class="text-center">${{ (row.TradeGroupsOpen * -1) | number:2 }}</td> 
-              <td class="text-center" ng-class="{ red: (spread_gain_loss(row) < 0), green: (spread_gain_loss(row) > 0)}">${{ spread_gain_loss(row) | number:2 }}</td>
+              <td class="text-center" ng-class="{ red: (spread_gain_loss(row, 'put') < 0), green: (spread_gain_loss(row, 'put') > 0)}">${{ spread_gain_loss(row, 'put') | number:2 }}</td>
               <td class="text-center">
                 <div class="btn-group" ng-hide="row.asset_mark">
                   <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

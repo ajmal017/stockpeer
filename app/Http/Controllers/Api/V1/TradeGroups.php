@@ -70,6 +70,12 @@ class TradeGroups extends \Cloudmanic\LaravelApi\Controller
     {
       $this->model->set_col('TradeGroupsType', 'Put Credit Spread');
     }    
+
+    // Special filter for only getting Call credit spreads
+    if(Input::get('only-call-credit-spreads'))
+    {
+      $this->model->set_col('TradeGroupsType', 'Call Credit Spread');
+    } 
     
     return parent::get();
   }

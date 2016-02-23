@@ -19,6 +19,7 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   
   
   $scope.trade_groups_put_credit_spread = [];
+  $scope.trade_groups_call_credit_spread = [];  
   $scope.positions_stocks = [];
    
 
@@ -64,14 +65,20 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   });
   
   // Figure out gain / loss of a spread.
-  $scope.spread_gain_loss = function (spread)
+  $scope.spread_gain_loss = function (spread, type)
   {    
     if(! $scope.quotes[spread.Positions[1].SymbolsShort])
     {
       return 0;
     }
     
-    return (spread.TradeGroupsOpen * -1) - ((($scope.quotes[spread.Positions[1].SymbolsShort].ask - $scope.quotes[spread.Positions[0].SymbolsShort].bid) * 100) * spread.Positions[0].PositionsQty)       
+    if(type == 'put')
+    {
+      return (spread.TradeGroupsOpen * -1) - ((($scope.quotes[spread.Positions[1].SymbolsShort].ask - $scope.quotes[spread.Positions[0].SymbolsShort].bid) * 100) * spread.Positions[0].PositionsQty)       
+    } else
+    {
+      return (spread.TradeGroupsOpen * -1) - ((($scope.quotes[spread.Positions[0].SymbolsShort].ask - $scope.quotes[spread.Positions[1].SymbolsShort].bid) * 100) * spread.Positions[1].PositionsQty)      
+    }
   }
   
   // Figure out spread precent_to_close
@@ -86,7 +93,7 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   }  
   
   // Figure out percent away.
-  $scope.percent_away = function (row)
+  $scope.percent_away = function (row, type)
   {
     // Find the short strike.
     var short_strike = null; 
@@ -109,7 +116,16 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
       return '';
     }
     
-    return ((parseFloat($scope.quotes[short_strike.SymbolsUnderlying].last) - parseFloat(short_strike.SymbolsStrike)) / ((parseFloat($scope.quotes[short_strike.SymbolsUnderlying].last) + parseFloat(short_strike.SymbolsStrike)) / 2)) * 100;
+    
+    if(type == 'put')
+    {
+      return ((parseFloat($scope.quotes[short_strike.SymbolsUnderlying].last) - parseFloat(short_strike.SymbolsStrike)) / 
+                ((parseFloat($scope.quotes[short_strike.SymbolsUnderlying].last) + parseFloat(short_strike.SymbolsStrike)) / 2)) * 100;
+    } else
+    {
+      return ((parseFloat(short_strike.SymbolsStrike) - parseFloat($scope.quotes[short_strike.SymbolsUnderlying].last)) / 
+                 parseFloat($scope.quotes[short_strike.SymbolsUnderlying].last)) * 100;      
+    }
   }
   
   // Get the total cost baises of the positions
@@ -160,7 +176,25 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
     }
         
     return total;
-  }  
+  } 
+  
+  // Return total credit of positions.
+  $scope.total_call_spread_credit = function ()
+  {
+    var total = 0;
+    
+    for(var i in $scope.trade_groups_call_credit_spread)
+    {
+      if($scope.trade_groups_call_credit_spread[i].TradeGroupsType != 'Call Credit Spread')
+      {
+        continue;
+      }
+      
+      total = total + ($scope.trade_groups_call_credit_spread[i].TradeGroupsOpen * -1)
+    }
+        
+    return total;
+  }    
   
   // Return the days to expire.
   $scope.days_to_expire = function (row)
@@ -307,6 +341,11 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
     $http.get('/api/v1/tradegroups?filter=open-only&only-open-positions=true&only-put-credit-spreads=true').success(function (json) {
       $scope.trade_groups_put_credit_spread = json.data;    
     });
+
+    $http.get('/api/v1/tradegroups?filter=open-only&only-open-positions=true&only-call-credit-spreads=true').success(function (json) {
+      $scope.trade_groups_call_credit_spread = json.data;    
+    });
+
     
     $http.get('/api/v1/positions?col_SymbolsType=Stock&col_PositionsStatus=Open').success(function (json) {
       $scope.positions_stocks = json.data;    
