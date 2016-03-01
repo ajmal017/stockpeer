@@ -55,12 +55,11 @@ class PositionsManage extends Command
       Auth::loginUsingId($user->UsersId);
       
       // Update our orders database first.
-      //$orders_model->log_orders_from_tradier();
+      $orders_model->log_orders_from_tradier();
       
       // Get positions
       if($data = $this->_tradier->get_account_positions(Auth::user()->UsersTradierAccountId, true))
       {
-/*
         // Log positions
         $this->_log_positions($data, $user);
         
@@ -70,23 +69,16 @@ class PositionsManage extends Command
           // First we check if we have this position in our records
           if(! $pos = $positions_model->get_open_by_symbol($row['symbol']))
           {
-            // TODO: check to see if we need to add positions.
             continue;
           }
           
           // See if we have any options expiring worthless today.
           $this->_close_expired_options($row, $pos); 
         }
-*/
       
         // See if we have any positions that have closed.
         $this->_close_positions($data);      
       }
-      
-/*
-      // Loop through our orders and see if any of them filled (as in closed).
-      $orders_model->manage_postions_from_orders();
-*/
     }
 
     $this->info('[' . date('n-j-Y g:i:s a') . '] Ending manage positions.');  
@@ -96,7 +88,7 @@ class PositionsManage extends Command
 	// ------------------- Private Helper Functions ------------ //
 	
 	//
-	// Close Positions
+	// Close Positions - See if any positions are completely gone at Tradier.
 	//
 	private function _close_positions($positions)
 	{
@@ -104,6 +96,7 @@ class PositionsManage extends Command
   	$broker_ids = [];
   	$orders_model = App::make('App\Models\Orders');
   	$positions_model = App::make('App\Models\Positions');
+  	$tradegroups_model = App::make('App\Models\TradeGroups'); 
   	
   	// Get a list of positions that are currently open.
     foreach($positions AS $key => $row)
@@ -176,10 +169,17 @@ class PositionsManage extends Command
           'PositionsStatus' => 'Closed',
           'PositionsClosed' => date('Y-m-d H:i:s') 
         ], $pos['PositionsId']);
-      } else
-      {
-        // We did not close the entire pos........
-        // TODO: Make this work
+        
+        $stats = $tradegroups_model->get_stats($pos['PositionsTradeGroupId']); 
+        
+        // Update tradegrop with Summary
+        $tradegroups_model->update([
+          'TradeGroupsTitle' => $stats['title'],
+          'TradeGroupsOpen' => $stats['cost_base'],
+          'TradeGroupsOpenCommission' => $stats['open_comm'],
+          'TradeGroupsType' => $stats['type'],
+          'TradeGroupsRisked' => $stats['risked']                     
+        ], $pos['PositionsTradeGroupId']);          
       }
     }
     

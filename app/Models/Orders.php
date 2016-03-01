@@ -16,34 +16,6 @@ class Orders extends \Cloudmanic\LaravelApi\Model
   ];
   
   //
-  // Loop through filled orders and see if we need to close any positions.
-  //
-  public function manage_postions_from_orders()
-  {
-    $tradegroups_model = App::make('App\Models\TradeGroups');
-    
-    // Loop through filled orders.
-    $this->set_col('OrdersStatus', 'Filled');
-    $this->set_col('OrdersReviewed', 'No');
-    foreach($this->get() AS $key => $row)
-    {            
-      // See if any of our orders closed a position.
-      $tradegroups_model->close_position($row);
-      
-      // Mark order as reviewed.
-      $this->update([ 'OrdersReviewed' => 'Yes' ], $row['OrdersId']);
-    }
-    
-    // Loop through Canceled orders.
-    $this->set_col('OrdersStatus', 'Canceled');
-    $this->set_col('OrdersReviewed', 'No');
-    foreach($this->get() AS $key => $row)
-    {      
-      $this->update([ 'OrdersReviewed' => 'Yes' ], $row['OrdersId']);
-    }    
-  }
-  
-  //
   // Log orders from Tradier.
   //
   public function log_orders_from_tradier()
