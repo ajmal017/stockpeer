@@ -302,7 +302,7 @@ class Tradier
         $this->errors[] = 'A call to get_quotes in get_account_orders failed with - ' . $this->get_last_error();
         return [];
       }
-      
+
       // Index up the quotes.
       foreach($quotes AS $key => $row)
       {
@@ -368,7 +368,21 @@ class Tradier
   public function get_quotes($symbols)
   {
     $d = $this->_send_request('markets/quotes?symbols=' . implode(',', $symbols), 'get_quotes');
-    return (isset($d['quotes']['quote'])) ? $d['quotes']['quote'] : false;
+  
+    if(isset($d['quotes']['quote']))
+    {
+      if(isset($d['quotes']['quote']['symbol']))
+      {
+        return [ $d['quotes']['quote'] ];
+      } else
+      {
+        return $d['quotes']['quote'];
+      
+      }
+    } else
+    {
+      return [];
+    }
   }
   
   //

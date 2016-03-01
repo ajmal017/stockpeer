@@ -55,11 +55,12 @@ class PositionsManage extends Command
       Auth::loginUsingId($user->UsersId);
       
       // Update our orders database first.
-      $orders_model->log_orders_from_tradier();
+      //$orders_model->log_orders_from_tradier();
       
       // Get positions
       if($data = $this->_tradier->get_account_positions(Auth::user()->UsersTradierAccountId, true))
       {
+/*
         // Log positions
         $this->_log_positions($data, $user);
         
@@ -76,6 +77,7 @@ class PositionsManage extends Command
           // See if we have any options expiring worthless today.
           $this->_close_expired_options($row, $pos); 
         }
+*/
       
         // See if we have any positions that have closed.
         $this->_close_positions($data);      
@@ -100,6 +102,7 @@ class PositionsManage extends Command
 	{
   	$db_ids = [];  	
   	$broker_ids = [];
+  	$orders_model = App::make('App\Models\Orders');
   	$positions_model = App::make('App\Models\Positions');
   	
   	// Get a list of positions that are currently open.
@@ -115,14 +118,73 @@ class PositionsManage extends Command
       $db_ids[] = (int) $row['PositionsBrokerId'];
     }
     
-    echo '<pre>' . print_r($db_ids, TRUE) . '</pre>';	
-    
-    echo '<pre>' . print_r($broker_ids, TRUE) . '</pre>';
-    
     // Figure out what ids are not currently in the database.
     $diff_ids = array_diff($db_ids, $broker_ids);	   
     
-    echo '<pre>' . print_r($diff_ids, TRUE) . '</pre>'; 
+    // So we assume the ids found in $diff_ids are positions that have closed at the broker and we need to update our database
+    foreach($diff_ids AS $key => $row)
+    {
+      $positions_model->set_col('PositionsStatus', 'Open');
+      $positions_model->set_col('PositionsBrokerId', $row);
+      
+      if(! $pos = $positions_model->first())
+      {
+        continue;
+      }
+      
+      // Check the orders table for a closing orders.
+      $orders_model->set_col('OrdersReviewed', 'No');
+      $orders_model->set_col('OrdersStatus', 'Filled');
+      $orders_model->db->where(function ($query) use ($pos) {
+        $query->orWhere('OrdersSymbol', $pos['SymbolsShort']);
+        $query->orWhere('OrdersLeg1OptionSymbol', $pos['SymbolsShort']);
+        $query->orWhere('OrdersLeg2OptionSymbol', $pos['SymbolsShort']);
+        $query->orWhere('OrdersLeg3OptionSymbol', $pos['SymbolsShort']);  
+        $query->orWhere('OrdersLeg4OptionSymbol', $pos['SymbolsShort']);                                
+      });     
+      
+      if(! $order = $orders_model->first())
+      {
+        continue;
+      }
+      
+      // Figure out the type of position we are dealing with here.
+      $fs = [ 
+              'OrdersSymbol' => [ 'OrdersFilledPrice', 'OrdersQty' ], 
+              'OrdersLeg1OptionSymbol' => [ 'OrdersLeg1FilledPrice', 'OrdersLeg1Qty' ], 
+              'OrdersLeg2OptionSymbol' => [ 'OrdersLeg2FilledPrice', 'OrdersLeg2Qty' ], 
+              'OrdersLeg3OptionSymbol' => [ 'OrdersLeg3FilledPrice', 'OrdersLeg3Qty' ], 
+              'OrdersLeg4OptionSymbol' => [ 'OrdersLeg4FilledPrice', 'OrdersLeg4Qty' ] 
+            ];
+            
+      // Figure out which fill price we had
+      foreach($fs AS $key2 => $row2)
+      {
+        if($order[$key2] == $pos['SymbolsShort'])
+        {
+          $fill_qty = $order[$row2[1]];
+          $fill_price = $order[$row2[0]];
+        }
+      }
+      
+      // Finally close the positiion in the DB.
+      if($pos['PositionsQty'] == $fill_qty)
+      {
+        $positions_model->update([
+          'PositionsQty' => 0,
+          'PositionsClosePrice' => $fill_price * $pos['PositionsOrgQty'],
+          'PositionsStatus' => 'Closed',
+          'PositionsClosed' => date('Y-m-d H:i:s') 
+        ], $pos['PositionsId']);
+      } else
+      {
+        // We did not close the entire pos........
+        // TODO: Make this work
+      }
+    }
+    
+    // Return happy.
+    return true;
 	}
 	
   //
