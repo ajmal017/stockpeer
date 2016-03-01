@@ -1,4 +1,5 @@
 <?php 
+
 namespace App\Console\Commands;
 
 use DB;
@@ -75,10 +76,15 @@ class PositionsManage extends Command
           // See if we have any options expiring worthless today.
           $this->_close_expired_options($row, $pos); 
         }
+      
+        // See if we have any positions that have closed.
+        $this->_close_positions($data);      
       }
       
+/*
       // Loop through our orders and see if any of them filled (as in closed).
       $orders_model->manage_postions_from_orders();
+*/
     }
 
     $this->info('[' . date('n-j-Y g:i:s a') . '] Ending manage positions.');  
@@ -86,6 +92,38 @@ class PositionsManage extends Command
 	}
 	
 	// ------------------- Private Helper Functions ------------ //
+	
+	//
+	// Close Positions
+	//
+	private function _close_positions($positions)
+	{
+  	$db_ids = [];  	
+  	$broker_ids = [];
+  	$positions_model = App::make('App\Models\Positions');
+  	
+  	// Get a list of positions that are currently open.
+    foreach($positions AS $key => $row)
+    {
+      $broker_ids[] = (int) $row['id'];
+    }
+  	
+    // Get positions that are curently open.
+    $positions_model->set_col('PositionsStatus', 'Open');
+    foreach($positions_model->get() AS $key => $row)
+    {
+      $db_ids[] = (int) $row['PositionsBrokerId'];
+    }
+    
+    echo '<pre>' . print_r($db_ids, TRUE) . '</pre>';	
+    
+    echo '<pre>' . print_r($broker_ids, TRUE) . '</pre>';
+    
+    // Figure out what ids are not currently in the database.
+    $diff_ids = array_diff($db_ids, $broker_ids);	   
+    
+    echo '<pre>' . print_r($diff_ids, TRUE) . '</pre>'; 
+	}
 	
   //
   // Log positions

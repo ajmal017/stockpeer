@@ -35,6 +35,7 @@ class Activity extends \Cloudmanic\LaravelApi\Model
   //
   public function google_send_push_notifications()
   {
+/*
     $devices = [];
     
     $devs = DB::table('UserToDevice')
@@ -58,6 +59,7 @@ class Activity extends \Cloudmanic\LaravelApi\Model
       
       $msg = json_decode($response, true);
     }
+*/
   }
   
   //
