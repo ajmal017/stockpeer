@@ -63,18 +63,8 @@ class PositionsManage extends Command
         // Log positions
         $this->_add_update_positions($data, $user);
         
-        // Loop through the positions.
-        foreach($data AS $key => $row)
-        {
-          // First we check if we have this position in our records
-          if(! $pos = $positions_model->get_open_by_symbol($row['symbol']))
-          {
-            continue;
-          }
-          
-          // See if we have any options expiring worthless today.
-          $this->_close_expired_options($row, $pos); 
-        }
+        // See if we have any options expiring worthless today.
+        $this->_close_expired_options($data); 
       
         // See if we have any positions that have closed.
         $this->_close_positions($data);      
@@ -318,7 +308,9 @@ class PositionsManage extends Command
   //
   public function update_position($row)
   {
+    $updated = false;
     $positions_model = App::make('App\Models\Positions');
+    $tradegroups_model = App::make('App\Models\TradeGroups');     
     
     // First we see if we have already logged this position. 
     $positions_model->set_col('PositionsStatus', 'Open');
@@ -328,20 +320,38 @@ class PositionsManage extends Command
       // See if the PositionsDateAcquired has changed.
       if($p[0]['PositionsDateAcquired'] != $row['date_acquired'])
       {
+        $updated = true;        
         $positions_model->update([ 'PositionsDateAcquired' => $row['date_acquired'] ], $p[0]['PositionsId']);
       }
       
       // See if the qty has changed.
       if($p[0]['PositionsQty'] != $row['quantity'])
       {
+        $updated = true;        
         $positions_model->update([ 'PositionsQty' => $row['quantity'] ], $p[0]['PositionsId']);
       }
     
       // See if the PositionsCostBasis has changed.
       if(floatval($p[0]['PositionsCostBasis']) != floatval(round($row['cost_basis'], 2)))
-      {          
+      {    
+        $updated = true;              
         $positions_model->update([ 'PositionsCostBasis' => $row['cost_basis'] ], $p[0]['PositionsId']);
       }     
+      
+      // If we updated the trade group run the stats update
+      if($updated)
+      {
+        $stats = $tradegroups_model->get_stats($p[0]['PositionsTradeGroupId']); 
+        
+        // Update tradegrop with Summary
+        $tradegroups_model->update([
+          'TradeGroupsTitle' => $stats['title'],
+          'TradeGroupsOpen' => $stats['cost_base'],
+          'TradeGroupsOpenCommission' => $stats['open_comm'],
+          'TradeGroupsType' => $stats['type'],
+          'TradeGroupsRisked' => $stats['risked']                     
+        ], $p[0]['PositionsTradeGroupId']); 
+      }
     
       // Return true.
       return true;
@@ -354,34 +364,45 @@ class PositionsManage extends Command
 	//
 	// Close expired options
 	//
-	private function _close_expired_options($row, $pos)
-	{    
-    // (we only check this after the market closes)
-    if(($pos['SymbolsType'] == 'Option') && 
-        (strtotime($pos['SymbolsExpire'] . ' 13:05:00') <= strtotime('now')))
-    {
-      // Setup models      
-      $positions_model = App::make('App\Models\Positions');
-      $tradegroups_model = App::make('App\Models\TradeGroups');       
-      
-      // Make sure it expired worthless - Put
-      if(($pos['SymbolsOptionType'] == 'Put') && ($row['quote']['bid'] <= 0.03))
+	private function _close_expired_options($data)
+	{   
+    $positions_model = App::make('App\Models\Positions');  	
+  	
+  	foreach($data AS $key => $row)
+  	{
+      // First we check if we have this position in our records
+      if(! $pos = $positions_model->get_open_by_symbol($row['symbol']))
       {
-        // Close position.
-        $positions_model->update([ 
-          'PositionsStatus' => 'Closed',
-          'PositionsClosed' => date('Y-m-d G:i:s'),
-          'PositionsClosePrice' => 0,
-          'PositionsQty' => 0,
-          'PositionsNote' => 'Expired worthless.' 
-        ], $pos['PositionsId']);
-      
-        // Close Trade Group
-        $tradegroups_model->update([
-          'TradeGroupsStatus' => 'Closed',
-          'TradeGroupsEnd' => date('Y-m-d G:i:s'),
-          'TradeGroupsNote' => 'Expired worthless.'
-        ], $pos['PositionsTradeGroupId']);
+        continue;
+      }    	
+    	
+      // (we only check this after the market closes)
+      if(($pos['SymbolsType'] == 'Option') && 
+          (strtotime($pos['SymbolsExpire'] . ' 13:05:00') <= strtotime('now')))
+      {
+        // Setup models      
+        $positions_model = App::make('App\Models\Positions');
+        $tradegroups_model = App::make('App\Models\TradeGroups');       
+        
+        // Make sure it expired worthless - Put
+        if(($pos['SymbolsOptionType'] == 'Put') && ($row['quote']['bid'] <= 0.03))
+        {
+          // Close position.
+          $positions_model->update([ 
+            'PositionsStatus' => 'Closed',
+            'PositionsClosed' => date('Y-m-d G:i:s'),
+            'PositionsClosePrice' => 0,
+            'PositionsQty' => 0,
+            'PositionsNote' => 'Expired worthless.' 
+          ], $pos['PositionsId']);
+        
+          // Close Trade Group
+          $tradegroups_model->update([
+            'TradeGroupsStatus' => 'Closed',
+            'TradeGroupsEnd' => date('Y-m-d G:i:s'),
+            'TradeGroupsNote' => 'Expired worthless.'
+          ], $pos['PositionsTradeGroupId']);
+        }
       }
     }      	
 	}
