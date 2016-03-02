@@ -93,6 +93,12 @@ class Tradier
     $d = $this->_send_request('accounts/' . $account_id . '/positions', 'get_account_positions');
     $data = (isset($d['positions']['position'])) ? $d['positions']['position'] : false;  
     
+    // Always want an array
+    if(isset($data['id']))
+    {
+      $data = [ $data ];
+    }
+    
     // No data or don't add quotes.
     if((! $add_quotes) || (! $data))
     {

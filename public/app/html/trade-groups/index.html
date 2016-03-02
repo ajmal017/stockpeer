@@ -124,7 +124,7 @@
       	  <td ng-if="row2.PositionsStatus != 'Open'" ng-bind="row2.PositionsClosed | dateToISO | date:'M/d/yyyy'"></td>            	  
       	  <td ng-if="row2.PositionsStatus == 'Open'">---</td>
       	  
-      	  <td ng-bind="row2.PositionsQty"></td>
+      	  <td ng-bind="row2.PositionsOrgQty"></td>
       	  
           <td>$<span ng-bind="row2.PositionsCostBasis | number:2"></span></td>
           

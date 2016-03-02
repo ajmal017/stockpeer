@@ -14,6 +14,7 @@ class PositionsManage extends Command
 {
 	protected $name = 'stockpeer:managepositions';
 	protected $description = 'Check to see if any of our positions need updating in our records.';
+  private $pid_file = '/tmp/Stockpeer_PositionsManage.pid';
 
   //
   // Create a new command instance.
@@ -39,6 +40,16 @@ class PositionsManage extends Command
 	public function fire()
 	{
     $this->info('[' . date('n-j-Y g:i:s a') . '] Starting manage positions.');
+    
+    // Check lock file.
+    if($this->_has_lock())
+    {
+      $this->info('[' . date('n-j-Y g:i:s a') . '] Ending manage positions. Already running else where.');
+      return false;      
+    } else
+    {
+      $this->_set_lock();
+    }
     
     // Setup models    
     $orders_model = App::make('App\Models\Orders'); 
@@ -71,11 +82,75 @@ class PositionsManage extends Command
       }
     }
 
+    // Log.....
     $this->info('[' . date('n-j-Y g:i:s a') . '] Ending manage positions.');  
     
+    // Remove lock
+    $this->_remove_lock();
 	}
 	
 	// ------------------- Private Helper Functions ------------ //
+	
+	//
+	// Set pid lock
+	//
+	private function _set_lock()
+	{
+  	file_put_contents($this->pid_file, getmypid());
+	}
+	
+	//
+	// Remove lock
+	//
+	private function _remove_lock()
+	{
+    @unlink($this->pid_file);
+	}
+	
+	//
+	// See if we have a lock in place. A lock indicates another version of this app is running.
+	//
+	private function _has_lock()
+	{
+  	// See if we have a pid file
+    if(! is_file($this->pid_file))
+    {
+      return false;
+    }
+    
+    // Read the file.
+    $running_pid = file_get_contents($this->pid_file);
+  	
+  	// Is the process still running
+    if($this->_is_job_running($running_pid))
+    {
+      return true;
+    }
+  	
+  	// If we made it this far we should just delete the pid file.
+  	$this->_remove_lock();
+  	
+  	return false;
+	}
+	
+	//
+	// See if a process is running
+  public function _is_job_running($pid)
+  {
+    try
+    {
+      $result = shell_exec(sprintf("ps %d", $pid));
+      
+      if(count(preg_split("/\n/", $result)) > 2)
+      {
+        return true;
+      }
+    } catch (Exception $e)
+    {
+    }
+
+    return false;
+  }	
 	
 	//
 	// Close Positions - See if any positions are completely gone at Tradier.
@@ -83,6 +158,8 @@ class PositionsManage extends Command
 	private function _close_positions($positions)
 	{
   	$db_ids = [];  	
+  	$seen_orders = [];
+  	$seen_tradegroups = [];  	
   	$broker_ids = [];
   	$orders_model = App::make('App\Models\Orders');
   	$positions_model = App::make('App\Models\Positions');
@@ -102,8 +179,8 @@ class PositionsManage extends Command
     }
     
     // Figure out what ids are not currently in the database.
-    $diff_ids = array_diff($db_ids, $broker_ids);	   
-    
+    $diff_ids = array_diff($db_ids, $broker_ids);	  
+
     // So we assume the ids found in $diff_ids are positions that have closed at the broker and we need to update our database
     foreach($diff_ids AS $key => $row)
     {
@@ -131,6 +208,9 @@ class PositionsManage extends Command
         continue;
       }
       
+      // Mark seen
+      $seen_orders[] = $order['OrdersId'];
+      
       // Figure out the type of position we are dealing with here.
       $fs = [ 
               'OrdersSymbol' => [ 'OrdersFilledPrice', 'OrdersQty' ], 
@@ -151,26 +231,39 @@ class PositionsManage extends Command
       }
       
       // Finally close the positiion in the DB.
-      if($pos['PositionsQty'] == $fill_qty)
+      if(abs($pos['PositionsQty']) == $fill_qty)
       {
         $positions_model->update([
           'PositionsQty' => 0,
-          'PositionsClosePrice' => $fill_price * $pos['PositionsOrgQty'],
+          'PositionsClosePrice' => $fill_price * $pos['PositionsOrgQty'] * 100,
           'PositionsStatus' => 'Closed',
           'PositionsClosed' => date('Y-m-d H:i:s') 
         ], $pos['PositionsId']);
         
-        $stats = $tradegroups_model->get_stats($pos['PositionsTradeGroupId']); 
-        
-        // Update tradegrop with Summary
-        $tradegroups_model->update([
-          'TradeGroupsTitle' => $stats['title'],
-          'TradeGroupsOpen' => $stats['cost_base'],
-          'TradeGroupsOpenCommission' => $stats['open_comm'],
-          'TradeGroupsType' => $stats['type'],
-          'TradeGroupsRisked' => $stats['risked']                     
-        ], $pos['PositionsTradeGroupId']);          
-      }
+        // Log trade groups we have seen.
+        $seen_tradegroups[] = $pos['PositionsTradeGroupId'];      
+      }  
+    }
+    
+    // Update any tradegroups we touched
+    foreach(array_unique($seen_tradegroups) AS $key => $row)
+    {
+      $stats = $tradegroups_model->get_stats($row);
+      
+      $tg = $tradegroups_model->get_by_id($row);
+      
+      $tradegroups_model->update([
+        'TradeGroupsClose' => $stats['close_price'],
+        'TradeGroupsCloseCommission' => $stats['open_comm'] + $tg['TradeGroupsCloseCommission'],
+        'TradeGroupsEnd' => date('Y-m-d H:i:s'),
+        'TradeGroupsStatus' => $stats['status']                   
+      ], $row);  
+    }    
+    
+    // Close out orders we have seen.
+    foreach(array_unique($seen_orders) AS $key => $row)
+    {
+      $orders_model->update([ 'OrdersReviewed' => 'Yes' ], $row);
     }
     
     // Return happy.
