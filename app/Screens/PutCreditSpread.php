@@ -41,6 +41,7 @@ class PutCreditSpread
     
     // Get the current SPY stock price.
     $stock = $tradier->get_quotes([ 'spy' ]);
+    $stock = $stock[0];
     
     // Figure out the strike price that is the min we can sell.
     $tmp = $stock['last'] - ($stock['last'] * ($signals['buy']['value'] / 100));    
@@ -140,6 +141,7 @@ class PutCreditSpread
     
     // Get the current SPY stock price.
     $stock = $tradier->get_quotes([ $signals['buy']['symbol'] ]);
+    $stock = $stock[0];
     
     // Figure out the strike price that is the min we can sell.
     $tmp = $stock['last'] - ($stock['last'] * ($signals['buy']['value'] / 100));    
