@@ -233,9 +233,16 @@ class PositionsManage extends Command
       // Finally close the positiion in the DB.
       if(abs($pos['PositionsQty']) == $fill_qty)
       {
+        $close_qty = $pos['PositionsOrgQty'];
+        
+        if($pos['PositionsType'] != 'Stock')
+        {
+          $close_qty = $close_qty * 100;
+        }
+
         $positions_model->update([
           'PositionsQty' => 0,
-          'PositionsClosePrice' => $fill_price * $pos['PositionsOrgQty'] * 100,
+          'PositionsClosePrice' => ($fill_price * $close_qty),
           'PositionsStatus' => 'Closed',
           'PositionsClosed' => date('Y-m-d H:i:s') 
         ], $pos['PositionsId']);
