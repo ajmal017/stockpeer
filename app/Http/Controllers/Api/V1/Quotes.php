@@ -81,6 +81,7 @@ class Quotes extends \Cloudmanic\LaravelApi\Controller
       
       // Get the current price for the VIX.
       $vix = $tradier->get_quotes([ 'vix' ]); 
+      $vix = $vix[0];
       $today = $vix['last'];    
       
       // Loop through data.              
