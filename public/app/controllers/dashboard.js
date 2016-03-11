@@ -220,8 +220,8 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
       ],
       
       option_symbol: [
-        row.Positions[1].SymbolsShort,
-        row.Positions[0].SymbolsShort
+        row.Positions[0].SymbolsShort,
+        row.Positions[1].SymbolsShort
       ],
       
       quantity: [ row.Positions[0].PositionsQty, row.Positions[0].PositionsQty ]
@@ -237,9 +237,9 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
       }
       
       json.data.action = 'close';
-      json.data.lots = row.Positions[1].PositionsQty;
-      json.data.buy_leg = row.Positions[0].SymbolsFull 
-      json.data.sell_leg = row.Positions[1].SymbolsFull;       
+      json.data.lots = row.Positions[0].PositionsQty;
+      json.data.buy_leg = row.Positions[1].SymbolsFull 
+      json.data.sell_leg = row.Positions[0].SymbolsFull;       
       $scope.$emit('order-preview:credit-spreads', { preview: json.data, order: order });
     });
   }
