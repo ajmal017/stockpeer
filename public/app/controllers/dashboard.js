@@ -237,9 +237,9 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
       }
       
       json.data.action = 'close';
-      json.data.lots = row.legs[0].quantity;
-      json.data.buy_leg = row.legs[1].quote.description; 
-      json.data.sell_leg = row.legs[0].quote.description;       
+      json.data.lots = row.Positions[0].quantity;
+      json.data.buy_leg = row.Positions[1].SymbolsFull 
+      json.data.sell_leg = row.Positions[0].SymbolsFull;       
       $scope.$emit('order-preview:credit-spreads', { preview: json.data, order: order });
     });
   }
