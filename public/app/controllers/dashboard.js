@@ -205,7 +205,7 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   
   // Close credit option trade
   $scope.close_credit_option_trade = function (row, debit)
-  {
+  {    
     var order = {
       class: 'multileg',
       symbol: 'SPY',
@@ -220,11 +220,11 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
       ],
       
       option_symbol: [
-        row.legs[0].symbol,
-        row.legs[1].symbol
+        row.Positions[0].SymbolsShort,
+        row.Positions[1].SymbolsShort
       ],
       
-      quantity: [ row.legs[0].quantity, row.legs[0].quantity ]
+      quantity: [ row.Positions[0].PositionsQty, row.Positions[0].PositionsQty ]
     };
     
     // Send a request for preview for the order.
