@@ -224,7 +224,7 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
         row.Positions[0].SymbolsShort
       ],
       
-      quantity: [ row.Positions[1].PositionsQty, row.Positions[1].PositionsQty ]
+      quantity: [ row.Positions[0].PositionsQty, row.Positions[0].PositionsQty ]
     };
     
     // Send a request for preview for the order.
