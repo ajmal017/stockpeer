@@ -98,8 +98,8 @@
               <td colspan="7" style="border-top: none;">
                                 
                 <div class="progress">
-                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ row.precent_to_close }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ spread_precent_to_close(row) | number:2 }}%;">
-                    {{ spread_precent_to_close(row) | number:2 }}%
+                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ row.precent_to_close }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ spread_precent_to_close(row, 'call') | number:2 }}%;">
+                    {{ spread_precent_to_close(row, 'call') | number:2 }}%
                   </div>
                 </div>
                                 
@@ -159,8 +159,8 @@
               <td colspan="7" style="border-top: none;">
                                 
                 <div class="progress">
-                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ row.precent_to_close }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ spread_precent_to_close(row) | number:2 }}%;">
-                    {{ spread_precent_to_close(row) | number:2 }}%
+                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ row.precent_to_close }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ spread_precent_to_close(row, 'put') | number:2 }}%;">
+                    {{ spread_precent_to_close(row, 'put') | number:2 }}%
                   </div>
                 </div>
                                 

@@ -74,6 +74,9 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
     
     if(type == 'put')
     {
+      
+      //console.log((spread.TradeGroupsOpen * -1) - ((($scope.quotes[spread.Positions[1].SymbolsShort].ask - $scope.quotes[spread.Positions[0].SymbolsShort].bid) * 100) * spread.Positions[0].PositionsQty) );
+      
       return (spread.TradeGroupsOpen * -1) - ((($scope.quotes[spread.Positions[1].SymbolsShort].ask - $scope.quotes[spread.Positions[0].SymbolsShort].bid) * 100) * spread.Positions[0].PositionsQty)       
     } else
     {
@@ -82,14 +85,14 @@ app.controller('DashboardCtrl', function ($scope, $http, $location, $timeout, $f
   }
   
   // Figure out spread precent_to_close
-  $scope.spread_precent_to_close = function (spread)
+  $scope.spread_precent_to_close = function (spread, type)
   {    
     if(! $scope.quotes[spread.Positions[1].SymbolsShort])
     {
       return 0;
     }
     
-    return ($scope.spread_gain_loss(spread) / (spread.TradeGroupsOpen * -1)) * 100;     
+    return ($scope.spread_gain_loss(spread, type) / (spread.TradeGroupsOpen * -1)) * 100;     
   }  
   
   // Figure out percent away.
