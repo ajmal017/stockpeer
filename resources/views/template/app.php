@@ -34,6 +34,10 @@
     <script src="/app/bower/moment/min/moment.min.js"></script>
     <script src="/app/vendor/Highstock-2.1.8/js/highstock.js"></script>     
     
+    <script src="<?=elixir('app/css/app.js')?>"></script>
+    
+<?php
+/*
     <script src="/app/config/app.js"></script>
     <script src="/app/config/routes.js"></script>    
 
@@ -46,7 +50,9 @@
     <script src="/app/controllers/backtest.js"></script> 
     <script src="/app/controllers/trades.js"></script>
     <script src="/app/controllers/trade-groups.js"></script> 
-    <script src="/app/controllers/settings.js"></script>                      	      
+    <script src="/app/controllers/settings.js"></script> 
+*/
+?>                     	      
   </head>
   
   <body>

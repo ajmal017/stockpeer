@@ -12,4 +12,4 @@ git push origin master
 
 cd ../scripts
 
-ssh -p 9022 web10.cloudmanic.com 'cd /var/www/stockpeer.com && git pull origin master && php artisan migrate --force && composer update'
+ssh -p 9022 web10.cloudmanic.com 'cd /var/www/stockpeer.com && git pull origin master && php artisan migrate --force && composer install'
