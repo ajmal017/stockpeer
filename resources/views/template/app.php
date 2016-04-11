@@ -9,12 +9,8 @@
     <base href="/a" />
     <title>Stockpeer.com</title>
     
-    <link href="/app/bower/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/app/bower/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.css" rel="stylesheet" />    
-    <link href="/assets/css/socialicons.css" rel="stylesheet" />
-    <link href="/app/css/style.css" rel="stylesheet" />
-    
-    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="<?=elixir('css/app.css')?>" />
+    <link rel="manifest" href="/manifest.json" />
     
     <script>
       var site = {
@@ -25,34 +21,9 @@
       	user_hash: '<?=Crypt::encrypt(Auth::user()->UsersId)?>'
       }
     </script>    
-    
-    <script src="/app/bower/jquery/dist/jquery.min.js"></script> 
-    <script src="/app/bower/angular/angular.min.js"></script> 
-    <script src="/app/bower/angular-route/angular-route.min.js"></script>        
-    <script src="/app/bower/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/app/bower/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="/app/bower/moment/min/moment.min.js"></script>
-    <script src="/app/vendor/Highstock-2.1.8/js/highstock.js"></script>     
-    
-    <script src="<?=elixir('app/css/app.js')?>"></script>
-    
-<?php
-/*
-    <script src="/app/config/app.js"></script>
-    <script src="/app/config/routes.js"></script>    
-
-    <script src="/app/filters/date.js"></script>	
-
-    <script src="/app/controllers/dashboard.js"></script>	
-    <script src="/app/controllers/screener.js"></script>
-    <script src="/app/controllers/accounting.js"></script>  
-    <script src="/app/controllers/reports.js"></script>  
-    <script src="/app/controllers/backtest.js"></script> 
-    <script src="/app/controllers/trades.js"></script>
-    <script src="/app/controllers/trade-groups.js"></script> 
-    <script src="/app/controllers/settings.js"></script> 
-*/
-?>                     	      
+      
+    <script src="<?=elixir('js/libs.js')?>"></script>    
+    <script src="<?=elixir('js/app.js')?>"></script>                    	      
   </head>
   
   <body>
