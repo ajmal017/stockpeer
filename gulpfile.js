@@ -20,6 +20,6 @@ elixir(function(mix) {
     'app/css/app.css'
   ], 'public/build/app.css', 'resources/');
   
-  mix.version([ 'public/build/app.css', 'public/build/app.js' ]);
+  mix.version([ 'build/app.css', 'build/app.js' ]);
     
 });
