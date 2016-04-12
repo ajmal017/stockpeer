@@ -18,6 +18,168 @@ use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 |
 */
 
+Route::get('bt_cl', function () {
+  
+  $ups = 0;
+  $downs = 0;
+  $last = null;
+  $order = null;
+  $orders = [];
+  
+  if(Input::get('year'))
+  {
+    $year = Input::get('year');
+  } else
+  {
+    $year = 2016;
+  }
+  
+  $data = DB::table('Data1MinFutCl')
+            ->where('Data1MinFutClDate', '>=', $year . '-01-01') 
+            ->where('Data1MinFutClDate', '<=', $year . '-12-31')                      
+            ->where('Data1MinFutClTime', '>=', '06:00:00')
+            ->orderBy('Data1MinFutClDate')
+            ->orderBy('Data1MinFutClTime')
+            ->get();
+  
+  foreach($data AS $key => $row)
+  {
+    $stick = (array) $row;
+
+    // See if we should close a trade out
+    if(! is_null($order))
+    {
+      // Did we get profit.
+      if($stick['Data1MinFutClDate'] != $order['Data1MinFutClDate']) // Did the day end?
+      {
+        $orders[] = [ 
+          'date' => $order['Data1MinFutClDate'],
+          'open_time' => $order['Data1MinFutClTime'], 
+          'close_time' => $last['Data1MinFutClTime'], 
+          'open' => $order['Data1MinFutClClose'], 
+          'close' => $last['Data1MinFutClClose'], 
+          'profit' => ($last['Data1MinFutClClose'] - $order['Data1MinFutClClose']),
+          'draw_down' => $order['DrawDown']  
+        ];
+        
+        $order = null; 
+        
+        $ups = 0;
+        $downs = 0;        
+        
+        continue;         
+      } else if($stick['Data1MinFutClClose'] >= ($order['Data1MinFutClClose'] + 0.10))
+      {
+        $orders[] = [ 
+          'date' => $order['Data1MinFutClDate'],
+          'open_time' => $order['Data1MinFutClTime'], 
+          'close_time' => $stick['Data1MinFutClTime'], 
+          'open' => $order['Data1MinFutClClose'], 
+          'close' => $stick['Data1MinFutClClose'], 
+          'profit' => ($stick['Data1MinFutClClose'] - $order['Data1MinFutClClose']),
+          'draw_down' => $order['DrawDown'] 
+        ];
+        
+        $order = null; 
+        
+        continue;       
+      }
+
+      // Track max drawdowns
+      if(($order['Data1MinFutClClose'] - $order['DrawDown']) > $stick['Data1MinFutClClose'])
+      {
+        $order['DrawDown'] = $order['Data1MinFutClClose'] - $stick['Data1MinFutClClose'];
+      }
+    }
+
+    // Start Strat
+    $down = false;
+    $up = false;
+    $trigger = false;
+    
+    if($stick['Data1MinFutClOpen'] > $stick['Data1MinFutClClose'])
+    {
+      $downs++;
+      $ups = 0;
+      $down = true;
+    } else
+    {
+      $ups++;
+      $up = true;
+      
+      if($downs >= 4)
+      {
+        $trigger = true;
+      } 
+      
+      $downs = 0;
+    }
+    
+    if($trigger)
+    {      
+      $ups = 0;
+      $downs = 0;
+      $order = $stick;
+      
+      $order['DrawDown'] = 0;
+      $trigger = false;
+    }
+  
+    // Record the last.
+    $last = $stick;
+  }
+  
+  $total_profit = 0;
+  $max_drawdown = 0;
+  
+  foreach($orders AS $key => $row)
+  {
+    $total_profit = $total_profit + $row['profit'];
+    
+    if($max_drawdown < $row['draw_down'])
+    {
+      $max_drawdown = $row['draw_down'];
+    }
+  }  
+
+  echo "<p><b>Trades:</b>" . number_format(count($orders), 2) . "</p>";
+  echo "<p><b>Max Drawdowns:</b> $" . number_format($max_drawdown * 100 * 10, 2) . "</p>";  
+  echo "<p><b>Total Profit:</b> $" . number_format($total_profit * 100 * 10, 2) . "</p>";
+
+  echo "<table width=\"95%\">";
+  
+  echo "<tr>
+    <th>Date</th>
+    <th>Open Time</th>
+    <th>Close Time</th>
+    <th>Open Price</th>
+    <th>Close Price</th>
+    <th>Draw Down</th>
+    <th>Profit</th>          
+  </tr>";
+  
+  foreach($orders AS $key => $row)
+  {    
+    $profit = ($row['profit'] > 0) ? 'Yes' : 'No';
+    
+    $color = ($profit == 'Yes') ? ' color: black; ' : ' color: red; ';
+    
+    echo "<tr>
+      <td style=\"text-align: center;" . $color . "\">" . $row['date'] . "</td>
+      <td style=\"text-align: center;" . $color . "\">" . $row['open_time'] . "</td>
+      <td style=\"text-align: center;" . $color . "\">" . $row['close_time'] . "</td>
+      <td style=\"text-align: center;" . $color . "\">$" . $row['open'] . "</td>
+      <td style=\"text-align: center;" . $color . "\">$" . $row['close'] . "</td>
+      <td style=\"text-align: center;" . $color . "\">$" . number_format($row['draw_down'] * 10 * 100, 2) . "</td>      
+      <td style=\"text-align: center;" . $color . "\">$" . number_format($row['profit'] * 10 * 100, 2) . "</td>
+    </tr>";    
+  }
+  
+  echo "</table>";
+  
+  return '';
+});
+
 Route::get('bt', function () {
   
   $bt = new App\Backtesting\PutCreditSpreads;

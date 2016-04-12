@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputArgument;
 class Import1MinData extends Command 
 {
 	protected $name = 'stockpeer:import1mindata';
-	protected $description = 'Import 1min data from kibot.com.';
+	protected $description = 'Import 1min data from kibot.com (and data from Jose).';
 
   //
   // Create a new command instance.
@@ -34,6 +34,43 @@ class Import1MinData extends Command
 	{
     $this->info('Starting Import');
 
+    // /CL Jose data
+    $file = '/Users/spicer/Dropbox/Apps/Stockpeer/data/Futures1MinData/future_cl_1m_data.csv';
+    $cont = file_get_contents($file);
+    $rows = explode("\n", $cont);
+    
+    foreach($rows AS $key => $row)
+    {
+      // "Date","Time","Open","High","Low","Close","Up","Down"
+      
+      // Skip first row.
+      if($key == 0)
+      {
+        continue;
+      }
+      
+      $data = explode(",", $row);
+
+      // We be done.
+      if(! isset($data[2]))
+      {
+        continue;
+      }
+
+      // Insert data.      
+      DB::table('Data1MinFutCl')->insert([
+        'Data1MinFutClOpen' => $data[2],
+        'Data1MinFutClHigh' => $data[3],
+        'Data1MinFutClLow' => $data[4],
+        'Data1MinFutClClose' => $data[5],                
+        'Data1MinFutClDate' => date('Y-m-d', strtotime($data[0])),  
+        'Data1MinFutClTime' => $data[1],
+        'Data1MinFutClCreatedAt' => date('Y-m-d G:i:s')                  
+      ]);
+    }
+
+/*
+    // IWM Kibot data
     $file = '/Users/spicer/Dropbox/Stock1MinData/IWM.txt';
     $cont = file_get_contents($file);
     $rows = explode("\n", $cont);
@@ -50,6 +87,7 @@ class Import1MinData extends Command
         'Data1MinIwmCreatedAt' => date('Y-m-d G:i:s')                  
       ]);
     }
+*/
     
     $this->info('Ending Import');    
 	}
