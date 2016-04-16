@@ -50,6 +50,11 @@
           </tr>
 
           <tr>
+            <td><b>CAGR:</b></td>
+            <td><?=number_format($cagr, 2)?>%</td>
+          </tr> 
+
+          <tr>
             <td><b>Profit:</b></td>
             <td>$<?=number_format($profit, 2)?> (<?=$profit_precent?>%)</td>
           </tr>          
@@ -91,7 +96,7 @@
               <td>$<?=number_format($row['open_price'], 2)?></td>    
               <td>$<?=number_format($row['close_price'], 2)?></td>    
               <td>$<?=number_format($row['profit_share'], 2)?></td>  
-              <td>$<?=number_format($row['profit'], 2)?></td>   
+              <td <?php if($row['profit'] < 0) echo 'style="color: red;"'; ?>>$<?=number_format($row['profit'], 2)?></td>   
               <td>$<?=number_format($row['cash'], 2)?></td>                                    
             </tr>
             

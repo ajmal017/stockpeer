@@ -155,6 +155,12 @@ class FuturesBase
   //
   public function order($qty = 1)
   {    
+    // Make sure we have enough cash for this order.
+    if(($this->margin * abs($qty)) > $this->cash)
+    {
+      return false;
+    }
+    
     // Update Balance
     $this->cash = $this->cash - ($this->margin * abs($qty));
     
@@ -267,7 +273,8 @@ class FuturesBase
       'profit' => 0,
       'wins' => 0,
       'losses' => 0,
-      'win_rate' => 0
+      'win_rate' => 0,
+      'cagr' => 0
     ];
     
     $trades = $this->get_trades();
@@ -289,6 +296,13 @@ class FuturesBase
     
     $rt['win_rate'] = round(($rt['wins'] / count($trades)) * 100, 2);
     
+    // CAGR Calc.
+    $date1 = date_create($this->start_date);
+    $date2 = date_create($this->end_date);
+    $diff = date_diff($date1, $date2);
+    $rt['rounded_years'] = ceil($diff->days / 365);
+    $rt['cagr'] = round(((pow(($rt['end_cash'] / $this->start_cash), (1 / $rt['rounded_years']))) - 1) * 100, 2);    
+    
     return $rt;
   }
   
@@ -309,6 +323,7 @@ class FuturesBase
       'trade_count' => count($trades), 
       'profit' => $summary['profit'],
       'win_rate' => $summary['win_rate'],
+      'cagr' => $summary['cagr'],
       'profit_precent' => number_format((($summary['end_cash'] - $this->start_cash) / ($this->start_cash)) * 100, 2)
     ]);   
   }  

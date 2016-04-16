@@ -24,8 +24,8 @@ class FuturesCL1Min extends FuturesBase
   //
   public function run($parms)
   {
-    $this->start_date = '2015-01-01';
-    $this->end_date = '2015-12-31';
+    $this->start_date = $parms['start_date'];
+    $this->end_date = $parms['end_date'];
     $this->start_time = '09:00:00';
     $this->end_time = '13:00:00';
     
@@ -33,7 +33,7 @@ class FuturesCL1Min extends FuturesBase
     $this->set_symbol('cl');
     
     // Set starting capital.
-    $this->set_cash(2000);
+    $this->set_cash($parms['cash']);
     
     // Tick by 1 min.
     $this->run_1_min_trades();
