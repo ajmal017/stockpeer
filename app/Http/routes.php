@@ -20,6 +20,13 @@ use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
 Route::get('bt_cl', function () {
   
+  $bt = App::make('App\Backtesting\FuturesCL1Min');
+  
+  $bt->run([]);
+  
+  return $bt->return_html();
+  
+/*
   $ups = 0;
   $downs = 0;
   $last = null;
@@ -45,13 +52,16 @@ Route::get('bt_cl', function () {
   foreach($data AS $key => $row)
   {
     $stick = (array) $row;
+    
+    // get the current hour.
+    $cur_hour = explode(':', $stick['Data1MinFutClTime'])[0];
 
     // See if we should close a trade out
     if(! is_null($order))
     {
       // Did we get profit.
       if($stick['Data1MinFutClDate'] != $order['Data1MinFutClDate']) // Did the day end?
-      {
+      {        
         $orders[] = [ 
           'date' => $order['Data1MinFutClDate'],
           'open_time' => $order['Data1MinFutClTime'], 
@@ -67,8 +77,27 @@ Route::get('bt_cl', function () {
         $ups = 0;
         $downs = 0;        
         
+        $last = $stick;
         continue;         
-      } else if($stick['Data1MinFutClClose'] >= ($order['Data1MinFutClClose'] + 0.10))
+      } else if($stick['Data1MinFutClClose'] >= ($order['Data1MinFutClClose'] + 0.10)) // Hit profit target
+      {        
+        $orders[] = [ 
+          'date' => $order['Data1MinFutClDate'],
+          'open_time' => $order['Data1MinFutClTime'], 
+          'close_time' => $stick['Data1MinFutClTime'], 
+          'open' => $order['Data1MinFutClClose'], 
+          'close' => $stick['Data1MinFutClClose'], 
+          'profit' => ($stick['Data1MinFutClClose'] - $order['Data1MinFutClClose']),
+          'draw_down' => $order['DrawDown'] 
+        ];
+        
+        $order = null; 
+        $ups = 0;
+        $downs = 0;
+        
+        $last = $stick;
+        continue;       
+      } else if($stick['Data1MinFutClClose'] <= ($order['Data1MinFutClClose'] - 0.40)) // Hit stop loss
       {
         $orders[] = [ 
           'date' => $order['Data1MinFutClDate'],
@@ -81,8 +110,11 @@ Route::get('bt_cl', function () {
         ];
         
         $order = null; 
+        $ups = 0;
+        $downs = 0;
         
-        continue;       
+        $last = $stick;
+        continue;        
       }
 
       // Track max drawdowns
@@ -90,9 +122,27 @@ Route::get('bt_cl', function () {
       {
         $order['DrawDown'] = $order['Data1MinFutClClose'] - $stick['Data1MinFutClClose'];
       }
+      
+      // Nothing to do we are in a trade.
+      $last = $stick;
+      continue;
     }
 
-    // Start Strat
+    // --------- Start Strat --------- //
+    
+    // Don't trade in the last hour of the day.
+    if($cur_hour >= 11)
+    {
+      $last = $stick;
+      continue;
+    }
+
+    if($cur_hour != 9)
+    {
+      $last = $stick;
+      continue;
+    }
+    
     $down = false;
     $up = false;
     $trigger = false;
@@ -122,28 +172,73 @@ Route::get('bt_cl', function () {
       $order = $stick;
       
       $order['DrawDown'] = 0;
-      $trigger = false;
     }
   
     // Record the last.
     $last = $stick;
   }
   
+  // -------- Summary...... --------- //
+  
+  $max_loss = 0;
+  $loss_count = 0;
   $total_profit = 0;
   $max_drawdown = 0;
+  $avg_drawdown = 0;
+  $total_drawdown = 0;
+  $count_drawdown = 0;
+  $open_hours = [];
   
   foreach($orders AS $key => $row)
   {
     $total_profit = $total_profit + $row['profit'];
     
+    // Figure out open hours summary
+    $hour = explode(':', $row['open_time'])[0];
+    
+    if(! isset($open_hours[$hour]))
+    {
+      $open_hours[$hour] = [ 'win' => 0, 'loss' => 0, 'total' => 0 ];
+    }
+    
+    $open_hours[$hour]['total']++;    
+    
     if($max_drawdown < $row['draw_down'])
     {
       $max_drawdown = $row['draw_down'];
     }
+    
+    if($row['draw_down'] > 0)
+    {
+      $count_drawdown++;
+      $total_drawdown = $total_drawdown + $row['draw_down']; 
+    }
+    
+    if($row['profit'] < 0)
+    {
+      $loss_count++;
+      $open_hours[$hour]['loss']++;
+    } else
+    {
+      $open_hours[$hour]['win']++;      
+    }
+    
+    if($row['profit'] < $max_loss)
+    {
+      $max_loss = $row['profit'];
+    }
   }  
+  
+  echo '<pre>' . print_r($open_hours, TRUE) . '</pre>';
+  
+  $avg_drawdown = $total_drawdown / $count_drawdown;
+  $win_rate = ((count($orders) - $loss_count) / count($orders)) * 100;
 
-  echo "<p><b>Trades:</b>" . number_format(count($orders), 2) . "</p>";
+  echo "<p><b>Trades:</b> " . number_format(count($orders), 2) . "</p>";
+  echo "<p><b>Win Rate:</b> " . number_format($win_rate, 2) . "%</p>";  
+  echo "<p><b>Max Loss:</b> $" . number_format($max_loss * 100 * 10, 2) . "</p>";  
   echo "<p><b>Max Drawdowns:</b> $" . number_format($max_drawdown * 100 * 10, 2) . "</p>";  
+  echo "<p><b>Avg. Drawdowns:</b> $" . number_format($avg_drawdown * 100 * 10, 2) . "</p>";  
   echo "<p><b>Total Profit:</b> $" . number_format($total_profit * 100 * 10, 2) . "</p>";
 
   echo "<table width=\"95%\">";
@@ -176,6 +271,7 @@ Route::get('bt_cl', function () {
   }
   
   echo "</table>";
+*/
   
   return '';
 });
