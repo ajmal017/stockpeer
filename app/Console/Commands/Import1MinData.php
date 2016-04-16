@@ -34,7 +34,43 @@ class Import1MinData extends Command
 	{
     $this->info('Starting Import');
 
-    // /CL Jose data
+    // /CL Jose data - ES
+    $file = '/Users/spicer/Dropbox/Apps/Stockpeer/data/Futures1MinData/future_1m_ES_data.csv';
+    $cont = file_get_contents($file);
+    $rows = explode("\n", $cont);
+    
+    foreach($rows AS $key => $row)
+    {
+      // "Date","Time","Open","High","Low","Close","Up","Down"
+      
+      // Skip first row.
+      if($key == 0)
+      {
+        continue;
+      }
+      
+      $data = explode(",", $row);
+
+      // We be done.
+      if(! isset($data[2]))
+      {
+        continue;
+      }
+
+      // Insert data.      
+      DB::table('Data1MinFutEs')->insert([
+        'Data1MinFutEsOpen' => $data[2],
+        'Data1MinFutEsHigh' => $data[3],
+        'Data1MinFutEsLow' => $data[4],
+        'Data1MinFutEsClose' => $data[5],                
+        'Data1MinFutEsDate' => date('Y-m-d', strtotime($data[0])),  
+        'Data1MinFutEsTime' => $data[1],
+        'Data1MinFutEsCreatedAt' => date('Y-m-d G:i:s')                  
+      ]);
+    }
+
+/*
+    // /CL Jose data - CL
     $file = '/Users/spicer/Dropbox/Apps/Stockpeer/data/Futures1MinData/future_cl_1m_data.csv';
     $cont = file_get_contents($file);
     $rows = explode("\n", $cont);
@@ -68,6 +104,7 @@ class Import1MinData extends Command
         'Data1MinFutClCreatedAt' => date('Y-m-d G:i:s')                  
       ]);
     }
+*/
 
 /*
     // IWM Kibot data

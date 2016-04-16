@@ -29,9 +29,9 @@ class FuturesBase
   public $trade_log = [];
   public $positions = [];
   
-  
   protected $symbol_table_1_min_map = [
-    'cl' => 'Data1MinFutCl'
+    'cl' => 'Data1MinFutCl',
+    'es' => 'Data1MinFutEs'
   ];
   
   //
@@ -155,6 +155,12 @@ class FuturesBase
   //
   public function order($qty = 1)
   {    
+    // Make sure qty is not zero
+    if($qty == 0)
+    {
+      return false;
+    }
+    
     // Make sure we have enough cash for this order.
     if(($this->margin * abs($qty)) > $this->cash)
     {

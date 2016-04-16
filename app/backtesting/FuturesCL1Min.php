@@ -106,6 +106,16 @@ class FuturesCL1Min extends FuturesBase
       $this->ups = 0;
       $this->downs = 0;
       
+/*
+      // Get qty of order.
+      $qty = floor($this->cash / 5000);
+      
+      if($qty == 0)
+      {
+        $qty = 1;
+      }   
+*/  
+      
       // Place order.
       $this->order(1);
     }     
