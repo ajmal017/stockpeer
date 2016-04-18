@@ -205,11 +205,10 @@ class FuturesBase
           $profit = round((($this->current_quote[$this->table . 'Close'] - $row['open_price']) * $row['qty']) * 1000, 2);
         } else
         {
-          $profit = round((($row['open_price'] - $this->current_quote[$this->table . 'Close']) * $row['qty']) * 1000, 3);
+          $profit = round((($row['open_price'] - $this->current_quote[$this->table . 'Close']) * abs($row['qty'])) * 1000, 3);
         }
         
         // Update Balance
-        //echo '<pre>' . print_r($this->cash, TRUE) . '</pre>';
         $this->cash = $this->cash + ($this->margin * abs($row['qty'])) + $profit;       
         
         // Log order.
@@ -223,7 +222,7 @@ class FuturesBase
           'close_time' => $this->current_quote[$this->table . 'Time'],
           'open_price' => $row['open_price'],
           'close_price' => $this->current_quote[$this->table . 'Close'],
-          'profit_share' => ($profit / $row['qty']), 
+          'profit_share' => ($profit / abs($row['qty'])), 
           'profit' => $profit,
           'cash' => $this->cash        
         ];

@@ -50,9 +50,9 @@ class FuturesCL1Min extends FuturesBase
     // Get any orders we might have.
     $order = $this->get_first_position();
     
-    // See if we have an order to close
-    if($order)
-    {
+    // See if we have an order to close (long)
+    if($order && ($order['qty'] > 0))
+    {      
       // Hit profit target
       if($quote['Close'] >= ($order['open_price'] + 0.10)) 
       {          
@@ -60,6 +60,26 @@ class FuturesCL1Min extends FuturesBase
         $this->downs = 0;
         $this->order_close();    
       } else if($quote['Close'] <= ($order['open_price'] - 0.40)) // Hit stop loss
+      {  
+        $this->ups = 0;
+        $this->downs = 0;
+        $this->order_close(); 
+      }
+      
+      // If we have an order and we did not close it we don't do anything else.
+      return;
+    }
+
+    // See if we have an order to close (short)
+    if($order && ($order['qty'] < 0))
+    {      
+      // Hit profit target
+      if($quote['Close'] <= ($order['open_price'] - 0.10)) 
+      {                  
+        $this->ups = 0;
+        $this->downs = 0;
+        $this->order_close();    
+      } else if($quote['Close'] >= ($order['open_price'] + 0.40)) // Hit stop loss
       {  
         $this->ups = 0;
         $this->downs = 0;
@@ -80,13 +100,20 @@ class FuturesCL1Min extends FuturesBase
 
     $down = false;
     $up = false;
-    $trigger = false;
+    $trigger_long = false;
+    $trigger_short = false;
     
     if($quote['Open'] > $quote['Close'])
     {
       $this->downs++;
+      $down = true;      
+      
+      if($this->ups >= 4)
+      {
+        $trigger_short = true;
+      }      
+      
       $this->ups = 0;
-      $down = true;
     } else
     {
       $this->ups++;
@@ -94,27 +121,39 @@ class FuturesCL1Min extends FuturesBase
       
       if($this->downs >= 4)
       {
-        $trigger = true;
+        $trigger_long = true;
       } 
       
       $this->downs = 0;
     }
+
+/*
+    // Place a short order.
+    if($trigger_short)
+    {      
+      $this->ups = 0;
+      $this->downs = 0;
+      
+      // Place order.
+      $this->order(-1);      
+    }
+*/
     
     // Place a long order.
-    if($trigger)
+    if($trigger_long)
     {      
       $this->ups = 0;
       $this->downs = 0;
       
 /*
       // Get qty of order.
-      $qty = floor($this->cash / 5000);
+      $qty = floor($this->cash / 4000);
       
       if($qty == 0)
       {
         $qty = 1;
-      }   
-*/  
+      } 
+*/    
       
       // Place order.
       $this->order(1);
