@@ -97,7 +97,7 @@ class RecordFuturesTrades extends Command
       'TradeGroupsClose' => $tg['TradeGroupsClose'] + ($close_price * 1000)      
     ], $TradeGroupId);
     
-    $this->info('Your trade is all recorded.');
+    $this->info('Your trade is all recorded. TradeGroup Id #' . $TradeGroupId);
 	}
 	
   //
