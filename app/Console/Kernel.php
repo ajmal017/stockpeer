@@ -26,7 +26,8 @@ class Kernel extends ConsoleKernel
 		'App\Console\Commands\CachePrime',
 		'App\Console\Commands\ImportPastData',
 		'App\Console\Commands\ImportEodOptions',
-		'App\Console\Commands\ScreenerPrime'
+		'App\Console\Commands\ScreenerPrime',
+		'App\Console\Commands\RecordFuturesTrades'
 	];
 
 	/**
