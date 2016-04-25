@@ -55,7 +55,7 @@ class RecordFuturesTrades extends Command
       $TradeGroupId = $tradegroups_model->insert([
         'TradeGroupsRisked' => 1000, // what we risk per trade (margin)
         'TradeGroupsTitle' => 'Futures Day Trade',
-        'TradeGroupsStatus' => 'Open',
+        'TradeGroupsStatus' => 'Closed',
         'TradeGroupsStart' => date('Y-m-d H:i:s'),
         'TradeGroupsType' => 'Futures Day Trade',
         'TradeGroupsUpdatedAt' => date('Y-m-d H:i:s'),
@@ -74,7 +74,7 @@ class RecordFuturesTrades extends Command
     // Record the new position.
     $positions_model->insert([
       'PositionsTradeGroupId' => $TradeGroupId,
-      'PositionsAssetId' => 18,
+      'PositionsAssetId' => 19,
       'PositionsSymbolId' => $syb_id,
       'PositionsType' => 'Future',
       'PositionsQty' => 0, // future....
@@ -93,6 +93,7 @@ class RecordFuturesTrades extends Command
     $tg = $tradegroups_model->get_by_id($TradeGroupId);
     
     $tradegroups_model->update([ 
+      'TradeGroupsEnd' => date('Y-m-d H:i:s'),
       'TradeGroupsOpen' => $tg['TradeGroupsOpen'] + ($open_price * 1000),
       'TradeGroupsClose' => $tg['TradeGroupsClose'] + ($close_price * 1000)      
     ], $TradeGroupId);
