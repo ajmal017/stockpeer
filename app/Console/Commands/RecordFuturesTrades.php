@@ -53,7 +53,7 @@ class RecordFuturesTrades extends Command
     if($TradeGroupId == 0)
     {
       $TradeGroupId = $tradegroups_model->insert([
-        'TradeGroupsRisked' => 1000, // what we risk per trade (margin)
+        'TradeGroupsRisked' => 500, // what we risk per trade (margin)
         'TradeGroupsTitle' => 'Futures Day Trade',
         'TradeGroupsStatus' => 'Closed',
         'TradeGroupsStart' => date('Y-m-d H:i:s'),
@@ -66,9 +66,9 @@ class RecordFuturesTrades extends Command
     }
 
     // Get symb id.
-    if(! $syb_id = $symbols_model->get_symbol_id('/CL'))
+    if(! $syb_id = $symbols_model->get_symbol_id('/ES'))
     {
-      $syb_id = $symbols_model->insert([ 'SymbolsShort' => '/CL', 'SymbolsFull' => 'Light Sweet Crude Oil Futures' ]);
+      $syb_id = $symbols_model->insert([ 'SymbolsShort' => '/ES', 'SymbolsFull' => 'E-mini S&P 500 Futures' ]);
     }
 
     // Record the new position.
@@ -78,10 +78,10 @@ class RecordFuturesTrades extends Command
       'PositionsSymbolId' => $syb_id,
       'PositionsType' => 'Future',
       'PositionsQty' => 0, // future....
-      'PositionsOrgQty' => 1000,
-      'PositionsCostBasis' => ($open_price * 1000),
+      'PositionsOrgQty' => 50,
+      'PositionsCostBasis' => ($open_price * 50),
       'PositionsAvgPrice' => $open_price, 
-      'PositionsClosePrice' => ($close_price * 1000),
+      'PositionsClosePrice' => ($close_price * 50),
       'PositionsDateAcquired' => date('Y-m-d H:i:s'),
       'PositionsStatus' => 'Closed',
       'PositionsClosed' => date('Y-m-d H:i:s'),
@@ -94,8 +94,10 @@ class RecordFuturesTrades extends Command
     
     $tradegroups_model->update([ 
       'TradeGroupsEnd' => date('Y-m-d H:i:s'),
-      'TradeGroupsOpen' => $tg['TradeGroupsOpen'] + ($open_price * 1000),
-      'TradeGroupsClose' => $tg['TradeGroupsClose'] + ($close_price * 1000)      
+      'TradeGroupsOpen' => $tg['TradeGroupsOpen'] + ($open_price * 50),
+      'TradeGroupsClose' => $tg['TradeGroupsClose'] + ($close_price * 50),
+      'TradeGroupsOpenCommission' => $tg['TradeGroupsOpenCommission'] + 2.23, 
+      'TradeGroupsCloseCommission' => $tg['TradeGroupsCloseCommission'] + 2.23            
     ], $TradeGroupId);
     
     $this->info('Your trade is all recorded. TradeGroup Id #' . $TradeGroupId);
