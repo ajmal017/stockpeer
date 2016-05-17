@@ -373,8 +373,8 @@ Route::group([ 'middleware' => 'force.ssl' ], function() {
 	Route::get('a/backtester', 'AppController@template');	
 });
 
-// Special rountes for my AH friends.
-Route::get('ah/ivr/{days}', 'AhController@ivr');
+// Special routes for my AH friends.
+Route::get('ah/ivr', 'AhController@ivr');
 
 // Apple Safari stuff.
 Route::post('v1/log', 'AppleController@collect_logs');
