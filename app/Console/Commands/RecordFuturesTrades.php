@@ -96,8 +96,8 @@ class RecordFuturesTrades extends Command
       'TradeGroupsEnd' => date('Y-m-d H:i:s'),
       'TradeGroupsOpen' => $tg['TradeGroupsOpen'] + ($open_price * 50),
       'TradeGroupsClose' => $tg['TradeGroupsClose'] + ($close_price * 50),
-      'TradeGroupsOpenCommission' => $tg['TradeGroupsOpenCommission'] + 2.23, 
-      'TradeGroupsCloseCommission' => $tg['TradeGroupsCloseCommission'] + 2.23            
+      'TradeGroupsOpenCommission' => $tg['TradeGroupsOpenCommission'] + 2.01, 
+      'TradeGroupsCloseCommission' => $tg['TradeGroupsCloseCommission'] + 2.01            
     ], $TradeGroupId);
     
     $this->info('Your trade is all recorded. TradeGroup Id #' . $TradeGroupId);
