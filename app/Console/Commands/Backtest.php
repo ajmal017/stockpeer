@@ -58,6 +58,30 @@ class Backtest extends Command
     // See what type of test we are doing.
     switch($backtest->BackTestsType)
     {
+      // LongButterflySpread
+      case 'Long Butterfly Spread':
+        
+        $bt = App::make('App\Backtesting\LongButterflySpread');
+        
+        $symbol = 'spy';
+        
+        // Run the backtest        
+        $trades = $bt->run([
+          'symbol' => $symbol,
+          'cash' => $backtest->BackTestsStartBalance,
+          'start_date' => $backtest->BackTestsStart,
+          'end_date' => $backtest->BackTestsEnd,
+          'option_type' => 'calls',
+          'min_days_to_expire' => $backtest->BackTestsMinDaysExpire,
+          'max_days_to_expire' => $backtest->BackTestsMaxDaysExpire,
+          'max_price_to_pay' => 2.00
+        ]); 
+        
+        die();
+        
+      break; 
+      
+      
       // PutCreditSpreads
       case 'Put Credit Spreads':
     

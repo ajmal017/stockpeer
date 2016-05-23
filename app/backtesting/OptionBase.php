@@ -517,6 +517,52 @@ class OptionBase
   }
   
   //
+  // Open a Long Butterfly Spread
+  //
+  // $type : call or put
+  // $expire : xxxx-xx-xx
+  // $itm_strike : strike price
+  // $atm_strike : strike price
+  // $otm_strike : strike price
+  //
+  public function open_basic_long_butterfly_spread($type, $expire, $itm_strike, $atm_strike, $otm_strike, $lots = 1)
+  { 
+    // Find the options we are trading.
+    $itm_trade = $this->current_quote[$type][$expire][$itm_strike];
+    $atm_trade = $this->current_quote[$type][$expire][$atm_strike];
+    $otm_trade = $this->current_quote[$type][$expire][$otm_strike]; 
+    
+    // Price
+    $price = $itm_trade['ask'] + $otm_trade['ask'] - ($atm_trade['bid'] * 2); 
+    
+    // Cost
+    $cost = $price * $lots;  
+    
+    // Put order.
+    $this->positions[] = [
+      'id' => uniqid(),
+      'open_date' => $this->current_quote['date'],
+      'order_type' => 'basic-long-butterfly-spread',
+      'type' => $type,
+      'otm_leg' => $otm_trade,
+      'atm_leg' => $itm_trade,
+      'itm_leg' => $itm_trade,
+      'price' => $price,
+      'cost' => $cost,
+      'lots' => $lots,
+      'open_symb' => $this->current_quote['last'],
+      'open_vix' => $this->current_quote['vix_close'],
+      'open_snp_ivr' => $this->current_quote['snp_ivr'],
+      'open_delta' => $this->current_quote[$type][$expire][$atm_strike]['delta'],
+      'close_delta' => 0,
+      'close_symb' => 0.00
+    ];  
+    
+    // Update cash.
+    $this->cash = $this->cash - $cost;     
+  }
+  
+  //
   // Open a basic spread order.
   // $buy_strike : should be in xxx.xx format
   // $sell_strike : should be in xxx.xx format

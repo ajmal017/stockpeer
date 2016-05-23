@@ -19,7 +19,7 @@ class Backtests01 extends Migration {
     	$table->increments('BackTestsId');
     	$table->integer('BackTestsAccountId')->index('BackTestsAccountId');
     	$table->string('BackTestsName');  
-			$table->enum('BackTestsType', [ 'Put Credit Spreads' ])->default('Put Credit Spreads');
+			$table->enum('BackTestsType', [ 'Put Credit Spreads', 'Long Butterfly Spread' ])->default('Put Credit Spreads');
 			$table->date('BackTestsStart');      	
 			$table->date('BackTestsEnd'); 
 			$table->decimal('BackTestsStartBalance', 9, 2);
