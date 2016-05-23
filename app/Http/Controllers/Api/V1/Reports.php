@@ -23,6 +23,7 @@ class Reports extends \Cloudmanic\LaravelApi\Controller
         'Long_Stock_Trade' => 0,
         'Weekly_Put_Credit_Spread' => 0,
         'Long_Option_Trade' => 0,
+        'Futures_Day_Trade' => 0,
         'Dividends' => 0,
         'Interest' => 0,
         'Loan_Interest' => 0,        
@@ -39,6 +40,7 @@ class Reports extends \Cloudmanic\LaravelApi\Controller
         'Weekly_Put_Credit_Spread_Commissions' => 0, 
         'Long_Option_Trade_Commissions' => 0,
         'Long_Stock_Trade_Commissions' => 0,
+        'Futures_Day_Trade_Commissions' => 0,
         'Other_Commissions' => 0,
         'Total' => 0                
       ],

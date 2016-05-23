@@ -57,6 +57,12 @@
               <td>${{ statement.Income.Long_Option_Trade | number:2 }}</td>
             </tr>
 
+            <tr ng-show="statement.Income.Futures_Day_Trade != 0">
+              <td>&nbsp;</td>
+              <td>Futures Day Trade</td>
+              <td>${{ statement.Income.Futures_Day_Trade | number:2 }}</td>
+            </tr>
+
             <tr ng-show="statement.Income.Long_Stock_Trade != 0">
               <td>&nbsp;</td>
               <td>Long Stock Trades</td>
@@ -145,6 +151,12 @@
               <td>&nbsp;</td>
               <td>Long Stock Trade Commission</td>
               <td>${{ statement.Trading_Expenses.Long_Stock_Trade_Commissions | number:2 }}</td>
+            </tr>
+
+            <tr ng-show="statement.Trading_Expenses.Futures_Day_Trade_Commissions != 0">
+              <td>&nbsp;</td>
+              <td>Futures Day Trade Commissions</td>
+              <td>${{ statement.Trading_Expenses.Futures_Day_Trade_Commissions | number:2 }}</td>
             </tr>
 
             <tr ng-show="statement.Trading_Expenses.Other_Commissions != 0">
