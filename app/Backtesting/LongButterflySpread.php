@@ -15,6 +15,7 @@ class LongButterflySpread extends OptionBase
   public $start_date = null;
   public $end_date = null;
   public $waiting_period = 0;
+  public $total_profit = 0;
   
   //
   // Run....
@@ -35,6 +36,8 @@ class LongButterflySpread extends OptionBase
     // Tick by eod
     $this->run_eod_ticks();
     
+    echo "Total: $" . $this->total_profit . "\n";
+    
     // Return all the trades.
     return $this->trade_log;
   }
@@ -46,6 +49,11 @@ class LongButterflySpread extends OptionBase
   {  
     
     $trades = $trades = $this->_filter_trades($quote, $this->_screen_trades_trades($quote));
+    
+    if(! count($trades))
+    {
+      return false;
+    }
     
     //echo '<pre>' . print_r($trades, TRUE) . '</pre>';
     
@@ -87,7 +95,29 @@ class LongButterflySpread extends OptionBase
         // Hack for testing.
         $this->positions = [];
         
-        echo "Closing: " .  round($quote['last'] - $row['itm_leg']['strike'], 2) . " (" . $quote['last'] . ")\n";
+        // See what the final value is.
+        $p_l = 0;
+        
+        if(($last_quote['last'] - $row['itm_leg']['strike']) > 0)
+        {
+          $p_l = $p_l + ($last_quote['last'] - $row['itm_leg']['strike']);
+        }
+
+        if(($last_quote['last'] - $row['otm_leg']['strike']) > 0)
+        {
+          $p_l = $p_l + ($last_quote['last'] - $row['otm_leg']['strike']);
+        }
+        
+        if($row['atm_leg']['strike'] < $last_quote['last'])
+        {
+          $p_l = $p_l - (($last_quote['last'] - $row['atm_leg']['strike']) * 2);
+        }
+        
+
+        
+        echo "Closing: (" . $last_quote['last'] . ")  Value: $" . round($p_l, 2) . " Profit: $" . round($p_l - $row['cost'], 2) . "\n";
+        
+        $this->total_profit = $this->total_profit + ($p_l - $row['cost']);
         
         continue;
       }
@@ -171,8 +201,8 @@ class LongButterflySpread extends OptionBase
     
     // Figure out the ATM strike
     $atm_strike = number_format(($quote['last'] >= .5) ? (floor($quote['last']) + .5) : floor($quote['last']), 2);
-    $itm_strike = number_format(($atm_strike - 5), 2);      
-    $otm_strike = number_format(($atm_strike + 5), 2); 
+    $itm_strike = number_format(($atm_strike - $this->parms['wing_width']), 2);      
+    $otm_strike = number_format(($atm_strike + $this->parms['wing_width']), 2); 
     
     // Loop through the exire dates.
     foreach($quote[$this->option_type] AS $key => $row)

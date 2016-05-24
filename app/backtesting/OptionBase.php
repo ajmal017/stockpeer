@@ -545,7 +545,7 @@ class OptionBase
       'order_type' => 'basic-long-butterfly-spread',
       'type' => $type,
       'otm_leg' => $otm_trade,
-      'atm_leg' => $itm_trade,
+      'atm_leg' => $atm_trade,
       'itm_leg' => $itm_trade,
       'price' => $price,
       'cost' => $cost,
