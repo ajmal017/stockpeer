@@ -71,7 +71,7 @@ class LongButterflySpread extends OptionBase
     {
       $last_option = $trades[count($trades) - 1];
     
-      echo "Opening: " . $quote['date'] . ' :: ' . $last_option['itm']['strike'] . ' / ' . $last_option['atm']['strike'] . ' / ' . $last_option['otm']['strike'] . ' ' . $last_option['atm']['expire'] . ' $' . $last_option['bid_price'] . "\n";
+      echo "Opening: " . $quote['date'] . ' :: ' . $last_option['itm']['strike'] . ' / ' . $last_option['atm']['strike'] . ' / ' . $last_option['otm']['strike'] . ' ' . $last_option['atm']['expire'] . ' $' . $last_option['bid_price'] . ' ' . $quote['snp_ivr'] . "\n";
     
       $this->open_basic_long_butterfly_spread($this->option_type, $last_option['atm']['expire'], $last_option['itm']['strike'], $last_option['atm']['strike'], $last_option['otm']['strike'], 1);
     }
@@ -195,9 +195,18 @@ class LongButterflySpread extends OptionBase
     $rt = [];
     
     // Figure out the ATM strike
-    $atm_strike = number_format(($quote['last'] >= .5) ? (floor($quote['last']) + .5) : floor($quote['last']), 2);
-    $itm_strike = number_format(($atm_strike - $this->parms['wing_width']), 2);      
-    $otm_strike = number_format(($atm_strike + $this->parms['wing_width']), 2); 
+    $diff = $quote['last'] - floor($quote['last']);
+    $atm_strike = number_format(($diff >= .5) ? (floor($quote['last']) + .5) : floor($quote['last']), 2);
+    
+    $itm_strike = $atm_strike - ($atm_strike * $this->parms['wing_width_percent']);      
+    $otm_strike = $atm_strike + ($atm_strike * $this->parms['wing_width_percent']); 
+    
+    $diff = $itm_strike - floor($itm_strike);
+    $itm_strike = number_format(($diff >= .5) ? (floor($itm_strike) + .5) : floor($itm_strike), 2);
+
+    $diff = $otm_strike - floor($otm_strike);
+    $otm_strike = number_format(($diff >= .5) ? (floor($otm_strike) + .5) : floor($otm_strike), 2);
+    
     
     // Loop through the exire dates.
     foreach($quote[$this->option_type] AS $key => $row)

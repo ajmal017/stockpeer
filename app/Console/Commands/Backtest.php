@@ -74,8 +74,8 @@ class Backtest extends Command
           'option_type' => 'calls',
           'min_days_to_expire' => $backtest->BackTestsMinDaysExpire,
           'max_days_to_expire' => $backtest->BackTestsMaxDaysExpire,
-          'max_price_to_pay' => 6.00,
-          'wing_width' => 9
+          'max_price_to_pay' => 88.00,
+          'wing_width_percent' => 0.05
         ]); 
         
         die();
