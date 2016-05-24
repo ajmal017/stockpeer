@@ -55,13 +55,15 @@ class LongButterflySpread extends OptionBase
       return false;
     }
     
+/*
     //echo '<pre>' . print_r($trades, TRUE) . '</pre>';
     
-/*
     foreach($trades AS $key => $row)
     {      
-      //echo $row['itm']['strike'] . ' / ' . $row['atm']['strike'] . ' / ' . $row['otm']['strike'] . ' ' . $row['atm']['expire'] . ' $' . $row['bid_price'] . "\n";
+      echo $row['itm']['strike'] . ' / ' . $row['atm']['strike'] . ' / ' . $row['otm']['strike'] . ' ' . $row['atm']['expire'] . ' $' . $row['bid_price'] . "\n";
     }
+    
+    die();
 */
     
     // Just for kicks we trade the last option.
@@ -121,13 +123,6 @@ class LongButterflySpread extends OptionBase
         
         continue;
       }
-      
-      // Get close price of current pos. 
-      $ask_price = ($quote[$this->option_type][$row['atm_leg']['expire']][$row['atm_leg']['strike']]['ask'] * 2) -
-                    ($quote[$this->option_type][$row['itm_leg']['expire']][$row['itm_leg']['strike']]['bid'] + 
-                    $quote[$this->option_type][$row['otm_leg']['expire']][$row['otm_leg']['strike']]['bid']);
-      
-      //echo $row['cost'] . '  ' . $ask_price . '  ' . $quote['last'] . "\n";
     }
     
     // Return happy
