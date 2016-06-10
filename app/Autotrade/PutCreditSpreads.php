@@ -20,9 +20,9 @@ class PutCreditSpreads extends AutoTradeBase
   //
   // Construct.
   //
-  public function __construct($cli, $time_base, $data_driver)
+  public function __construct($cli, $time_base, $data_driver, $account_driver)
   {
-    parent::__construct($cli, $time_base, $data_driver);
+    parent::__construct($cli, $time_base, $data_driver, $account_driver);
   }  
   
   //
@@ -34,9 +34,9 @@ class PutCreditSpreads extends AutoTradeBase
   //
   public function on_data($now, $data)
   {
-    $trades = $this->_find_possible_trades($data);
+    //$trades = $this->_find_possible_trades($data);
     
-    echo '<pre>' . print_r($trades, TRUE) . '</pre>';
+    //echo '<pre>' . print_r($trades, TRUE) . '</pre>';
     
     return true;
   }  

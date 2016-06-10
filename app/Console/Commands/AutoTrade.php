@@ -23,7 +23,8 @@ class AutoTrade extends Command
       'class' => 'PutCreditSpreads',
       'symbol' => 'SPY',
       'time_base' => '1 Minute',
-      'data_driver' => 'App\Autotrade\DataDrivers\OptionsChain' 
+      'data_driver' => 'App\Autotrade\DataDrivers\OptionsChain',
+      'account_driver' => 'App\Autotrade\AccountDrivers\PaperAccount' 
       	
   	]
 	
@@ -50,7 +51,7 @@ class AutoTrade extends Command
   // Execute the console command.
   //
 	public function fire()
-	{  	
+	{  	  	  	
   	// Validate the type we passed in.
   	if(! in_array($this->argument('type'), array_keys($this->types_map)))
   	{
@@ -65,13 +66,21 @@ class AutoTrade extends Command
     
     // Load the drivers.
     $data_driver = new $this->types_map[$this->type]['data_driver']($this, $this->types_map[$this->type]['symbol']);
+    $account_driver = new $this->types_map[$this->type]['account_driver']($this, $this->types_map[$this->type]['symbol']);
     
     // Create instance of this type and run with it.
     $class = 'App\Autotrade\\' . $this->types_map[$this->type]['class'];
-    $auto_trade = new $class($this, $this->types_map[$this->type]['time_base'], $data_driver); 	
+    $auto_trade = new $class($this, $this->types_map[$this->type]['time_base'], $data_driver, $account_driver); 	
     
     // Run the auto trade instance
-    $auto_trade->run();
+    if($this->option('daemon') == 'true')
+    {
+      $this->info('[' . date('Y-m-d G:i:s') . '] Starting AutoTrade - Running as a daemon.');
+      $auto_trade->run(true);      
+    } else
+    {
+      $auto_trade->run(false);
+    }
 
     // All done. (really should never get here).
     $this->info('[' . date('Y-m-d G:i:s') . '] Ending AutoTrade - ' . $this->argument('type') . '.');
@@ -92,7 +101,9 @@ class AutoTrade extends Command
   //
 	protected function getOptions()
 	{
-		return [];
+		return [
+  		[ 'daemon', null, InputOption::VALUE_OPTIONAL, 'Run as a daemon server instead of just once.', null ],
+		];
 	}
 
 }

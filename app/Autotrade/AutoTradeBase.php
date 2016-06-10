@@ -15,24 +15,33 @@ class AutoTradeBase
   public $cli = null;
   public $time_base = null;
   public $data_driver = null;
+  public $account_driver = null;  
   
   //
   // Construct.
   //
-  public function __construct($cli, $time_base, $data_driver)
+  public function __construct($cli, $time_base, $data_driver, $account_driver)
   {
     $this->cli = $cli;
     $this->time_base = $time_base;
     $this->data_driver = $data_driver;
+    $this->account_driver = $account_driver;
   }
   
   //
   // Run the auto trader.
   //
-  public function run()
+  public function run($loop = true)
   {
+    // If No loop.
+    if(! $loop)
+    {
+      $now = Carbon::now();
+      $this->on_data($now, $this->data_driver->get_data($now));
+    }    
+    
     // Just keep looping until we are done.
-    while(1)
+    while($loop)
     {
       // Get current time object
       $now = Carbon::now();
