@@ -147,11 +147,6 @@ class PutCreditSpread
     $tmp = $stock['last'] - ($stock['last'] * ($signals['buy']['value'] / 100));    
     $fraction = $tmp - floor($tmp);
     $min_sell_strike = ($fraction >= .5) ? (floor($tmp) + .5) : floor($tmp);    
-    
-    // Figure out the strike price that is the min we can sell.
-    $tmp = $stock['last'] - ($stock['last'] * ($signals['buy']['value'] / 100));    
-    $fraction = $tmp - floor($tmp);
-    $min_sell_strike = ($fraction >= .5) ? (floor($tmp) + .5) : floor($tmp);
      
     // Get a list of all possible expirations
     $expirations = $tradier->get_option_expiration_dates($signals['buy']['symbol']);

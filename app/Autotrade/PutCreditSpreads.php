@@ -11,6 +11,12 @@ use Carbon\Carbon;
 
 class PutCreditSpreads extends AutoTradeBase
 {
+  public $buy_min_credit = 0.18;
+  public $buy_value_away = 4;
+  public $buy_spread_width = 2;
+  public $max_days_to_expire = 45;
+  public $min_days_to_expire = 0;
+  
   //
   // Construct.
   //
@@ -28,11 +34,127 @@ class PutCreditSpreads extends AutoTradeBase
   //
   public function on_data($now, $data)
   {
-    echo '<pre>' . print_r(array_keys($data['2016-06-10']['209']), TRUE) . '</pre>';
+    $trades = $this->_find_possible_trades($data);
+    
+    echo '<pre>' . print_r($trades, TRUE) . '</pre>';
     
     return true;
   }  
   
+  // --------------------- Private Helper Functions ------------------------ //  
+  
+  //
+  // Find possible trades.
+  //
+  private function _find_possible_trades(&$data)
+  {
+    $rt = [];
+    
+    // Figure out the strike price that is the min we can sell.
+    $tmp = $data['stock']['last'] - ($data['stock']['last'] * ($this->buy_value_away / 100));    
+    $fraction = $tmp - floor($tmp);
+    $min_sell_strike = ($fraction >= .5) ? (floor($tmp) + .5) : floor($tmp);       
+      
+    // Loop through expire dates looking for trades.
+    foreach($data['chain'] AS $key => $row)
+    {
+      // Days to expire.
+      $date1 = date_create("now");
+      $date2 = date_create($key);
+      $diff = date_diff($date1, $date2);
+      
+      // Don't want to go too far out.
+      if($diff->days > $this->max_days_to_expire)
+      {
+        continue;
+      }
+      
+      // Don't want to go too close out.
+      if($diff->days < $this->min_days_to_expire)
+      {
+        continue;
+      }  
+      
+      // Loop through chain and review.
+      foreach($row AS $key2 => $row2)
+      {
+        // Only puts
+        if($row2['option_type'] != 'put')
+        {
+          continue;
+        }
+        
+        // Skip open_interest of 0
+        if($row2['open_interest'] <= 0)
+        {
+          continue;
+        }
+        
+        // Skip strikes that are higher than our min strike.
+        if($row2['strike'] > $min_sell_strike)
+        {
+          continue;          
+        }
+        
+        // Find the strike that is x points away.
+        if(! $buy_leg = $this->_find_by_strike($row, 'put', ($row2['strike'] - $this->buy_spread_width)))
+        {
+          continue;
+        }
+        
+        // See if there is enough credit.
+        $credit = $row2['bid'] - $buy_leg['ask'];
+        if($credit < $this->buy_min_credit)
+        {
+          continue;
+        }    
+        
+        // Figure out the credit spread amount.
+        $buy_cost = $row2['ask'] - $buy_leg['bid'];
+        $mid_point = ($credit + $buy_cost) / 2;	           
+        
+        // We have a winner
+        $rt[] = [
+          'timestamp' => date('n-j-Y g:i:s a'),
+          'timestamp_df1' => date('n/j/y g:i:s a'),
+          'sell_leg' => $row2['strike'],
+          'buy_leg' => $buy_leg['strike'],
+          'expire' => $key,
+          'expire_df1' => date('n/j/y', strtotime($key)),       
+          'credit' => number_format($credit, 2),
+          'midpoint' => number_format($mid_point, 2),
+          'precent_away' => number_format((1 - $row2['strike'] / $data['stock']['last']) * 100, 2),
+          'occ_sell' => $row2['symbol'],
+          'occ_buy' => $buy_leg['symbol'] 
+        ];
+      }
+    }     
+    
+    // Return trades.
+    return $rt;    
+  }
+  
+  //
+  // Find a strike price that is X number of strikes below.
+  //
+  private function _find_by_strike(&$chain, $type, $strike)
+  {    
+    foreach($chain AS $key => $row)
+    {
+      // Only want puts.
+      if($row['option_type'] != $type)
+      {
+        continue;
+      }
+      
+      if($strike == $row['strike'])
+      {
+        return $row;
+      }
+    }
+    
+    return false;    
+  }  
 }
 
 /* End File */

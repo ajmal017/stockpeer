@@ -35,7 +35,11 @@ class OptionsChain
   //
   public function get_data($now)
   {
-    $rt = [];
+    $rt = [ 'stock' => [], 'chain' => [] ];
+    
+    // Get the current SPY stock price.
+    $stock = $this->tradier->get_quotes([ $this->symbol ]);
+    $rt['stock'] = $stock[0];    
     
     // Get Expiration dates.
     $expirations = $this->tradier->get_option_expiration_dates($this->symbol);
@@ -44,7 +48,7 @@ class OptionsChain
     foreach($expirations AS $key => $row)
     {      
       // Get a option chain.
-      $rt[$row] = $this->tradier->get_option_chain($this->symbol, $row); 
+      $rt['chain'][$row] = $this->tradier->get_option_chain($this->symbol, $row); 
     }
     
     // Return the data.
