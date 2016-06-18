@@ -35,6 +35,15 @@ class OptionsChain
   }
   
   //
+  // Find out if the market is open.
+  //
+  public function is_market_open()
+  {
+    $status = $this->tradier->get_intraday_status();
+    return ($status['state'] == 'open') ? true : false;
+  }
+  
+  //
   // Get data. Anytime someone wants data we call this function
   // and we make calls to Tradier to return the data. Some parent
   // function should manage how often this is called.

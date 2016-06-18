@@ -63,6 +63,7 @@ class PaperOrders
     // See if we have enough margin to make this trade
     if($this->account_driver->get_available_to_trade() < $margin)
     {
+      $this->cli->info('[' . date('Y-m-d G:i:s') . '] No margin to trade.');
       return false;
     }
     
@@ -90,6 +91,9 @@ class PaperOrders
     // Add the positions.
     $this->positions_driver->open_positon($buy_leg, $lots, $order_id);
     $this->positions_driver->open_positon($sell_leg, ($lots * -1), $order_id);
+    
+    // Log Placed order.
+    $this->cli->info('[' . date('Y-m-d G:i:s') . '] ' . $quotes[0]['description'] . ' / ' . $quotes[1]['description']);
     
     // Save the order.
     $this->save();

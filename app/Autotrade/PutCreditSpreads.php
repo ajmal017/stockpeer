@@ -19,14 +19,6 @@ class PutCreditSpreads extends AutoTradeBase
   public $min_days_to_expire = 0;
   
   //
-  // Construct.
-  //
-  public function __construct($cli, $time_base, $data_driver, $account_driver, $positions_driver, $orders_driver)
-  {
-    parent::__construct($cli, $time_base, $data_driver, $account_driver, $positions_driver, $orders_driver);
-  }  
-  
-  //
   // Everytime we get data (1st a min) we manage the data.
   // We get an options chain.
   //
@@ -35,6 +27,13 @@ class PutCreditSpreads extends AutoTradeBase
   //
   public function on_data($now, $data)
   {
+    // See if the market is open. Nothing to do if it is not open.
+    if(! $this->data_driver->is_market_open())
+    {
+      $this->cli->info('[' . date('Y-m-d G:i:s') . '] Market is closed.');
+      //return false;
+    }
+    
     // Get possible trades. 
     $trades = $this->_find_possible_trades($data);
     
@@ -65,8 +64,6 @@ class PutCreditSpreads extends AutoTradeBase
     {
       $list[] = $row['symbol'];
     }
-    
-    echo '<pre>' . print_r($list, TRUE) . '</pre>';
     
     // Filter out trades
     foreach($trades AS $key => $row)
