@@ -18,14 +18,9 @@ class PaperAccount
   //
   // Construct.
   //
-  public function __construct($cli, $symbol)
+  public function __construct($cli)
   {
     $this->cli = $cli;
-    $this->symbol = $symbol;
-        
-    // Setup tradier
-    $this->tradier = App::make('App\Library\Tradier');
-    $this->tradier->set_token(Crypt::decrypt(Auth::user()->UsersTradierToken));
     
     // Set the storage path.
     $this->store_path = storage_path() . '/papertrade/';
@@ -77,6 +72,24 @@ class PaperAccount
   {
     return $this->account['completed_trades'];
   }  
+  
+  //
+  // Add money to balance. (only use in paper trading).
+  //
+  public function add_funds($amount)
+  {
+    $this->account['balance'] = $this->account['balance'] + $amount;
+    $this->save();
+  }
+  
+  //
+  // Add a margin requirement. (only used in paper trading).
+  //
+  public function add_margin($amount)
+  {
+    $this->account['margin_required'] = $this->account['margin_required'] + $amount;
+    $this->save();
+  }
   
   // 
   // Save account. Write account data to file.

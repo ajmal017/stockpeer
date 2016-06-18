@@ -27,6 +27,14 @@ class OptionsChain
   }
   
   //
+  // Pass in an array and get a list of quotes
+  //
+  public function get_quotes($symbols)
+  {
+    return $this->tradier->get_quotes($symbols);
+  }
+  
+  //
   // Get data. Anytime someone wants data we call this function
   // and we make calls to Tradier to return the data. Some parent
   // function should manage how often this is called.

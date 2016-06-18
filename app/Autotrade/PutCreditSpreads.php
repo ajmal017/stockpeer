@@ -11,6 +11,7 @@ use Carbon\Carbon;
 
 class PutCreditSpreads extends AutoTradeBase
 {
+  public $buy_lots = 5;
   public $buy_min_credit = 0.18;
   public $buy_value_away = 4;
   public $buy_spread_width = 2;
@@ -20,9 +21,9 @@ class PutCreditSpreads extends AutoTradeBase
   //
   // Construct.
   //
-  public function __construct($cli, $time_base, $data_driver, $account_driver)
+  public function __construct($cli, $time_base, $data_driver, $account_driver, $positions_driver, $orders_driver)
   {
-    parent::__construct($cli, $time_base, $data_driver, $account_driver);
+    parent::__construct($cli, $time_base, $data_driver, $account_driver, $positions_driver, $orders_driver);
   }  
   
   //
@@ -34,14 +35,86 @@ class PutCreditSpreads extends AutoTradeBase
   //
   public function on_data($now, $data)
   {
-    //$trades = $this->_find_possible_trades($data);
+    // Get possible trades. 
+    $trades = $this->_find_possible_trades($data);
     
-    //echo '<pre>' . print_r($trades, TRUE) . '</pre>';
+    $this->filter_trades($trades);
+    
+    // Get the trade we are going to make.
+    $trade = $this->get_middle_credit_trade($trades);
+
+    // Place order.
+    $this->orders_driver->order_put_credit_spread($trade['occ_buy'], $trade['occ_sell'], 'limit', $trade['credit'], $this->buy_lots);
     
     return true;
   }  
   
   // --------------------- Private Helper Functions ------------------------ //  
+  
+  //
+  // Filter out positions we already have.
+  //
+  public function filter_trades(&$trades)
+  {
+    $list = [];
+    
+    // Get the positions we already have on.
+    $poss = $this->positions_driver->get_positions();
+    
+    foreach($poss AS $key => $row)
+    {
+      $list[] = $row['symbol'];
+    }
+    
+    echo '<pre>' . print_r($list, TRUE) . '</pre>';
+    
+    // Filter out trades
+    foreach($trades AS $key => $row)
+    {
+      if(in_array($row['occ_sell'], $list))
+      {
+        unset($trades[$key]);
+      } else if(in_array($row['occ_buy'], $list))
+      {
+        unset($trades[$key]);
+      }      
+    }
+  }
+  
+  //
+  // Return trade with the middle credit.
+  //
+  public function get_middle_credit_trade(&$trades)
+  {
+    $tmp = [];
+    $trade = null;
+    
+    if(count($trades) <= 0)
+    {
+      return $trade;
+    }
+    
+    foreach($trades AS $key => $row)
+    {
+      $tmp[] = $row['credit'];
+    }
+    
+    // Get the median
+    rsort($tmp); 
+    $middle = round(count($tmp) / 2); 
+    $median = $tmp[$middle-1]; 
+    
+    // Look for our median
+    foreach($trades AS $key => $row)
+    {
+      if($row['credit'] == $median)
+      {
+        return $row;
+      }
+    }
+    
+    return $trade;
+  }  
   
   //
   // Find possible trades.

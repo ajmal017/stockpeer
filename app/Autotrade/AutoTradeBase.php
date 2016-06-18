@@ -15,17 +15,21 @@ class AutoTradeBase
   public $cli = null;
   public $time_base = null;
   public $data_driver = null;
-  public $account_driver = null;  
+  public $orders_driver = null; 
+  public $account_driver = null;   
+  public $positions_driver = null;  
   
   //
   // Construct.
   //
-  public function __construct($cli, $time_base, $data_driver, $account_driver)
+  public function __construct($cli, $time_base, $data_driver, $account_driver, $positions_driver, $orders_driver)
   {
     $this->cli = $cli;
     $this->time_base = $time_base;
     $this->data_driver = $data_driver;
+    $this->orders_driver = $orders_driver;
     $this->account_driver = $account_driver;
+    $this->positions_driver = $positions_driver;
   }
   
   //

@@ -18,13 +18,15 @@ class AutoTrade extends Command
   
 	private $types_map = [
   	
-  	'45-dte-spy-put-credit-spreads' => [
+  	'paper-45-dte-spy-put-credit-spreads' => [
     	
       'class' => 'PutCreditSpreads',
       'symbol' => 'SPY',
       'time_base' => '1 Minute',
       'data_driver' => 'App\Autotrade\DataDrivers\OptionsChain',
-      'account_driver' => 'App\Autotrade\AccountDrivers\PaperAccount' 
+      'orders_driver' => 'App\Autotrade\OrdersDrivers\PaperOrders',
+      'account_driver' => 'App\Autotrade\AccountDrivers\PaperAccount', 
+      'positions_driver' => 'App\Autotrade\PositionsDrivers\PaperPositions', 
       	
   	]
 	
@@ -64,13 +66,15 @@ class AutoTrade extends Command
   	
     $this->info('[' . date('Y-m-d G:i:s') . '] Starting AutoTrade - ' . $this->argument('type') . '.'); 
     
-    // Load the drivers.
-    $data_driver = new $this->types_map[$this->type]['data_driver']($this, $this->types_map[$this->type]['symbol']);
-    $account_driver = new $this->types_map[$this->type]['account_driver']($this, $this->types_map[$this->type]['symbol']);
+    // Load the drivers.      
+    $data_driver = new $this->types_map[$this->type]['data_driver']($this, $this->types_map[$this->type]['symbol']);     
+    $positions_driver = new $this->types_map[$this->type]['positions_driver']($this, $data_driver);       
+    $account_driver = new $this->types_map[$this->type]['account_driver']($this);    
+    $orders_driver = new $this->types_map[$this->type]['orders_driver']($this, $account_driver, $data_driver, $positions_driver);          
     
     // Create instance of this type and run with it.
     $class = 'App\Autotrade\\' . $this->types_map[$this->type]['class'];
-    $auto_trade = new $class($this, $this->types_map[$this->type]['time_base'], $data_driver, $account_driver); 	
+    $auto_trade = new $class($this, $this->types_map[$this->type]['time_base'], $data_driver, $account_driver, $positions_driver, $orders_driver); 	
     
     // Run the auto trade instance
     if($this->option('daemon') == 'true')
