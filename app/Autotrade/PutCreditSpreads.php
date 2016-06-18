@@ -31,7 +31,7 @@ class PutCreditSpreads extends AutoTradeBase
     if(! $this->data_driver->is_market_open())
     {
       $this->cli->info('[' . date('Y-m-d G:i:s') . '] Market is closed.');
-      //return false;
+      return false;
     }
     
     // Get possible trades. 
