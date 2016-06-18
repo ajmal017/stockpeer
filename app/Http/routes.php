@@ -360,17 +360,15 @@ Route::group([ 'middleware' => 'force.ssl' ], function() {
 	Route::get('blog/rss', 'BlogController@rss');
 	Route::get('blog/{id}/{slug}', 'BlogController@single');		
 	
-  // backtests/option-spreads/{hash}
+  // backtests
+  Route::get('backtest', 'BacktestsController@index');
   Route::get('backtests/option-spreads/{hash}', 'BacktestsController@options_spreads');
 	
 	// options-broker-picker
-	Route::get('options-broker-picker', 'BrokerPickerController@options');	
+	Route::get('options-broker-picker', 'BrokerPickerController@options');	  
 	
 	// api/v1/newsletter
 	Route::post('api/v1/newsletter/create', 'Api\V1\Newsletter@create');	
-	
-	// a/backtester
-	Route::get('a/backtester', 'AppController@template');	
 });
 
 // Special routes for my AH friends.

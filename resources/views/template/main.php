@@ -41,14 +41,8 @@
 	<script src="/assets/js/jquery-1.9.1.js"></script>
 	<script src="/assets/js/bootstrap.min.js"></script>	
 	<script src="/app/bower/angular/angular.min.js"></script>
-
-  <?php if(Request::segment(1) == 'a') : ?>
-	<script src="/app/config/app.js"></script>
-	<script src="/app/controllers/dashboard.js"></script>	
-	<script src="/app/controllers/screener.js"></script>		
-	<?php else : ?>
 	<script src="/app/controllers/public.js"></script>
-  <?php endif; ?>
+	<script src="/app/controllers/public-backtest.js"></script>
 </head>
 <body ng-controller="SiteWideCtrl">
 

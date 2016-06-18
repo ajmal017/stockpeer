@@ -22,6 +22,14 @@ class BacktestsController extends Controller
 			'thumb' => 'https://dukitbr4wfrx2.cloudfront.net/blog/find-the-best-options-broker_25_thumb.png',			
 			'description' => 'Here we are using the results of a backtest on Stockpeer.com'
 		];
+	}
+	
+	//
+	// Index.
+	///
+	public function index()
+	{
+    return View::make('template.main', $this->_data)->nest('body', 'backtests.index', $this->_data);	
 	}	  
   
   //
