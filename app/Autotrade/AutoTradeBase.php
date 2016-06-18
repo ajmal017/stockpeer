@@ -16,13 +16,14 @@ class AutoTradeBase
   public $time_base = null;
   public $data_driver = null;
   public $orders_driver = null; 
+  public $cleanup_driver = null;   
   public $account_driver = null;   
   public $positions_driver = null;  
   
   //
   // Construct.
   //
-  public function __construct($cli, $time_base, $data_driver, $account_driver, $positions_driver, $orders_driver)
+  public function __construct($cli, $time_base, $data_driver, $account_driver, $positions_driver, $orders_driver, $cleanup_driver)
   {
     $this->cli = $cli;
     $this->time_base = $time_base;
@@ -30,6 +31,7 @@ class AutoTradeBase
     $this->orders_driver = $orders_driver;
     $this->account_driver = $account_driver;
     $this->positions_driver = $positions_driver;
+    $this->cleanup_driver = $cleanup_driver;    
   }
   
   //
@@ -40,8 +42,16 @@ class AutoTradeBase
     // If No loop.
     if(! $loop)
     {
-      $now = Carbon::now();
+      $now = Carbon::now();      
+      
+      // Call before clean up stuff.
+      $this->cleanup_driver->before_on_data();      
+      
+      // On data time.
       $this->on_data($now, $this->data_driver->get_data($now));
+      
+      // Call after clean up stuff.
+      $this->cleanup_driver->after_on_data();      
     }    
     
     // Just keep looping until we are done.
@@ -50,12 +60,18 @@ class AutoTradeBase
       // Get current time object
       $now = Carbon::now();
 
+      // Call before clean up stuff.
+      $this->cleanup_driver->before_on_data();
+
       // Fire every min.
       if(($now->second == 0) && ($this->time_base == '1 Minute'))
       {
         $this->on_data($now, $this->data_driver->get_data($now));
       }
       
+      // Call clean up stuff.
+      $this->cleanup_driver->after_on_data();
+         
       // Sleep one second.
       sleep(1);
     }

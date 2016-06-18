@@ -23,10 +23,13 @@ class AutoTrade extends Command
       'class' => 'PutCreditSpreads',
       'symbol' => 'SPY',
       'time_base' => '1 Minute',
+      
+      // Drivers
       'data_driver' => 'App\Autotrade\DataDrivers\OptionsChain',
       'orders_driver' => 'App\Autotrade\OrdersDrivers\PaperOrders',
       'account_driver' => 'App\Autotrade\AccountDrivers\PaperAccount', 
       'positions_driver' => 'App\Autotrade\PositionsDrivers\PaperPositions', 
+      'cleanup_driver' => 'App\Autotrade\CleanupDrivers\PaperCleanup',       
       	
   	]
 	
@@ -71,10 +74,11 @@ class AutoTrade extends Command
     $positions_driver = new $this->types_map[$this->type]['positions_driver']($this, $data_driver);       
     $account_driver = new $this->types_map[$this->type]['account_driver']($this);    
     $orders_driver = new $this->types_map[$this->type]['orders_driver']($this, $account_driver, $data_driver, $positions_driver);          
+    $cleanup_driver = new $this->types_map[$this->type]['cleanup_driver']($this, $account_driver, $data_driver, $positions_driver); 
     
     // Create instance of this type and run with it.
     $class = 'App\Autotrade\\' . $this->types_map[$this->type]['class'];
-    $auto_trade = new $class($this, $this->types_map[$this->type]['time_base'], $data_driver, $account_driver, $positions_driver, $orders_driver); 	
+    $auto_trade = new $class($this, $this->types_map[$this->type]['time_base'], $data_driver, $account_driver, $positions_driver, $orders_driver, $cleanup_driver); 	
     
     // Run the auto trade instance
     if($this->option('daemon') == 'true')
