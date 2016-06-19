@@ -363,6 +363,7 @@ Route::group([ 'middleware' => 'force.ssl' ], function() {
   // backtests
   Route::get('backtest', 'BacktestsController@index');
   Route::get('backtests/get/{id}', 'BacktestsController@get');  
+  Route::get('backtests/get_trades/{id}', 'BacktestsController@get_trades');
   Route::get('backtests/status/{id}', 'BacktestsController@status');
   Route::get('backtests/option-spreads/{hash}', 'BacktestsController@options_spreads');
   Route::post('backtests/run', 'BacktestsController@run');

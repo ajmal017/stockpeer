@@ -55,7 +55,12 @@ app.controller('BacktestCtrl', function ($scope, $http)
           $scope.started = false;
           $scope.progress = 100;
           $scope.backtest = json;
-        })
+        });
+        
+        // Get all the backtested trades.
+        $http.get('/backtests/get_trades/' + $scope.backtest_id).success(function (json) {
+          $scope.trades = json;
+        });        
       }      
     });
   }

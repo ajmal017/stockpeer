@@ -45,6 +45,27 @@ class BacktestsController extends Controller
   }
   
   //
+  // Get trades.
+  //
+  public function get_trades($id)
+  {
+    $rt = [];
+    
+    $dd = DB::table('BackTestTrades')
+      ->where('BackTestTradesTestId', $id)
+      ->orderBy('BackTestTradesId', 'asc')
+      ->get();
+      
+    // Clean up data
+    foreach($dd AS $key => $row)
+    {
+      $rt[] = (array) $row;
+    }
+    
+    return $rt;
+  }  
+  
+  //
   // Options Spreads
   //
   public function options_spreads($hash)
