@@ -409,7 +409,12 @@
 			  </div>
 			  
 			  <div class="control-group span3">					
-							    
+          <label class="control-label">Trade Select</label>
+          <select class="form-control" ng-model="fields.BackTestsTradeSelect">
+            <option value="lowest-credit">Lowest Credit</option>
+            <option value="median-credit">Median Credit</option>
+            <option value="highest-credit">Highest Credit</option>
+          </select>							    
 			  </div>				  				  			  	
 			  
 			</div>						
