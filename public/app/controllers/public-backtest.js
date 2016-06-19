@@ -5,6 +5,7 @@ app.controller('BacktestCtrl', function ($scope, $http)
 {
   $scope.trades = [];
   $scope.started = false;
+  $scope.summary = false;
   $scope.progress = 0;
   $scope.backtest_id = 0;
   $scope.backtest = {}
@@ -25,6 +26,18 @@ app.controller('BacktestCtrl', function ($scope, $http)
     BackTestsOneTradeAtTime: 'No',  
     BackTestsTradeSelect: 'lowest-credit',
     BackTestsSpreadWidth: '2'    
+  }
+  
+  // Back to summary
+  $scope.back_to_summary = function ()
+  {
+    $scope.summary = true;
+  }
+  
+  // Run another backtest.
+  $scope.another_backtest = function ()
+  {
+    $scope.summary = false;
   }
   
   // Check to see if we have any new trades. 
@@ -60,6 +73,7 @@ app.controller('BacktestCtrl', function ($scope, $http)
         // Get all the backtested trades.
         $http.get('/backtests/get_trades/' + $scope.backtest_id).success(function (json) {
           $scope.trades = json;
+          $scope.summary = true;
         });        
       }      
     });

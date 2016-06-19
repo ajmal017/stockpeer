@@ -1,23 +1,65 @@
-<div class="span12 zone-content" ng-controller="BacktestCtrl">
+<div class="zone-content" ng-controller="BacktestCtrl">
 	
 	<h1>Backtester</h1>
 	
 	<div class="row" ng-show="started">
   	
-  	<div class="span11">
-      <div class="progress">
-        <div class="bar bar-success" style="width: {{ progress }}%;"></div>
-        {{ progress }}%
-      </div>
-  	</div>
+    <div class="progress">
+      <div class="bar bar-success" style="width: {{ progress }}%;"></div>
+      {{ progress }}%
+    </div>
   
 	</div>		
 	
-	<div class="row span11 well" ng-hide="started">
+	<div class="row well" ng-show="summary">
+    <table class="backtest-summary-table">
+      <tr>
+        <td class="col-label">Balance:</td>
+        <td>$<span ng-bind="backtest.BackTestsEndBalance | number:0"></span></td>
+        
+        <td class="col-label">Profit:</td>
+        <td>$<span ng-bind="backtest.BackTestsProfit | number:0"></span></td>        
+        
+        <td class="col-label">CAGR:</td>
+        <td><span ng-bind="backtest.BackTestsCagr"></span>%</td>
+        
+        <td class="col-label">Avg. Days:</td>
+        <td><span ng-bind="backtest.BackTestsAvgDaysInTrade | number:0"></span></td>
+      </tr>
+      
+      
+      <tr>
+        <td class="col-label">Avg. Credit:</td>
+        <td><span ng-bind="backtest.BackTestsAvgCredit"></span></td>
+        
+        <td class="col-label">Win Rate:</td>
+        <td><span ng-bind="backtest.BackTestsWinRate"></span>%</td>
+        
+        <td class="col-label"># Trades:</td>
+        <td><span ng-bind="backtest.BackTestsTotalTrades"></span></td>
+        
+        <td class="col-label"># Loss Trades:</td>
+        <td><span ng-bind="backtest.BackTestsLosses"></span></td>                                        
+      </tr>
+
+    </table>
+    
+    <div class="row backtest-summary-share">
+      <div class="span9">
+        Share: <a href="<?=URL::to('/backtests/option-spreads')?>/{{ backtest.BackTestsPublicHash }}" target="_blank"><?=URL::to('/backtests/option-spreads')?>/{{ backtest.BackTestsPublicHash }}</a>
+      </div>
+      
+      <div class="span2">
+        <a hrf="" class="btn btn-primary" ng-click="another_backtest()">Another Backtest</a>
+      </div>
+    </div>
+	</div>
+	
+	<div class="row well" ng-hide="summary || started">
 		<form role="form">
 			
 			<div class="row">				
-			  <div class="control-group span4">
+			  <div class="control-group span4 ml-60">
 			    <label class="control-label">Backtest Type</label>
 			    <div class="controls">						
             <select class="input-large" ng-model="fields.BackTestsType">
@@ -26,14 +68,14 @@
 					</div>
 			  </div>
 			  
-			  <div class="control-group span4">
+			  <div class="control-group span4 ml-60">
 			    <label class="control-label">Start Date</label>
 			    <div class="controls">
 						<input type="text" placeholder="Text input" class="form-control" ng-model="fields.BackTestsStart" />
 					</div>
 			  </div>			  
 
-			  <div class="control-group span3">
+			  <div class="control-group span3 ml-60">
 			    <label class="control-label">End Date</label>
 			    <div class="controls">
 						<input type="text" placeholder="Text input" class="form-control" ng-model="fields.BackTestsEnd"  />
@@ -44,7 +86,7 @@
 			
 			<div class="row">
   			
-			  <div class="control-group span4">
+			  <div class="control-group span4 ml-60">
   			  
           <label class="control-label">Open Signal</label>
           
@@ -54,7 +96,7 @@
 
 			  </div>
 			  
-			  <div class="control-group span4">
+			  <div class="control-group span4 ml-60">
 					
           <label class="control-label">One Trade At A Time</label>
           
@@ -65,7 +107,7 @@
 					
 			  </div>			  
 
-			  <div class="control-group span3">
+			  <div class="control-group span3 ml-60">
           <label class="control-label">Min Credit To Open</label>
           <select class="form-control" ng-model="fields.BackTestsMinOpenCredit">
             <option value="0.05">$0.05</option>
@@ -97,7 +139,7 @@
 
 			<div class="row">
 				
-			  <div class="control-group span4">
+			  <div class="control-group span4 ml-60">
 			    <label class="control-label">Starting Balance</label>
           
           <div class="controls input-prepend">
@@ -107,7 +149,7 @@
 		    
 			  </div>	
 			  
-			  <div class="control-group span4">
+			  <div class="control-group span4 ml-60">
 			    <label class="control-label">Trade Size</label>
 			    
           <select class="input-large" ng-model="fields.BackTestsTradeSize">
@@ -198,7 +240,7 @@
 
 			  </div>				  
 			  
-			  <div class="control-group span3">
+			  <div class="control-group span3 ml-60">
 			    <label class="control-label">Close Trade</label>
 			 
           <select class="input-large" ng-model="fields.BackTestsCloseAt">
@@ -236,7 +278,7 @@
 			
 			<div class="row">
 				
-			  <div class="control-group span4">
+			  <div class="control-group span4 ml-60">
 			    <label class="control-label">Ticker Symbol</label>
 			    <div class="controls">
 						<select class="input-large">
@@ -246,7 +288,7 @@
 					</div>
 			  </div>
 			  
-			  <div class="control-group span4">
+			  <div class="control-group span4 ml-60">
 			    <label class="control-label">Spread Width</label>
 					<select class="input-large" ng-model="fields.BackTestsSpreadWidth">
 					  <option value="1">1</option>
@@ -262,7 +304,7 @@
 					</select>
 			  </div>			  
 
-			  <div class="control-group span3">
+			  <div class="control-group span3 ml-60">
           <label class="control-label">Stop Loss</label>
           <select class="form-control" ng-model="fields.BackTestsStopAt">
             <option value="no-stop">No Stop</option>
@@ -274,7 +316,7 @@
 			
 			<div class="row">
 							  
-			  <div class="control-group span4">
+			  <div class="control-group span4 ml-60">
   			  					
           <label class="control-label">Min Days To Expiration</label>
           <select class="form-control" ng-model="fields.BackTestsMinDaysExpire">
@@ -342,7 +384,7 @@
 					
 			  </div>	
 			  
-			  <div class="control-group span4">
+			  <div class="control-group span4 ml-60">
           <label class="control-label">Max Days To Expiration</label>
           <select class="form-control" ng-model="fields.BackTestsMaxDaysExpire">
             <option value="1">1 Day</option>
@@ -408,7 +450,7 @@
           </select>					
 			  </div>
 			  
-			  <div class="control-group span3">					
+			  <div class="control-group span3 ml-60">					
           <label class="control-label">Trade Select</label>
           <select class="form-control" ng-model="fields.BackTestsTradeSelect">
             <option value="lowest-credit">Lowest Credit</option>
@@ -420,21 +462,14 @@
 			</div>						
 			
 			<div class="row">
-		  	<button type="submit" class="btn btn-primary span2 offset9" ng-click="run_backtest()">Run Backtest</button>
+  			<a href="" class="span2 mt-25" ng-show="trades.length" ng-click="back_to_summary()">Back To Summary</a>
+  			<span class="span2 mt-25" ng-show="! trades.length">&nbsp;</span>
+		  	<button type="submit" class="btn btn-primary span2 offset7" ng-click="run_backtest()">Run Backtest</button>
 			</div>
 		</form>				
 	</div>	
-	
-  <div class="span12 row" ng-show="(trades.length && (! started))">
-    
-    <p>
-      Share: 
-      <a href="<?=URL::to('/backtests/option-spreads')?>/{{ backtest.BackTestsPublicHash }}" target="_blank"><?=URL::to('/backtests/option-spreads')?>/{{ backtest.BackTestsPublicHash }}</a>
-    </p>
-    
-  </div>	
 		
-	<div class="span12 row">
+	<div class="row">
 		<table class="table table-bordered table-striped table-responsive">
 			<thead>
 				<tr>
