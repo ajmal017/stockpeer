@@ -76,7 +76,7 @@ class Backtest extends Command
           'max_days_to_expire' => $backtest->BackTestsMaxDaysExpire,
           'max_price_to_pay' => 88.00,
           'wing_width_percent' => 0.05
-        ]); 
+        ], $backtest->BackTestsId); 
         
         die();
         
@@ -139,7 +139,7 @@ class Backtest extends Command
             ]		
             
           ]
-        ]);      
+        ], $backtest->BackTestsId);      
       
         $summary = $bt->get_trade_summary();
       
@@ -147,12 +147,14 @@ class Backtest extends Command
       break;
     }
     
+/*
     // Load the trades into the Orders db.
     foreach($trades AS $key => $row)
     {
       $row['BackTestTradesTestId'] = $backtest->BackTestsId;
       $backtesttrades_model->insert($row);
     }
+*/
     
     // Mark when we end the backtest.
     $backtests_model->update([

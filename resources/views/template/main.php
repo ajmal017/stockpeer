@@ -42,6 +42,7 @@
 	<script src="/assets/js/bootstrap.min.js"></script>	
 	<script src="/app/bower/angular/angular.min.js"></script>
 	<script src="/app/controllers/public.js"></script>
+	<script src="/app/filters/date.js"></script>
 	<script src="/app/controllers/public-backtest.js"></script>
 </head>
 <body ng-controller="SiteWideCtrl">

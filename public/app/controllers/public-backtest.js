@@ -1,12 +1,13 @@
 //
 // Backtest controller.
 //
-app.controller('BacktestCtrl', function ($scope) 
+app.controller('BacktestCtrl', function ($scope, $http) 
 {
   $scope.trades = [];
   $scope.started = false;
   $scope.progress = 0;
   $scope.backtest_id = 0;
+  $scope.backtest = {}
   
   $scope.fields = {
     BackTestsType: 'Put Credit Spreads',
@@ -26,30 +27,57 @@ app.controller('BacktestCtrl', function ($scope)
     BackTestsSpreadWidth: '2'    
   }
   
+  // Check to see if we have any new trades. 
+  $scope.check_new_trades = function ()
+  {
+    $http.get('/backtests/status/' + $scope.backtest_id).success(function (json) {
+      $scope.trade_index = json.index;
+      
+      // Are we done backtesting?
+      if((json.status == 'Pending') || (json.status == 'Started'))
+      {
+        $scope.check_new_trades();
+        
+        // Update progress
+        $scope.progress = json.progress;
+        
+        // Show trades in the table.
+        for(var i = 0; i < json.trades.length; i++)
+        {
+          $scope.trades.push(json.trades[i]);
+        }
+      } else
+      {
+        $scope.progress = 95;
+        
+        // Get the full backtested results.
+        $http.get('/backtests/get/' + $scope.backtest_id).success(function (json) {
+          $scope.started = false;
+          $scope.progress = 100;
+          $scope.backtest = json;
+        })
+      }      
+    });
+  }
+  
   // Run the backtest.
   $scope.run_backtest = function ()
   {
-    alert('asdf');
-
-/*
     $scope.started = true;
     $scope.progress = 0;
     $scope.trades = [];
     
     // Setup the backtest.
-    $http.post('/api/v1/backtests/setup_backtest', $scope.fields).success(function (json) {
+    $http.post('/backtests/setup_backtest', $scope.fields).success(function (json) {
 
-      $scope.backtest_id = json.data.Id;
+      $scope.backtest_id = json.Id;
 
       // Run the backtest.
-      $http.post('/api/v1/backtests/run', { BackTestsId: $scope.backtest_id }).success(function (json) {
-        
-        // Do nothing....
-
+      $http.post('/backtests/run', { BackTestsId: $scope.backtest_id }).success(function (json) {
+        $scope.check_new_trades();
       });
       
     });
-*/
   
   }  
 

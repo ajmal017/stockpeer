@@ -2,7 +2,18 @@
 	
 	<h1>Backtester</h1>
 	
-	<div class="row span11 well">
+	<div class="row" ng-show="started">
+  	
+  	<div class="span11">
+      <div class="progress">
+        <div class="bar bar-success" style="width: {{ progress }}%;"></div>
+        {{ progress }}%
+      </div>
+  	</div>
+  
+	</div>		
+	
+	<div class="row span11 well" ng-hide="started">
 		<form role="form">
 			
 			<div class="row">				
@@ -18,14 +29,14 @@
 			  <div class="control-group span4">
 			    <label class="control-label">Start Date</label>
 			    <div class="controls">
-						<input type="date" placeholder="Text input" class="form-control" ng-model="fields.BackTestsStart" />
+						<input type="text" placeholder="Text input" class="form-control" ng-model="fields.BackTestsStart" />
 					</div>
 			  </div>			  
 
 			  <div class="control-group span3">
 			    <label class="control-label">End Date</label>
 			    <div class="controls">
-						<input type="date" placeholder="Text input" class="form-control" ng-model="fields.BackTestsEnd"  />
+						<input type="text" placeholder="Text input" class="form-control" ng-model="fields.BackTestsEnd"  />
 					</div>
 			  </div>	
 			  
@@ -83,8 +94,6 @@
 			  </div>	  			
   			
 			</div>
-			
-			
 
 			<div class="row">
 				
@@ -408,43 +417,44 @@
 			<div class="row">
 		  	<button type="submit" class="btn btn-primary span2 offset9" ng-click="run_backtest()">Run Backtest</button>
 			</div>
-		</form>
+		</form>				
 	</div>	
+	
+  <div class="span12 row" ng-show="(trades.length && (! started))">
+    
+    <p>
+      Share: 
+      <a href="<?=URL::to('/backtests/option-spreads')?>/{{ backtest.BackTestsPublicHash }}" target="_blank"><?=URL::to('/backtests/option-spreads')?>/{{ backtest.BackTestsPublicHash }}</a>
+    </p>
+    
+  </div>	
 		
 	<div class="span12 row">
 		<table class="table table-bordered table-striped table-responsive">
 			<thead>
 				<tr>
-					<th>Col #1</th>
-					<th>Col #2</th>
-					<th>Col #3</th>						
+					<th>Open Date</th>
+					<th>Close Date</th>
+					<th>Lots</th>					
+					<th>Spread</th>	
+					<th>Expire</th>
+					<th>Stopped</th>									
+					<th>Profit</th>
+					<th>Balance</th>											
 				</tr>
 			</thead>
 			
 			<tbody>
-				<tr>
-					<td>Col #1</td>
-					<td>Col #2</td>
-					<td>Col #3</td>						
-				</tr>
-				
-				<tr>
-					<td>Col #1</td>
-					<td>Col #2</td>
-					<td>Col #3</td>						
-				</tr>
-				
-				<tr>
-					<td>Col #1</td>
-					<td>Col #2</td>
-					<td>Col #3</td>						
-				</tr>
-				
-				<tr>
-					<td>Col #1</td>
-					<td>Col #2</td>
-					<td>Col #3</td>						
-				</tr>						
+				<tr ng-repeat="row in trades track by $index">
+					<td ng-bind="row.BackTestTradesOpen | date:'M/d/yyyy'"></td>
+					<td ng-bind="row.BackTestTradesClose | date:'M/d/yyyy'"></td>
+          <td ng-bind="row.BackTestTradesLots"></td>
+					<td><span ng-bind="row.BackTestTradesLongLeg1 | number:0"></span> / <span ng-bind="row.BackTestTradesShortLeg1 | number:0"></span></td>	
+					<td ng-bind="row.BackTestTradesExpire1 | date:'M/d/yyyy'"></td>
+					<td ng-bind="row.BackTestTradesStopped"></td>				
+					<td>$<span ng-bind="row.BackTestTradesProfit | number:2"></span></td>
+					<td>$<span ng-bind="row.BackTestTradesBalance | number:2"></span></td>											
+				</tr>					
 			</tbody>	
 		</table>
 	</div>

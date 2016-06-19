@@ -27,8 +27,9 @@ class PutCreditSpreads extends OptionBase
   //
   // Run....
   //
-  public function run($parms)
+  public function run($parms, $backtest_id)
   {
+    $this->backtest_id = $backtest_id;
     $this->start_date = $parms['start_date'];
     $this->end_date = $parms['end_date'];
     $this->signals = $parms['signals'];

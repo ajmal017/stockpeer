@@ -13,6 +13,8 @@ use Libraries\Rsi;
 
 class OptionBase
 {
+  public $backtest_id = 0;
+    
   public $table = null;
   public $symbol = null;
   
@@ -37,6 +39,8 @@ class OptionBase
   
   public $trade_log = [];
   public $positions = [];
+  
+  public $backtesttrades_model = null;
 
   //
   // Construct...
@@ -45,6 +49,7 @@ class OptionBase
   {
     $this->snp_ivr = Cache::get('EodQuote.EodQuoteClose.Snp.IVR');        
     $this->vix_close_prices = Cache::get('EodQuote.EodQuoteClose.VIX');
+    $this->backtesttrades_model = App::make('App\Models\BackTestTrades');
   }
   
   //
@@ -770,7 +775,11 @@ class OptionBase
             'reserved_cash' => $this->reserved_cash       
           ];
           
-          $this->trade_log[] = $order;          
+          $this->trade_log[] = $order;   
+          
+          // Record trade
+          $order['BackTestTradesTestId'] = $this->backtest_id;
+          $this->backtesttrades_model->insert($order);                   
         }
         
         
@@ -825,6 +834,10 @@ class OptionBase
           ];
           
           $this->trade_log[] = $order;
+          
+          // Record trade
+          $order['BackTestTradesTestId'] = $this->backtest_id;
+          $this->backtesttrades_model->insert($order);          
           
           // Tell the websocket this happened
           Queue::pushOn('stockpeer.com.websocket', 'Backtesting:order', [
