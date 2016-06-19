@@ -130,7 +130,7 @@ class Backtest extends Command
           		'value' => $backtest->BackTestOpenPercentAway,
           		'action' => 'credit-spread',
           		'trade-select' => $backtest->BackTestsTradeSelect,
-          		'spread_width' => 2,
+          		'spread_width' => $backtest->BackTestsSpreadWidth,
           		'min_credit' => $backtest->BackTestsMinOpenCredit,
           		'midpoint' => 'yes',
           		'one_at_time' => $backtest->BackTestsOneTradeAtTime,	

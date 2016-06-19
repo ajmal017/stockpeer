@@ -185,6 +185,7 @@ class BacktestsController extends Controller
       'BackTestsCloseAt' => Input::get('BackTestsCloseAt'), 			
       'BackTestsStopAt' => Input::get('BackTestsStopAt'),  	  	
       'BackTestsStatus' => 'Pending',
+      'BackTestsSpreadWidth' => Input::get('BackTestsSpreadWidth'),
       'BackTestsMinDaysExpire' => Input::get('BackTestsMinDaysExpire'),
       'BackTestsMaxDaysExpire' => Input::get('BackTestsMaxDaysExpire'),
       'BackTestsOpenAt' => Input::get('BackTestsOpenAt'),

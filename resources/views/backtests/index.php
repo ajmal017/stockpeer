@@ -30,7 +30,7 @@
       
       <tr>
         <td class="col-label">Avg. Credit:</td>
-        <td><span ng-bind="backtest.BackTestsAvgCredit"></span></td>
+        <td>$<span ng-bind="backtest.BackTestsAvgCredit"></span></td>
         
         <td class="col-label">Win Rate:</td>
         <td><span ng-bind="backtest.BackTestsWinRate"></span>%</td>
@@ -71,14 +71,14 @@
 			  <div class="control-group span4 ml-60">
 			    <label class="control-label">Start Date</label>
 			    <div class="controls">
-						<input type="text" placeholder="Text input" class="form-control" ng-model="fields.BackTestsStart" />
+						<input type="text" placeholder="Text input" class="form-control" ng-model="fields.BackTestsStart" style="height: 20px;" />
 					</div>
 			  </div>			  
 
 			  <div class="control-group span3 ml-60">
 			    <label class="control-label">End Date</label>
 			    <div class="controls">
-						<input type="text" placeholder="Text input" class="form-control" ng-model="fields.BackTestsEnd"  />
+						<input type="text" placeholder="Text input" class="form-control" ng-model="fields.BackTestsEnd" style="height: 20px;" />
 					</div>
 			  </div>	
 			  
@@ -98,12 +98,28 @@
 			  
 			  <div class="control-group span4 ml-60">
 					
-          <label class="control-label">One Trade At A Time</label>
-          
-          <select class="form-control" ng-model="fields.BackTestsOneTradeAtTime">
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>                
-          </select>					
+          <label class="control-label">Short Percent Away</label>
+          <select class="form-control" ng-model="fields.BackTestOpenPercentAway">
+            <option value="0.05">0.05% Down</option>
+            <option value="0.75">0.75% Down</option>
+            <option value="1.00">1.00% Down</option>
+            <option value="1.25">1.25% Down</option>
+            <option value="1.50">1.50% Down</option>    
+            <option value="1.75">1.75% Down</option>
+            <option value="2.00">2.00% Down</option>
+            <option value="2.25">2.25% Down</option>
+            <option value="2.50">2.50% Down</option>  
+            <option value="2.75">2.75% Down</option>
+            <option value="3.00">3.00% Down</option>
+            <option value="3.25">3.25% Down</option>
+            <option value="3.50">3.50% Down</option>    
+            <option value="3.75">3.75% Down</option>
+            <option value="4.00">4.00% Down</option>
+            <option value="4.25">4.25% Down</option>
+            <option value="4.50">4.50% Down</option>  
+            <option value="4.75">4.75% Down</option>  
+            <option value="5.00">5.00% Down</option>                                  
+          </select>				
 					
 			  </div>			  
 
@@ -459,7 +475,34 @@
           </select>							    
 			  </div>				  				  			  	
 			  
-			</div>						
+			</div>		
+			
+			
+			
+			<div class="row">
+							  
+			  <div class="control-group span4 ml-60">
+  			  
+          <label class="control-label">One Trade At A Time</label>
+          
+          <select class="form-control" ng-model="fields.BackTestsOneTradeAtTime">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>                
+          </select>				
+					
+			  </div>	
+			  
+			  <div class="control-group span4 ml-60">
+				
+			  </div>
+			  
+			  <div class="control-group span3 ml-60">					
+						    
+			  </div>				  				  			  	
+			  
+			</div>				
+			
+							
 			
 			<div class="row">
   			<a href="" class="span2 mt-25" ng-show="trades.length" ng-click="back_to_summary()">Back To Summary</a>
@@ -469,7 +512,7 @@
 		</form>				
 	</div>	
 		
-	<div class="row">
+	<div class="row" ng-show="trades.length">
 		<table class="table table-bordered table-striped table-responsive trades-table">
 			<thead>
 				<tr>
@@ -478,6 +521,8 @@
 					<th>Lots</th>					
 					<th>Spread</th>	
 					<th>Expire</th>
+					<th>Stock Open</th>	
+					<th>Stock Close</th>										
 					<th>Stopped</th>									
 					<th>Profit</th>
 					<th>Balance</th>											
@@ -491,6 +536,8 @@
           <td ng-bind="row.BackTestTradesLots"></td>
 					<td><span ng-bind="row.BackTestTradesLongLeg1 | number:0"></span> / <span ng-bind="row.BackTestTradesShortLeg1 | number:0"></span></td>	
 					<td ng-bind="row.BackTestTradesExpire1 | date:'M/d/yyyy'"></td>
+					<td>$<span ng-bind="row.BackTestTradesSymStart | number:2"></span></td>
+					<td>$<span ng-bind="row.BackTestTradesSymEnd | number:2"></span></td>					
 					<td ng-bind="row.BackTestTradesStopped"></td>				
 					<td ng-class="{ red: (row.BackTestTradesProfit < 0) }">$<span ng-bind="row.BackTestTradesProfit | number:2"></span></td>
 					<td>$<span ng-bind="row.BackTestTradesBalance | number:2"></span></td>											

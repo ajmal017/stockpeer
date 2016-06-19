@@ -59,6 +59,10 @@
 			</li>
 		  
 		  <li>
+				<a href="<?=URL::to('backtest')?>">Backtest</a>
+			</li>		  
+		  
+		  <li>
 				<a href="<?=URL::to('options-broker-picker')?>">Broker Finder</a>
 			</li>
 		  

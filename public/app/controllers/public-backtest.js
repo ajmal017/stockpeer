@@ -15,7 +15,7 @@ app.controller('BacktestCtrl', function ($scope, $http)
     BackTestsStart: '1/1/2015',
     BackTestsEnd: '12/31/2015',
     BackTestsStartBalance: '30000.00',
-    BackTestsTradeSize: 'percent-10',
+    BackTestsTradeSize: 'percent-15',
     BackTestsCloseAt: 'credit-0.03',
     BackTestsMinDaysExpire: '1',
     BackTestsMaxDaysExpire: '45',
@@ -52,7 +52,10 @@ app.controller('BacktestCtrl', function ($scope, $http)
         $scope.check_new_trades();
         
         // Update progress
-        $scope.progress = json.progress;
+        if(json.progress > 0)
+        {
+          $scope.progress = json.progress;
+        }
         
         // Show trades in the table.
         for(var i = 0; i < json.trades.length; i++)
