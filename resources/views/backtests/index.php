@@ -470,7 +470,7 @@
 	</div>	
 		
 	<div class="row">
-		<table class="table table-bordered table-striped table-responsive">
+		<table class="table table-bordered table-striped table-responsive trades-table">
 			<thead>
 				<tr>
 					<th>Open Date</th>
@@ -492,7 +492,7 @@
 					<td><span ng-bind="row.BackTestTradesLongLeg1 | number:0"></span> / <span ng-bind="row.BackTestTradesShortLeg1 | number:0"></span></td>	
 					<td ng-bind="row.BackTestTradesExpire1 | date:'M/d/yyyy'"></td>
 					<td ng-bind="row.BackTestTradesStopped"></td>				
-					<td>$<span ng-bind="row.BackTestTradesProfit | number:2"></span></td>
+					<td ng-class="{ red: (row.BackTestTradesProfit < 0) }">$<span ng-bind="row.BackTestTradesProfit | number:2"></span></td>
 					<td>$<span ng-bind="row.BackTestTradesBalance | number:2"></span></td>											
 				</tr>					
 			</tbody>	

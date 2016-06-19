@@ -184,10 +184,12 @@ a.button-link:hover {
 }
 
 
+/*
 .table-striped tbody > tr:nth-child(odd) > td,
 .table-striped tbody > tr:nth-child(odd) > th {
     background-color: #f6f6ed;
 }
+*/
 
 .table-hover tbody tr:hover > td,
 .table-hover tbody tr:hover > th {

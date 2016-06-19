@@ -30,6 +30,9 @@
 .red { color: red; }
 .green { color: green; }
 
+.trades-table th { text-align: center; }
+.trades-table td { text-align: center; }
+
 .backtest-summary-table { width: 100%; }
 .backtest-summary-table tr .col-label { font-weight: bold; }
 .backtest-summary-share { margin-top: 20px; }
