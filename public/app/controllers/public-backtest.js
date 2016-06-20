@@ -90,6 +90,15 @@ app.controller('BacktestCtrl', function ($scope, $http)
         $http.get('/backtests/get_trades/' + $scope.backtest_id).success(function (json) {
           $scope.trades = json;
           $scope.summary = true;
+          
+          // Show trades in the table.
+          for(var i = 0; i < json.length; i++)
+          {          
+            $scope.account_balance_chart.series[0].addPoint([ new Date(json[i].BackTestTradesClose).getTime(), parseFloat(json[i].BackTestTradesBalance) ], false);
+          }
+          
+          // Redraw chart
+          $scope.account_balance_chart.redraw();          
         });        
       }      
     });
@@ -131,6 +140,11 @@ app.controller('BacktestCtrl', function ($scope, $http)
       yAxis: { title: { text: '' } },
       
       credits: {  enabled: false },
+      
+      tooltip: {
+        headerFormat: '<b>{series.name}</b><br>',
+        pointFormat: '{point.x:%m/%d/%Y} : {point.y:,.1f}'
+      },      
           
       series: [{ name: 'Account Balance', data: [] }]
     
