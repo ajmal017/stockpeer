@@ -123,6 +123,9 @@ app.controller('BacktestCtrl', function ($scope, $http)
       });
       
     }); 
+    
+    // Track the event.
+    mixpanel.track('backtest-run', { platform: 'web' });    
   }  
   
   
