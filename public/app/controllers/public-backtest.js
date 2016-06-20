@@ -143,7 +143,7 @@ app.controller('BacktestCtrl', function ($scope, $http)
       
       tooltip: {
         headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '{point.x:%m/%d/%Y} : {point.y:,.1f}'
+        pointFormat: '{point.x:%m/%d/%Y} : {point.y:,.0f}'
       },      
           
       series: [{ name: 'Account Balance', data: [] }]
