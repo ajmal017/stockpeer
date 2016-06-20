@@ -510,40 +510,54 @@
 		  	<button type="submit" class="btn btn-primary span2 offset7" ng-click="run_backtest()">Run Backtest</button>
 			</div>
 		</form>				
-	</div>	
-		
-	<div class="row" ng-show="trades.length">
-		<table class="table table-bordered table-striped table-responsive trades-table">
-			<thead>
-				<tr>
-					<th>Open Date</th>
-					<th>Close Date</th>
-					<th>Lots</th>					
-					<th>Spread</th>	
-					<th>Expire</th>
-					<th>Stock Open</th>	
-					<th>Stock Close</th>										
-					<th>Stopped</th>									
-					<th>Profit</th>
-					<th>Balance</th>											
-				</tr>
-			</thead>
-			
-			<tbody>
-				<tr ng-repeat="row in trades track by $index">
-					<td ng-bind="row.BackTestTradesOpen | date:'M/d/yyyy'"></td>
-					<td ng-bind="row.BackTestTradesClose | date:'M/d/yyyy'"></td>
-          <td ng-bind="row.BackTestTradesLots"></td>
-					<td><span ng-bind="row.BackTestTradesLongLeg1 | number:0"></span> / <span ng-bind="row.BackTestTradesShortLeg1 | number:0"></span></td>	
-					<td ng-bind="row.BackTestTradesExpire1 | date:'M/d/yyyy'"></td>
-					<td>$<span ng-bind="row.BackTestTradesSymStart | number:2"></span></td>
-					<td>$<span ng-bind="row.BackTestTradesSymEnd | number:2"></span></td>					
-					<td ng-bind="row.BackTestTradesStopped"></td>				
-					<td ng-class="{ red: (row.BackTestTradesProfit < 0) }">$<span ng-bind="row.BackTestTradesProfit | number:2"></span></td>
-					<td>$<span ng-bind="row.BackTestTradesBalance | number:2"></span></td>											
-				</tr>					
-			</tbody>	
-		</table>
 	</div>
+	
+	
+  <div class="backtest-summary" ng-show="trades.length">
+  
+    <ul class="nav nav-pills">
+      <li ng-class="{ active: (backtest_summary_tab == 'performance') }"><a href="" ng-click="backtest_summary_click('performance')">Performance</a></li>
+      <li ng-class="{ active: (backtest_summary_tab == 'trades') }"><a href="" ng-click="backtest_summary_click('trades')">Trades</a></li>
+    </ul>  
+    	
+    <div class="row" ng-show="backtest_summary_tab == 'performance'">	
+      <div id="account_balance_chart" style="width: 1230px; height: 600px;"></div>	
+    </div>
+    
+    <div class="row" ng-show="backtest_summary_tab == 'trades'">
+      <table class="table table-bordered table-striped table-responsive trades-table">
+      	<thead>
+      		<tr>
+      			<th>Open Date</th>
+      			<th>Close Date</th>
+      			<th>Lots</th>					
+      			<th>Spread</th>	
+      			<th>Expire</th>
+      			<th>Stock Open</th>	
+      			<th>Stock Close</th>										
+      			<th>Stopped</th>									
+      			<th>Profit</th>
+      			<th>Balance</th>											
+      		</tr>
+      	</thead>
+      	
+      	<tbody>
+      		<tr ng-repeat="row in trades track by $index">
+      			<td ng-bind="row.BackTestTradesOpen | date:'M/d/yyyy'"></td>
+      			<td ng-bind="row.BackTestTradesClose | date:'M/d/yyyy'"></td>
+            <td ng-bind="row.BackTestTradesLots"></td>
+      			<td><span ng-bind="row.BackTestTradesLongLeg1 | number:0"></span> / <span ng-bind="row.BackTestTradesShortLeg1 | number:0"></span></td>	
+      			<td ng-bind="row.BackTestTradesExpire1 | date:'M/d/yyyy'"></td>
+      			<td>$<span ng-bind="row.BackTestTradesSymStart | number:2"></span></td>
+      			<td>$<span ng-bind="row.BackTestTradesSymEnd | number:2"></span></td>					
+      			<td ng-bind="row.BackTestTradesStopped"></td>				
+      			<td ng-class="{ red: (row.BackTestTradesProfit < 0) }">$<span ng-bind="row.BackTestTradesProfit | number:2"></span></td>
+      			<td>$<span ng-bind="row.BackTestTradesBalance | number:2"></span></td>											
+      		</tr>					
+      	</tbody>	
+      </table>
+    </div>
+	
+  </div>
 	
 </div>

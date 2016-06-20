@@ -9,6 +9,9 @@ app.controller('BacktestCtrl', function ($scope, $http)
   $scope.progress = 0;
   $scope.backtest_id = 0;
   $scope.backtest = {}
+  $scope.account_balance_chart = null;
+  $scope.backtest_summary_tab = 'performance';
+ 
   
   $scope.fields = {
     BackTestsType: 'Put Credit Spreads',
@@ -27,6 +30,12 @@ app.controller('BacktestCtrl', function ($scope, $http)
     BackTestsTradeSelect: 'lowest-credit',
     BackTestsSpreadWidth: '2'    
   }
+  
+  // Backtest performance clicks.
+  $scope.backtest_summary_click = function (tab)
+  {
+    $scope.backtest_summary_tab = tab;
+  } 
   
   // Back to summary
   $scope.back_to_summary = function ()
@@ -59,9 +68,13 @@ app.controller('BacktestCtrl', function ($scope, $http)
         
         // Show trades in the table.
         for(var i = 0; i < json.trades.length; i++)
-        {
+        {          
           $scope.trades.push(json.trades[i]);
+          $scope.account_balance_chart.series[0].addPoint([ new Date(json.trades[i].BackTestTradesClose).getTime(), parseFloat(json.trades[i].BackTestTradesBalance) ], false);
         }
+        
+        // Redraw chart
+        $scope.account_balance_chart.redraw();
       } else
       {
         $scope.progress = 95;
@@ -88,6 +101,7 @@ app.controller('BacktestCtrl', function ($scope, $http)
     $scope.started = true;
     $scope.progress = 0;
     $scope.trades = [];
+    $scope.set_backetst_charts();
     
     // Setup the backtest.
     $http.post('/backtests/setup_backtest', $scope.fields).success(function (json) {
@@ -99,8 +113,29 @@ app.controller('BacktestCtrl', function ($scope, $http)
         $scope.check_new_trades();
       });
       
-    });
-  
+    }); 
   }  
+  
+  
+  // Setup account balance chart.
+  $scope.set_backetst_charts = function ()
+  {
+    $scope.account_balance_chart = new Highcharts.Chart({
+        
+      chart: { renderTo: 'account_balance_chart' },
+        
+      title: { text: 'Account Performance', x: -20 },
+          
+      xAxis: { type: 'datetime' },
+          
+      yAxis: { title: { text: '' } },
+      
+      credits: {  enabled: false },
+          
+      series: [{ name: 'Account Balance', data: [] }]
+    
+    });
+  }
+  
 
 });

@@ -41,9 +41,15 @@
 	<script src="/assets/js/jquery-1.9.1.js"></script>
 	<script src="/assets/js/bootstrap.min.js"></script>	
 	<script src="/app/bower/angular/angular.min.js"></script>
+	<script src="/app/bower/highcharts/highcharts.js"></script>
+	
 	<script src="/app/controllers/public.js"></script>
 	<script src="/app/filters/date.js"></script>
 	<script src="/app/controllers/public-backtest.js"></script>
+	
+  <script src="/assets/js/bootstrap.js"></script>
+  <script src="/assets/js/tinynav.js"></script>
+  <script src="/assets/js/template.js"></script>	
 </head>
 <body ng-controller="SiteWideCtrl">
 
@@ -98,10 +104,6 @@
 	
 </div>
 
-<script src="/assets/js/jquery-1.9.1.js"></script>
-<script src="/assets/js/bootstrap.js"></script>
-<script src="/assets/js/tinynav.js"></script>
-<script src="/assets/js/template.js"></script>
 
 <?php if(App::environment('production')) : ?>
 <script src="//static.getclicky.com/js" type="text/javascript"></script>

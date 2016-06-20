@@ -37,6 +37,8 @@
 .backtest-summary-table tr .col-label { font-weight: bold; }
 .backtest-summary-share { margin-top: 20px; }
 
+.backtest-summary .nav { padding: 10px 0; }
+
 .mt-25 { margin-top: 25px !important; }
 .mt-30 { margin-top: 30px !important; }
 .mt-35 { margin-top: 35px !important; }
