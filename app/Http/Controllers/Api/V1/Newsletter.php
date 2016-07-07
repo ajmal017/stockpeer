@@ -19,7 +19,7 @@ class Newsletter extends \Cloudmanic\LaravelApi\Controller
 	{
 		// Add the IP address to the request.
 		Input::merge([ 'NewsletterIp' => Request::ip() ]);
-		
+				
 		return parent::create();
 	}
 }
