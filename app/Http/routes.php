@@ -18,20 +18,6 @@ use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 |
 */
 
-Route::get('sendy', function () {
-  
-  // Migrate newsletter users over to sendy.
-  $users = DB::table('Newsletter')->select('NewsletterEmail')->get();
-  
-  foreach($users AS $key => $row)
-  {
-    Sendy::subscribe([ 'email' => $row->NewsletterEmail ]);
-  }
-  
-  return 'done';
-  
-});
-
 /*
 Route::get('bt', function () {
   
