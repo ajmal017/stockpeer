@@ -27,7 +27,7 @@ type TimerSend struct {
 //
 // Get orders from Tradier
 //
-func (t *Timer) Do60Seconds(UsersId int, UsersTradierAccountId int, channel_websocket chan string) {
+func (t *Timer) Do60Seconds(UsersId int, UsersTradierAccountId string, channel_websocket chan string) {
   
    for {
       

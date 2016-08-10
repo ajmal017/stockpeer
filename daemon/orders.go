@@ -22,7 +22,7 @@ type OrdersSend struct {
 //
 // Get orders from Tradier
 //
-func (t *Orders) DoOrders(UsersId int, UsersTradierAccountId int, channel_websocket chan string) {
+func (t *Orders) DoOrders(UsersId int, UsersTradierAccountId string, channel_websocket chan string) {
   
   // Store the MD5 has of the last call.
   var md5_hash string
@@ -41,7 +41,7 @@ func (t *Orders) DoOrders(UsersId int, UsersTradierAccountId int, channel_websoc
     }
           
     // Create URL request.
-    url := fmt.Sprintf("https://api.tradier.com/v1/accounts/%d/orders", UsersTradierAccountId)
+    url := fmt.Sprintf("https://api.tradier.com/v1/accounts/%s/orders", UsersTradierAccountId)
     
     // Setup http client
     client := &http.Client{}    
