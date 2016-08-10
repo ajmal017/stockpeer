@@ -13,7 +13,7 @@ type UsersRow struct {
   UsersLast string
   UsersEmail string
   UsersWatchList string
-  UsersTradierAccountId int   
+  UsersTradierAccountId string   
 }
 
 // Positions Table
