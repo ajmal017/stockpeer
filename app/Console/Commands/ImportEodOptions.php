@@ -48,8 +48,11 @@ class ImportEodOptions extends Command
 
     $this->info('Ending Import'); 
     
-    // Log action as successful. 
-    file_get_contents('https://hchk.io/9c84b8b4-a043-4569-9957-966b3097ce4b');   
+    // Log action as successful. With healthchecks.io
+    if(env('HEALTHCHECKS_HOOK_IMPORTEODOPTIONS'))
+    {
+      file_get_contents(env('HEALTHCHECKS_HOOK_IMPORTEODOPTIONS'));   
+    }
 	}
 	
 	//
