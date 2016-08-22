@@ -46,8 +46,10 @@ class ImportEodOptions extends Command
     // FTP to deltaneutral.com and get the data we do not already have.
     $this->download_data();
 
- 
-    $this->info('Ending Import');    
+    $this->info('Ending Import'); 
+    
+    // Log action as successful. 
+    file_get_contents('https://hchk.io/9c84b8b4-a043-4569-9957-966b3097ce4b');   
 	}
 	
 	//
