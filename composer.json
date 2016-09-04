@@ -3,7 +3,7 @@
 	"description": "Stockpeer.com",
 	
 	"require": {
-		"laravel/framework": "5.0.*",
+		"laravel/framework": "5.1.*",
 		"cloudmanic/robinhood": "dev-master",
 		"cloudmanic/laravel-api-controller": "2.0.*@dev",
 		"cloudmanic/cloudmanic-cms": "dev-master",
