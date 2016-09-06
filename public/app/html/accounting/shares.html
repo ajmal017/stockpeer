@@ -36,7 +36,8 @@
 
               <td>${{ row.SharesPrice | number:2 }}</td>
 
-              <td>${{ (row.SharesPrice / row.SharesCount) | number:2 }}</td>
+              <td ng-if="row.SharesCount != 0">${{ (row.SharesPrice / row.SharesCount) | number:2 }}</td>
+              <td ng-if="row.SharesCount == 0">---</td>
 
               <td>{{ row.SharesNote }}</td>
               
