@@ -47,8 +47,7 @@ class Assets extends \Cloudmanic\LaravelApi\Model
     
     // Tell websockets this happened
     $data = $this->get_by_id($id);
-    $data['UsersId'] = Me::get_account_id();
-    Queue::pushOn('stockpeer.com.websocket', 'Assets:update', $data);
+    Queue::pushOn('stockpeer.com.websocket', 'Assets:update', [ 'UsersId' => (string) Me::get_account_id(), 'Payload' => $data ]);
     
     return $rt;      
   }

@@ -1,11 +1,11 @@
 <?php
 
 use Dropbox\Client;
+use Cloudmanic\LaravelApi\Me;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Ftp;
 use League\Flysystem\Dropbox\DropboxAdapter;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
-
 
 /*
 |--------------------------------------------------------------------------
