@@ -58,6 +58,18 @@ return [
 			'strict'    => false,
 		],
 
+		'craft' => [
+			'driver'    => 'mysql',
+			'host'      => env('DB_HOST_CRAFT', 'localhost'),
+			'database'  => env('DB_DATABASE_CRAFT', 'forge'),
+			'username'  => env('DB_USERNAME_CRAFT', 'forge'),
+			'password'  => env('DB_PASSWORD_CRAFT', ''),
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+			'strict'    => false,
+		],
+
 	],
 
 	/*
