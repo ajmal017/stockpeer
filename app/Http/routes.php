@@ -1,5 +1,6 @@
 <?php
 
+use Cloudmanic\Craft2Laravel\Craft2Laravel;
 use Dropbox\Client;
 use Cloudmanic\LaravelApi\Me;
 use League\Flysystem\Filesystem;
@@ -7,75 +8,17 @@ use League\Flysystem\Adapter\Ftp;
 use League\Flysystem\Dropbox\DropboxAdapter;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
+
 Route::get('craft', function () {
 
-  
-
-
-  
 /*
-  $content = DB::connection('craft')
-                ->table('craft_entries')
-                ->select('craft_content.*', 'craft_elements.enabled', 'craft_users.username', 'craft_users.firstName', 'craft_users.lastName', 'craft_elements.id AS element_id')
-                ->join('craft_content', 'craft_entries.id', '=', 'craft_content.id')
-                ->join('craft_entrytypes', 'craft_entries.typeId', '=', 'craft_entrytypes.id')
-                ->join('craft_elements', 'craft_content.elementId', '=', 'craft_elements.id')                
-                ->join('craft_users', 'craft_entries.authorId', '=', 'craft_users.id')  
-                ->where('craft_entrytypes.handle', 'blog')
-                ->get();
+	$craft2laravel = new Craft2Laravel('craft');
+	
+	$data = $craft2laravel->get_entries('blog');
   
-  // Add in relation data.
-  foreach($content AS $key => $row)
-  {
-    $relations = DB::connection('craft')
-                  ->table('craft_relations')
-                  ->select('craft_assetfiles.*', 'craft_assetfolders.name AS assetfolders_name', 'craft_assetfolders.path AS assetfolders_path', 
-                            'craft_assetsources.settings AS craft_assetsources_settings', 'craft_fields.name AS craft_fields_name', 'craft_fields.handle AS craft_fields_handle')
-                  ->join('craft_fields', 'craft_relations.fieldId', '=', 'craft_fields.id')
-                  ->join('craft_assetfiles', 'craft_relations.targetId', '=', 'craft_assetfiles.id')
-                  ->join('craft_assetfolders', 'craft_assetfiles.folderId', '=', 'craft_assetfolders.id') 
-                  ->join('craft_assetsources', 'craft_assetfolders.sourceId', '=', 'craft_assetsources.id')                                    
-                  ->where('craft_relations.sourceId', $row->element_id)
-                  ->get();
-        
-    // Loop through relations and do some processing and merry relationship to a field. 
-    foreach($relations AS $key2 => $row2)
-    {
-      if(isset($relations[$key2]->craft_assetsources_settings) && (! empty($relations[$key2]->craft_assetsources_settings)))
-      {
-        $relations[$key2]->craft_assetsources_settings = json_decode($relations[$key2]->craft_assetsources_settings);
-      
-        // Build full url.
-        $relations[$key2]->url = $relations[$key2]->craft_assetsources_settings->urlPrefix . $relations[$key2]->craft_assetsources_settings->subfolder . $row2->filename;
-      }
-    
-      // Merry the relationship to a field.
-      if(! isset($content[$key]->{'field_' . $relations[$key2]->craft_fields_handle}))
-      {
-        $content[$key]->{'field_' . $relations[$key2]->craft_fields_handle} = [];
-      }
-      
-      $content[$key]->{'field_' . $relations[$key2]->craft_fields_handle}[] = $relations[$key2];
-    } 
-  }
-  
-  foreach($content AS $key => $row)
-  {
-    echo $row->field_blogCloudCmsBlogId . '<br >';
-    
-    $old = DB::table('Blog')->where('BlogId', $row->field_blogCloudCmsBlogId)->first();
-
-    $image = DB::table('CMS_Media')->where('CMS_MediaId', $old->BlogImage)->first();
-    
-    DB::connection('craft')->table('craft_content')->where('field_blogCloudCmsBlogId', $row->field_blogCloudCmsBlogId)->update([
-      'field_blogBody' => $old->BlogBody, 
-      'field_blogSummary' => $old->BlogSummary,
-      'field_blogCloudCmsImageUrl' => ($image) ? 'https://dukitbr4wfrx2.cloudfront.net/blog/' . $image->CMS_MediaFile : '' 
-    ]);
-  }
+  echo '<pre>' . print_r($data, TRUE) . '</pre>';
 */
-  
-  
+
   
   return 'done';
 });

@@ -6,6 +6,7 @@ use DB;
 use View;
 use Config;
 use Response;
+use Cloudmanic\Craft2Laravel\Craft2Laravel;
 
 class BlogController extends Controller 
 {
@@ -29,11 +30,9 @@ class BlogController extends Controller
 	//
 	public function index()
 	{
-		$posts = DB::table('Blog')
-							->where('BlogStatus', 'Active')
-							->orderBy('BlogDate', 'desc')
-							->orderBy('BlogId', 'desc')							
-							->get();
+		// Get entries from craft
+		$craft2laravel = new Craft2Laravel('craft');
+		$posts = $craft2laravel->get_entries('blog');		
 							
 		$this->_data['posts'] = $posts;
 							
