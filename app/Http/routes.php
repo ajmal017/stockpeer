@@ -376,6 +376,7 @@ Route::group([ 'middleware' => 'force.ssl' ], function() {
 	// /blog
 	Route::get('blog', 'BlogController@index');	
 	Route::get('blog/rss', 'BlogController@rss');
+	Route::get('blog/{slug}', 'BlogController@single_slug');
 	Route::get('blog/{id}/{slug}', 'BlogController@single');		
 	
   // backtests

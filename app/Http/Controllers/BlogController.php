@@ -38,12 +38,38 @@ class BlogController extends Controller
 							
 		return View::make('template.main', $this->_data)->nest('body', 'blog.index', $this->_data);
 	}
+
+	//
+	// Single post page. - Slug
+	//
+	public function single_slug($slug)
+	{
+		// Get entries from craft
+		$craft2laravel = new Craft2Laravel('craft');
+		$post = $craft2laravel->get_entry_by_slug('blog', $slug);	
+	
+		$this->_data['post'] = $post;	
+		
+		// Setup header.
+/*
+		$this->_data['header']['image'] = Config::get('site.aws_url') . $post->CMS_MediaPath . $post->CMS_MediaFile;	
+		$this->_data['header']['thumb'] = Config::get('site.aws_url') . $post->CMS_MediaPathThumb . $post->CMS_MediaFileThumb;	
+*/
+
+		$this->_data['header']['title'] = $post->title;	
+		$this->_data['header']['description'] = $post->field_blogDescription;		
+							
+		return View::make('template.main', $this->_data)->nest('body', 'blog.single', $this->_data);	
+	}
 	
 	//
-	// Single post page.
+	// Single post page. - Id and Slug
 	//
 	public function single($id, $slug)
 	{
+		
+
+/*
 		$post = DB::table('Blog')
 							->leftJoin('CMS_Media', 'CMS_MediaId', '=', 'BlogImage')
 							->where('BlogId', $id)
@@ -59,6 +85,7 @@ class BlogController extends Controller
 		$this->_data['header']['description'] = $post->BlogDescription;		
 							
 		return View::make('template.main', $this->_data)->nest('body', 'blog.single', $this->_data);
+*/
 	}
 	
 	//
