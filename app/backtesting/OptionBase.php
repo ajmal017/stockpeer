@@ -765,11 +765,8 @@ class OptionBase
             'BackTestTradesExpire1' => $row['option']['expire'],                        
             'BackTestTradesOpen' => $row['open_date'],
             'BackTestTradesClose' => $this->current_quote['date'],                       
-
             'BackTestTradesOpenCost' => $row['cost'],
-            
             'BackTestTradesCloseCost' => $close_price,            
-
             'BackTestTradesProfit' => $profit,
             'BackTestTradesBalance' => $this->cash,         
             'reserved_cash' => $this->reserved_cash       
@@ -790,10 +787,10 @@ class OptionBase
         {
           // Figure out close price.
           if(is_null($close_price))
-          {
+          {	          
             $buy_leg = $this->current_quote[$row['type']][$row['buy_leg']['expire']][$row['buy_leg']['strike']];
-            $sell_leg = $this->current_quote[$row['type']][$row['sell_leg']['expire']][$row['sell_leg']['strike']];
-            $close_price = $sell_leg['ask'] - $buy_leg['bid'];
+						$sell_leg = $this->current_quote[$row['type']][$row['sell_leg']['expire']][$row['sell_leg']['strike']];
+						$close_price = $sell_leg['ask'] - $buy_leg['bid'];
           }
           
           // Figure out profit.
@@ -829,7 +826,7 @@ class OptionBase
             'BackTestTradesProfit' => $profit,
             'BackTestTradesBalance' => $this->cash,
             'BackTestTradesShortDeltaStart1' => $row['open_short_delta1'],
-            'BackTestTradesShortDeltaEnd1' => $this->current_quote[$row['type']][$row['sell_leg']['expire']][$row['sell_leg']['strike']]['delta'],          
+            'BackTestTradesShortDeltaEnd1' => 0, // TODO: Fix. //($this->current_quote[$row['type']][$row['sell_leg']['expire']][$row['sell_leg']['strike']]['delta'],          
             'reserved_cash' => $this->reserved_cash       
           ];
           

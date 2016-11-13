@@ -7,6 +7,7 @@ use Auth;
 use Crypt;
 use Coinbase;
 use Carbon\Carbon;
+use App\Library\Helper;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -32,8 +33,26 @@ class Random extends Command
   //
 	public function fire()
 	{
+/*
     $this->info('Starting Random');
     
+    $r = DB::select('SELECT OptionsEodId, OptionsEodExpiration FROM OptionsEod WHERE WEEKDAY(OptionsEodExpiration) = 5');
+    
+    foreach($r AS $key => $row)
+    {
+	    echo $row->OptionsEodId . "\n";
+	    
+	    // Move back a day.
+	    echo $row->OptionsEodExpiration . "\n";
+	    $new_date = date('Y-m-d', strtotime($row->OptionsEodExpiration . ' -1 day'));
+	    
+	    echo $new_date . "\n";
+	    
+	    //DB::table('OptionsEod')->where('OptionsEodId', $row->OptionsEodId)->update([ 'OptionsEodExpiration' => $new_date ]);
+    }
+    
+*/
+/*
     Auth::loginUsingId(1);
     
     $bt = App::make('App\Backtesting\OptionDirectional');
@@ -82,7 +101,9 @@ class Random extends Command
       		'max_days_to_expire' => $backtest->BackTestsMaxDaysExpire,
       		'min_days_to_expire' => $backtest->BackTestsMinDaysExpire
         ]
-*/		
+*/
+
+/*		
         
       ]
     ]); 
@@ -103,6 +124,7 @@ class Random extends Command
     echo '<pre>' . print_r($bt->positions, TRUE) . '</pre>';
     
     echo '<pre>' . print_r($profit, TRUE) . '</pre>';
+*/
 	}
 	
   //
