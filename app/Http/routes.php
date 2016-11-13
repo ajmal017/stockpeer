@@ -1,84 +1,12 @@
 <?php
 
+use Cloudmanic\Craft2Laravel\Craft2Laravel;
 use Dropbox\Client;
 use Cloudmanic\LaravelApi\Me;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Ftp;
 use League\Flysystem\Dropbox\DropboxAdapter;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
-
-Route::get('craft', function () {
-
-  
-
-
-  
-/*
-  $content = DB::connection('craft')
-                ->table('craft_entries')
-                ->select('craft_content.*', 'craft_elements.enabled', 'craft_users.username', 'craft_users.firstName', 'craft_users.lastName', 'craft_elements.id AS element_id')
-                ->join('craft_content', 'craft_entries.id', '=', 'craft_content.id')
-                ->join('craft_entrytypes', 'craft_entries.typeId', '=', 'craft_entrytypes.id')
-                ->join('craft_elements', 'craft_content.elementId', '=', 'craft_elements.id')                
-                ->join('craft_users', 'craft_entries.authorId', '=', 'craft_users.id')  
-                ->where('craft_entrytypes.handle', 'blog')
-                ->get();
-  
-  // Add in relation data.
-  foreach($content AS $key => $row)
-  {
-    $relations = DB::connection('craft')
-                  ->table('craft_relations')
-                  ->select('craft_assetfiles.*', 'craft_assetfolders.name AS assetfolders_name', 'craft_assetfolders.path AS assetfolders_path', 
-                            'craft_assetsources.settings AS craft_assetsources_settings', 'craft_fields.name AS craft_fields_name', 'craft_fields.handle AS craft_fields_handle')
-                  ->join('craft_fields', 'craft_relations.fieldId', '=', 'craft_fields.id')
-                  ->join('craft_assetfiles', 'craft_relations.targetId', '=', 'craft_assetfiles.id')
-                  ->join('craft_assetfolders', 'craft_assetfiles.folderId', '=', 'craft_assetfolders.id') 
-                  ->join('craft_assetsources', 'craft_assetfolders.sourceId', '=', 'craft_assetsources.id')                                    
-                  ->where('craft_relations.sourceId', $row->element_id)
-                  ->get();
-        
-    // Loop through relations and do some processing and merry relationship to a field. 
-    foreach($relations AS $key2 => $row2)
-    {
-      if(isset($relations[$key2]->craft_assetsources_settings) && (! empty($relations[$key2]->craft_assetsources_settings)))
-      {
-        $relations[$key2]->craft_assetsources_settings = json_decode($relations[$key2]->craft_assetsources_settings);
-      
-        // Build full url.
-        $relations[$key2]->url = $relations[$key2]->craft_assetsources_settings->urlPrefix . $relations[$key2]->craft_assetsources_settings->subfolder . $row2->filename;
-      }
-    
-      // Merry the relationship to a field.
-      if(! isset($content[$key]->{'field_' . $relations[$key2]->craft_fields_handle}))
-      {
-        $content[$key]->{'field_' . $relations[$key2]->craft_fields_handle} = [];
-      }
-      
-      $content[$key]->{'field_' . $relations[$key2]->craft_fields_handle}[] = $relations[$key2];
-    } 
-  }
-  
-  foreach($content AS $key => $row)
-  {
-    echo $row->field_blogCloudCmsBlogId . '<br >';
-    
-    $old = DB::table('Blog')->where('BlogId', $row->field_blogCloudCmsBlogId)->first();
-
-    $image = DB::table('CMS_Media')->where('CMS_MediaId', $old->BlogImage)->first();
-    
-    DB::connection('craft')->table('craft_content')->where('field_blogCloudCmsBlogId', $row->field_blogCloudCmsBlogId)->update([
-      'field_blogBody' => $old->BlogBody, 
-      'field_blogSummary' => $old->BlogSummary,
-      'field_blogCloudCmsImageUrl' => ($image) ? 'https://dukitbr4wfrx2.cloudfront.net/blog/' . $image->CMS_MediaFile : '' 
-    ]);
-  }
-*/
-  
-  
-  
-  return 'done';
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -90,195 +18,6 @@ Route::get('craft', function () {
 | and give it the controller to call when that URI is requested.
 |
 */
-
-/*
-Route::get('bt', function () {
-  
-  $bt = new App\Backtesting\PutCreditSpreads;
-  
-  $symbol = (Input::get('symbol')) ? Input::get('symbol') : 'spy';
-  $start = (Input::get('start')) ? Input::get('start') : '2011-01-01';
-  $end = (Input::get('end')) ? Input::get('end') : '2015-12-31';
-  
-  $bt->run([
-    'symbol' => $symbol,
-    'cash' => 10000,
-    'start_date' => $start,
-    'end_date' => $end,
-    'signals' => [
-      
-      'buy' => [
-  			'symbol' => 'spy',
-				'type' => 'precent-away',
-				'value' => 4,
-				'action' => 'credit-spread',
-				'spread_width' => 2,
-				'min_credit' => 0.18,	
-				'max_days_to_expire' => 45,
-				'min_days_to_expire' => 0
-		  ]		
-		  
-    ]
-  ]);
-  
-  return $bt->return_html();
-  
-});
-
-
-Route::get('boxspreads-show', function () {
-  
-  $log_file = storage_path('logs/boxspreads.json');
-  
-  if(file_exists($log_file))
-  {
-    $log = json_decode(file_get_contents($log_file), true);
-  } else
-  {    
-    $log = [];
-  }  
-  
-  echo "<table width=\"70%\">";
-  
-  echo "<tr>
-    <th>Timestamp</th>
-    <th>Trade</th>
-    <th>Last</th>
-    <th>Width</th>
-    <th>Cost</th>
-    <th>Diff</th>
-    <th>Box</th>            
-  </tr>";
-  
-  foreach($log AS $key => $row)
-  {
-    $yes_no = ($row['Diff'] > 0) ? 'Yes' : 'No';
-    
-    if($yes_no == 'No')
-    {
-      continue;
-    }
-    
-    $color = ($yes_no == 'Yes') ? ' color: green; ' : '';
-    
-    echo "<tr>
-      <td style=\"text-align: center;" . $color . "\">" . $row['Timestamp'] . "</td>
-      <td style=\"text-align: center;" . $color . "\">" . $row['Trade'] . "</td>
-      <td style=\"text-align: center;" . $color . "\">" . $row['Last'] . "</td>
-      <td style=\"text-align: center;" . $color . "\">" . $row['Width'] . "</td>
-      <td style=\"text-align: center;" . $color . "\">" . $row['Cost'] . "</td>
-      <td style=\"text-align: center;" . $color . "\">" . $row['Diff'] . "</td>
-      <td style=\"text-align: center;" . $color . "\">" . $yes_no . "</td>             
-    </tr>";    
-  }
-  
-  echo "</table>";
-  
-  return '';
-});
-*/
-
-Route::get('tradier', function () {
-
-
-/*
-    // Stock example
-    $order = [
-      'class' => 'equity',
-      'symbol' => 'AAPL',
-      'duration' => 'day',
-      'side' => 'buy',
-      'quantity' => '100',
-      'type' => 'limit',
-      'preview' => 'true',
-      'price' => '80.00'
-    ];
-*/
-    
-/*
-    // Credit spread example.
-    $order = [
-      'class' => 'multileg',
-      'symbol' => 'SPY',
-      'duration' => 'day',
-      'side' => 'buy',
-      'type' => 'credit',
-      'preview' => 'false',
-      'price' => '0.50',
-      'side' => [
-        'buy_to_open',
-        'sell_to_open'
-      ],
-      'option_symbol' => [
-        'SPY150717P00193000',
-        'SPY150717P00195000'
-      ],
-      'quantity' => [ '2', '2' ]
-    ];
-*/      	
-
-  $t = [];
-    
-  $tradier = App::make('App\Library\Tradier');
-  $tradier->set_token(Crypt::decrypt(Auth::user()->UsersTradierToken));
-  //$tradier->set_sandbox();
-  
-  //$data = $tradier->get_quotes([ 'xlf', 'spy' ]);
-  //$data = $tradier->get_timesales('spy', '1min', null, null, 'all');
-  //$data1 = $tradier->get_timesales('ivv', '1min', null, null, 'all');   
-  //$data = $tradier->get_historical_pricing('spy', 'monthly', null, null);
-  //$data = $tradier->get_option_chain('spy', '2015-06-12');
-  //$data = $tradier->get_user_balances();
-  //$data = $tradier->get_streaming_session();
-  //$data = $tradier->get_intraday_status();
-  //$data = $tradier->get_option_expiration_dates('spy');
-  //$data = $tradier->get_option_strike_prices('spy', '2015-06-19');
-  //$data = $tradier->get_account_positions(Auth::user()->UsersTradierAccountId);
-  //$data = $tradier->get_account_positions(Auth::user()->UsersTradierAccountId, true);  
-  //$data = $tradier->get_account_orders(Auth::user()->UsersTradierAccountId);
-  //$data = $tradier->get_account_orders(Auth::user()->UsersTradierAccountId, true);
-  //$data = $tradier->get_account_order(Auth::user()->UsersTradierAccountId, 44016);
-  //$data = $tradier->get_account_history(Auth::user()->UsersTradierAccountId);
-  //$data = $tradier->get_account_balances(Auth::user()->UsersTradierAccountId); 
-  //$data = $tradier->get_account_positions_group_by_type(Auth::user()->UsersTradierAccountId);
-  //$data = $tradier->place_order(Auth::user()->UsersTradierAccountId, $order);   
-
-
-  //echo '<pre>' . print_r($data, TRUE) . '</pre>';
-
-  //Cloudmanic\LaravelApi\Me::set_account([ 'AccountsId' => 1 ]);
-
-
-/*
-  //echo $tradier->get_last_error();
-  
-  foreach($data AS $key => $row)
-  {
-    $t[$row['time']] = [ $row['time'], $row['close'], $data1[$key]['close'] ];
-  }
-
-download_send_headers("data_export_" . date("Y-m-d") . ".csv");
-echo array2csv($t);
-die();
-
-  echo '<pre>' . print_r($t, TRUE) . '</pre>';
-*/
-  
-  
-  
-/*
-  echo '<pre>' . print_r($syms, TRUE) . '</pre>';
-  
-  $quotes = $tradier->get_quotes($syms);
-  
-  echo '<pre>' . print_r($quotes, TRUE) . '</pre>';
-  
-  
-  echo '<pre>' . print_r($data, TRUE) . '</pre>';
-*/
-  
-  return 'success';
-});
 
 // API V1 (NO Authed)
 Route::group([ 'prefix' => 'api/v1', 'middleware' => [ 'force.ssl' ] ], function() {
@@ -433,6 +172,7 @@ Route::group([ 'middleware' => 'force.ssl' ], function() {
 	// /blog
 	Route::get('blog', 'BlogController@index');	
 	Route::get('blog/rss', 'BlogController@rss');
+	Route::get('blog/{slug}', 'BlogController@single_slug');
 	Route::get('blog/{id}/{slug}', 'BlogController@single');		
 	
   // backtests
@@ -460,6 +200,6 @@ Route::post('v1/pushPackages/web.cloudmanic.stockpeer', 'AppleController@push_pa
 Route::post('v1/devices/{device}/registrations/web.cloudmanic.stockpeer', 'AppleController@store_device');
 
 // Random routes
-Route::get('random/bt_cl', 'RandomController@bt_cl');
+//Route::get('random/bt_cl', 'RandomController@bt_cl');
   
 /* End File */

@@ -1,8 +1,8 @@
 <div class="offset1 span10 zone-content">
 	<div class="blog-posts cont">
-		<div class="published"><?=date('F j, Y', strtotime($post->BlogDate))?></div> 
-		<h1><?=$post->BlogTitle?></h1>
-		<p><?=App\Library\Parse::instance()->run($post->BlogBody)?></p>
+		<div class="published"><?=date('F j, Y', strtotime($post->postDate))?></div> 
+		<h1><?=$post->title?></h1>
+		<p><?=App\Library\Parse::instance()->run($post->field_blogBody)?></p>
 				<div class="social-share well">
 			<p>Help support this blog, please share.</p>
 			<ul class="clearfix">
@@ -50,7 +50,7 @@
  
  <script type="text/javascript">
  	var disqus_shortname = 'stockpeer';
- 	var disqus_identifier = '<?=$post->BlogId?>';
+ 	var disqus_identifier = '<?=($post->field_blogCloudCmsBlogId > 0) ? $post->field_blogCloudCmsBlogId : $post->id?>';
  	
  	(function() {
  	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

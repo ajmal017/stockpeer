@@ -4,17 +4,17 @@
 		<title><?=$header['title']?></title>
 		<link><?=URL::to('blog')?></link>
 		<atom:link href="<?=URL::to('blog/rss')?>" rel="self" type="application/rss+xml" />
-		<description><?=$header['title']?></description>
-		<copyright><?=URL::to('description')?></copyright>
+		<description><?=$header['description']?></description>
+		<copyright>Cloudmanic Labs, LLC</copyright>
 		<ttl>30</ttl>
 
 		<?php foreach($posts AS $key => $row) : ?>
 			<item>
-				<title><?=$row->BlogTitle?></title>
-				<description><?=htmlspecialchars($row->BlogSummary)?></description>
-				<link><?=URL::to('blog/' . $row->BlogId . '/' . str_slug($row->BlogTitle))?></link>
-				<guid isPermaLink="true"><?=URL::to('blog/' . $row->BlogId . '/' . str_slug($row->BlogTitle))?></guid>
-				<pubDate><?=date('D, d M y H:i:s O', strtotime($row->BlogDate))?></pubDate>
+				<title><?=$row->title?></title>
+				<description><?=htmlspecialchars(App\Library\Parse::instance()->run($row->field_blogSummary))?></description>
+				<link><?=URL::to('blog/' . $row->slug)?></link>
+				<guid isPermaLink="true"><?=URL::to('blog/' . $row->slug)?></guid>
+				<pubDate><?=date('D, d M y H:i:s O', strtotime($row->postDate))?></pubDate>
 			</item>
 		<?php endforeach; ?>
 	</channel>
