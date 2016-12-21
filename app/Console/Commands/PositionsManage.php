@@ -70,7 +70,7 @@ class PositionsManage extends Command
       
       // Get positions
       if($data = $this->_tradier->get_account_positions(Auth::user()->UsersTradierAccountId, true))
-      {
+      {	      
         // Log positions
         $this->_add_update_positions($data, $user);
         
