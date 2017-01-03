@@ -9,6 +9,7 @@ app.controller('TradesCtrl', function ($scope, $http)
   $scope.pl_2014 = '';
   $scope.pl_2015 = '';  
   $scope.pl_2016 = ''; 
+  $scope.pl_2017 = '';
   
   // Catch Websocket event - Trades:insert
   $scope.$on('Trades:insert', function (event, args) {
@@ -85,7 +86,11 @@ app.controller('TradesCtrl', function ($scope, $http)
  
     $http.get('/api/v1/trades/pl_by_year/2016').success(function (json) {
       $scope.pl_2016 = json.data.p_l_df;
-    });          
+    });
+    
+    $http.get('/api/v1/trades/pl_by_year/2017').success(function (json) {
+      $scope.pl_2017 = json.data.p_l_df;
+    });              
   }
   
   $scope.refresh_trades(); 
