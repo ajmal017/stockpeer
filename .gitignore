@@ -2,6 +2,7 @@
 /bootstrap/compiled.php
 /vendor
 /apple
+/node_modules
 composer.phar
 .env.*.php
 .env.php
