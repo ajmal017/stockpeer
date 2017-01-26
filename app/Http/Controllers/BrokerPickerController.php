@@ -15,10 +15,10 @@ class BrokerPickerController extends Controller
 		'eOptions' => [ 'ticket_charge' => 3.00, 'per_option' => 0.15, 'per_leg' => true, 'url' => 'http://eoption.com?utm_campaign=stockpeer.com' ],
 		'just2trade' => [ 'ticket_charge' => 2.50, 'per_option' => 0.50, 'per_leg' => true, 'url' => 'http://just2trade.com?utm_campaign=stockpeer.com' ],
 		'Ameritrade' => [ 'ticket_charge' => 9.99, 'per_option' => 0.75, 'per_leg' => false, 'url' => 'http://tdameritrade.com?utm_campaign=stockpeer.com' ],	
-		'Dough (Ameritrade)' => [ 'ticket_charge' => 0.00, 'per_option' => 1.50, 'per_leg' => false, 'url' => 'http://dough.com?utm_campaign=stockpeer.com' ],	
+		'Tastyworks *' => [ 'ticket_charge' => 0.00, 'per_option' => 0.50, 'per_leg' => false, 'url' => 'https://www.tastyworks.com?utm_campaign=stockpeer.com' ],		
 		'Interactive Brokers' => [ 'ticket_charge' => 0.00, 'per_option' => 0.70, 'per_leg' => false, 'url' => 'https://www.interactivebrokers.com?utm_campaign=stockpeer.com' ],
 		'Options House' => [ 'ticket_charge' => 4.95, 'per_option' => 0.50, 'per_leg' => false, 'url' => 'https://optionshouse.com?utm_campaign=stockpeer.com' ],
-		'Tradier Brokerage' => [ 'ticket_charge' => 0.00, 'per_option' => 0.35, 'per_leg' => false, 'min_reg' => 5.00, 'min_leg' => 7.00, 'url' => 'https://brokerage.tradier.com' ],									
+		'Tradier Brokerage **' => [ 'ticket_charge' => 0.00, 'per_option' => 0.35, 'per_leg' => false, 'min_reg' => 5.00, 'min_leg' => 7.00, 'url' => 'https://brokerage.tradier.com' ],									
 	];	
 	
 	//
@@ -101,7 +101,7 @@ class BrokerPickerController extends Controller
 			}
 			
 			// Special case: Tradier Brokerage
-			if($key == 'Tradier Brokerage')
+			if($key == 'Tradier Brokerage **')
 			{	
   			if(($price_index[$key] < 5) && ($legs == 1))
   			{

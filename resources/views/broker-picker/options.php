@@ -66,7 +66,10 @@
 				<?php endforeach; ?>					
 			</tbody>	
 		</table>
-		<p style="font-size: 12px;">* Tradier Brokerage has a minimum charge of $5 per single legs and $7 for multi legs.</p>
+		<p style="font-size: 12px;">
+      * Tastyworks does not charge for closing trades. We assume you close your trade so we show their commission at $0.50 instead of $1.00 for a fair comparable. <br />
+      ** Tradier Brokerage has a minimum charge of $5 per single legs and $7 for multi legs.
+		</p>		
 	</div>
 	<?php endif; ?>
 	
