@@ -57,6 +57,7 @@ class Orders extends \Cloudmanic\LaravelApi\Model
           $status = 'Open';
         break;
         
+        case 'partially_filled':
         case 'partial_filled':
           $status = 'Partial';
         break;
