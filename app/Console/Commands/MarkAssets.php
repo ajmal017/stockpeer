@@ -57,8 +57,8 @@ class MarkAssets extends Command
         case 'Coinbase':
           $this->_process_coinbase($row);
         break;                
-      }
 */  
+      }
     
       // Logout
       Auth::logout();
