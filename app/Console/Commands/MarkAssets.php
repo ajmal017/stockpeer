@@ -51,12 +51,15 @@ class MarkAssets extends Command
           $this->_process_robinhood($row);
         break;
 */
+
+/*
         
         case 'Coinbase':
           $this->_process_coinbase($row);
         break;                
       }
-      
+*/  
+    
       // Logout
       Auth::logout();
     }
