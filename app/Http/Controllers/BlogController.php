@@ -31,6 +31,8 @@ class BlogController extends Controller
 	//
 	public function index()
 	{
+    return redirect('https://options.cafe/blog', 301);
+/*
 		// Get entries from craft
 		$craft2laravel = new Craft2Laravel('craft');
 		$posts = $craft2laravel->get_entries('blog');		
@@ -38,6 +40,7 @@ class BlogController extends Controller
 		$this->_data['posts'] = $posts;	
 							
 		return View::make('template.main', $this->_data)->nest('body', 'blog.index', $this->_data);
+*/
 	}
 
 	//
@@ -45,6 +48,9 @@ class BlogController extends Controller
 	//
 	public function single_slug($slug)
 	{
+    return redirect('https://options.cafe/blog/' . $slug, 301);
+
+/*
 		// Get entries from craft
 		$craft2laravel = new Craft2Laravel('craft');
 		$post = $craft2laravel->get_entry_by_slug('blog', $slug);	
@@ -66,7 +72,8 @@ class BlogController extends Controller
 		$this->_data['header']['title'] = $post->title;	
 		$this->_data['header']['description'] = $post->field_blogDescription;		
 							
-		return View::make('template.main', $this->_data)->nest('body', 'blog.single', $this->_data);	
+		return View::make('template.main', $this->_data)->nest('body', 'blog.single', $this->_data);
+*/	
 	}
 	
 	//

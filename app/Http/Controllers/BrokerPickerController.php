@@ -39,6 +39,8 @@ class BrokerPickerController extends Controller
 	//
 	public function options()
 	{
+    return redirect('https://options.cafe/options-broker-finder', 301);
+/*
 		if(Input::get('strategy'))
 		{
 			$this->_data['brokers'] = $this->_order_brokers();
@@ -47,7 +49,8 @@ class BrokerPickerController extends Controller
 			$this->_data['brokers'] = [];
 		}
 			
-		return View::make('template.main', $this->_data)->nest('body', 'broker-picker.options', $this->_data);	
+		return View::make('template.main', $this->_data)->nest('body', 'broker-picker.options', $this->_data);
+*/	
 	}
 	
 	// -------------------- Private Helper Functions -------------------- //
