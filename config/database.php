@@ -57,7 +57,7 @@ return [
 			'prefix'    => '',
 			'strict'    => false,
 		],
-
+/*
 		'craft' => [
 			'driver'    => 'mysql',
 			'host'      => env('DB_HOST_CRAFT', 'localhost'),
@@ -69,7 +69,7 @@ return [
 			'prefix'    => '',
 			'strict'    => false,
 		],
-
+*/
 	],
 
 	/*

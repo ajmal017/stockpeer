@@ -31,7 +31,7 @@ class BlogController extends Controller
 	//
 	public function index()
 	{
-    return redirect('https://options.cafe/blog', 301);
+    return redirect('https://options.cafe', 301);
 /*
 		// Get entries from craft
 		$craft2laravel = new Craft2Laravel('craft');
@@ -81,6 +81,7 @@ class BlogController extends Controller
 	//
 	public function single($id, $slug)
 	{
+    return redirect('https://options.cafe/blog', 301);
 		return $this->single_slug($slug);
 	}
 	
@@ -89,6 +90,8 @@ class BlogController extends Controller
 	//
 	public function rss()
 	{
+    return redirect('https://options.cafe/blog/rss', 301);
+
 		// Get entries from craft
 		$craft2laravel = new Craft2Laravel('craft');
 		$posts = $craft2laravel->get_entries('blog');		
