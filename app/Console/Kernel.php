@@ -52,10 +52,10 @@ class Kernel extends ConsoleKernel
     $schedule->command('stockpeer:cacheprime')->dailyAt('15:15');
     $schedule->command('stockpeer:cacheprime')->dailyAt('3:15');
     
-    $schedule->command('stockpeer:importeodoptions')
-      ->sendOutputTo(storage_path() . '/logs/stockpeer.importeodoptions.' . $ts . '.log')
-      ->emailOutputTo('spicer@stockpeer.com')
-      ->dailyAt('15:00');  
+    //$schedule->command('stockpeer:importeodoptions')
+    //  ->sendOutputTo(storage_path() . '/logs/stockpeer.importeodoptions.' . $ts . '.log')
+     // ->emailOutputTo('spicer@stockpeer.com')
+     // ->dailyAt('15:00');  
     
     
     // Deal with 1min data collection. (6:29am - 6:59am)
