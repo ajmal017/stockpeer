@@ -133,7 +133,7 @@ class PutCreditSpread
 				'action' => 'put-credit-spread',
 				'spread_width' => 2,
 				'min_credit' => 0.18,	
-				'max_days_to_expire' => 45,
+				'max_days_to_expire' => 46,
 				'min_days_to_expire' => 0						
 			]
 			
